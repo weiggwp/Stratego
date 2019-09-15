@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Board</title>
+    <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
+
+</head>
+<body>
+Stratego board made with div
+<div class="divTable board" id="board">
+    <div class="divTableBody">
+        <th:block th:each="i: ${#numbers.sequence(1, count)}">
+            <div class="divTableRow">
+
+                <th:block th:each="m: ${#numbers.sequence(1,inner)}">
+
+                    <div class="divTableCell1" th:if="${pos.compare(i,m)}"></div>
+
+                    <div class="divTableCell" th:unless="${pos.compare(i,m)}">
+
+                        <div class="all_pieces" th:if="${pos.getImage(i)}" >
+
+                            <div class="blue_pieces" th:if="${pos.blue(i)}" >
+
+                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="blue_back"  src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+
+                            </div>
+                            <div class="red_pieces" th:unless="${pos.blue(i)}">
+                                <img class="red_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}"/>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                </th:block>
+            </div>
+
+        </th:block>
+
+
+    </div>
+</div>
+
+</body>
+</html>
