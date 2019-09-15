@@ -1,10 +1,129 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"-->
+<!--      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
+<!--<head>-->
+<!--    <title>Register </title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1> Register Account</h1>-->
+
+<!--&lt;!&ndash;<div th:if="${param.error}">&ndash;&gt;-->
+<!--&lt;!&ndash;    Invalid username and password.&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div th:if="${param.logout}">&ndash;&gt;-->
+<!--&lt;!&ndash;    You have been logged out.&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--<div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red" > </div>-->
+
+<!--<br>-->
+
+<!--<form th:action="@{/register}" method="post">-->
+<!--    &lt;!&ndash;    <div><label> Username : <input type="text" name="username"/> </label></div>&ndash;&gt;-->
+<!--    &lt;!&ndash;    <div><label> Password: <input type="password" name="password"/> </label></div>&ndash;&gt;-->
+<!--    &lt;!&ndash;    <div><input type="submit" value="Sign In"/></div>&ndash;&gt;-->
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>Username:</td>-->
+<!--            <td><input type='text' name='username' value=''></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td>Password:</td>-->
+<!--            <td><input type='password' name='password' /></td>-->
+<!--        </tr>-->
+<!--        <tr>-->
+<!--            <td colspan='2'><input name="submit" type="submit" value="sign in" /></td>-->
+<!--        </tr>-->
+<!--    </table>-->
+<!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+
+<!--    <p>Click <a th:href="@{/register}">here</a> to register.</p>-->
+<!--</form>-->
+<!--</body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Create Account</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" type="text/css"
+          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+
+    <title>Registration</title>
 </head>
 <body>
-<h1>Create Account here</h1>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
+                Login Module</a>
+        </div>
+    </div>
+</nav>
+
+<br>
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+
+            <div th:if="${param.success}">
+                <div class="alert alert-info">You've successfully registered
+                    to our awesome app!</div>
+            </div>
+
+            <h1>Registration</h1>
+            <form th:action="@{/register}" th:object="${user}" method="post">
+
+                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
+                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
+                    error</p>
+
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
+                    <label for="email" class="control-label">E-mail</label> <input
+                        id="email" class="form-control" th:field="*{username}" />
+                    <p class="error-message"
+                       th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation
+                        error</p>
+                </div>
+
+                <div class="form-group"
+                     th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
+                    <label for="password" class="control-label">Password</label> <input
+                        id="password" class="form-control" type="password"
+                        th:field="*{password}" />
+                    <p class="error-message"
+                       th:each="error : ${#fields.errors('password')}"
+                       th:text="${error}">Validation error</p>
+                </div>
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Register</button>
+                    <span>Already registered? <a href="/" th:href="@{/login}">Login
+        here</a></span>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript"
+        th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
+<script type="text/javascript"
+        th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
 </body>
 </html>
