@@ -8,10 +8,13 @@
 
 </head>
 <body>
+<<<<<<< HEAD
 <p id="demo"></p>
 <script>
     var moving=-1;
 </script>
+=======
+>>>>>>> board and pieces done
 Stratego board made with div
 <div class="divTable board" id="board">
     <div class="divTableBody">
@@ -24,6 +27,7 @@ Stratego board made with div
 
                     <div class="divTableCell" th:unless="${pos.compare(i,m)}">
 
+<<<<<<< HEAD
                         <div class="all_pieces" th:if="${pos.getImage(i)}"
                               >
 
@@ -94,6 +98,21 @@ Stratego board made with div
                                      src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>
+=======
+                        <div class="all_pieces" th:if="${pos.getImage(i)}" >
+
+                            <div class="blue_pieces" th:if="${pos.blue(i)}" >
+
+                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="blue_back"  src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+
+                            </div>
+                            <div class="red_pieces" th:unless="${pos.blue(i)}">
+                                <img class="red_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}"/>
+
+                            </div>
+>>>>>>> board and pieces done
                         </div>
 
 

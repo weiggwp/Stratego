@@ -14,14 +14,20 @@ public class arrangement {
         red = populate(7);
 
     }
+<<<<<<< HEAD
     static int count=0;
 
+=======
+>>>>>>> board and pieces done
     public static Boolean compare(int row,int col)
     {
 
         if((row==5 || row==6) && (col==3 || col==4 || col==7 || col==8))
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> board and pieces done
             return true;
         }
         return false;
@@ -34,13 +40,18 @@ public class arrangement {
         }
         else
         {
+<<<<<<< HEAD
             return true;
+=======
+            return false;
+>>>>>>> board and pieces done
         }
 
 
     }
     public static Boolean blue(int row)
     {
+<<<<<<< HEAD
                         return row<5;
     }
     public static Boolean red(int row)
@@ -49,6 +60,9 @@ public class arrangement {
     }
     public static Boolean blank(int row){
         return row==5||row==6;
+=======
+        return row<5;
+>>>>>>> board and pieces done
     }
     public static String getId(int row,int col)
     {
