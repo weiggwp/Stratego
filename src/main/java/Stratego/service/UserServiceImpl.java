@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import Stratego.model.Role;
 import Stratego.model.User;
 import Stratego.repository.UserRepository;
-import Stratego.UserDto;
+import Stratego.dto.UserDto;
 
 @Service
 public class UserServiceImpl implements UserService {

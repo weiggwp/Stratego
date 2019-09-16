@@ -3,7 +3,7 @@ package Stratego.service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import Stratego.model.User;
-import Stratego.UserDto;
+import Stratego.dto.UserDto;
 
 public interface UserService extends UserDetailsService {
 

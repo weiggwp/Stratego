@@ -1,4 +1,4 @@
-package Stratego;
+package Stratego.dto;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,7 +11,6 @@ public class UserDto {
     @NotNull
     @NotEmpty
     private String password;
-    private String matchingPassword;
 
     // standard getters and setters
     public String getUsername() {
@@ -30,11 +29,4 @@ public class UserDto {
         this.password = password;
     }
 
-    public String getMatchingPassword() {
-        return matchingPassword;
-    }
-
-    public void setMatchingPassword(String matchingPassword) {
-        this.matchingPassword = matchingPassword;
-    }
 }

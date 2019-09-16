@@ -53,73 +53,62 @@
 
     <title>Registration</title>
 </head>
+
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top">
+
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-                    aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span> <span
-                    class="icon-bar"></span> <span class="icon-bar"></span> <span
-                    class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#" th:href="@{/}">Registration and
-                Login Module</a>
-        </div>
-    </div>
-</nav>
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
 
-<br>
-<br>
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-3">
+                <div th:if="${param.success}">
+                    <div class="alert alert-info">You've successfully registered
+                        to Stratego!</div>
+                </div>
+                <div th:if="${param.error}">
+                    <div class="alert alert-info">You've successfully registered
+                        to Stratego!</div>
+                </div>
 
-            <div th:if="${param.success}">
-                <div class="alert alert-info">You've successfully registered
-                    to our awesome app!</div>
+                <h1>Registration</h1>
+
+                    <!--error messages-->
+                    <div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red" > </div>
+                    <br>
+
+                    <form th:action="@{/register}" th:object="${user}" method="post">
+
+                        <table>
+                            <!--username-->
+                            <tr>
+                                <td>Username:</td>
+                                <td> <input type='text' name='username' value=''> </td>
+                            </tr>
+
+                            <!--password-->
+                            <tr>
+                                <td>Password:</td>
+                                <td> <input type='text' name='password' value=''> </td>
+                            </tr>
+                        </table>
+
+<!--                        <div class="form-group">-->
+<!--                            <label for="password" class="control-label">Password</label>-->
+<!--                            <input-->
+<!--                                id="password" class="form-control" type="password"-->
+<!--                                th:field="*{password}" />-->
+<!--                        </div>-->
+
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Register</button>
+                            <br>
+                            <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
+                        </div>
+                    </form>
             </div>
-
-            <h1>Registration</h1>
-            <form th:action="@{/register}" th:object="${user}" method="post">
-
-                <p class="error-message" th:if="${#fields.hasGlobalErrors()}"
-                   th:each="error : ${#fields.errors('global')}" th:text="${error}">Validation
-                    error</p>
-
-
-                <div class="form-group"
-                     th:classappend="${#fields.hasErrors('username')}? 'has-error':''">
-                    <label for="email" class="control-label">E-mail</label> <input
-                        id="email" class="form-control" th:field="*{username}" />
-                    <p class="error-message"
-                       th:each="error : ${#fields.errors('username')}" th:text="${error}">Validation
-                        error</p>
-                </div>
-
-                <div class="form-group"
-                     th:classappend="${#fields.hasErrors('password')}? 'has-error':''">
-                    <label for="password" class="control-label">Password</label> <input
-                        id="password" class="form-control" type="password"
-                        th:field="*{password}" />
-                    <p class="error-message"
-                       th:each="error : ${#fields.errors('password')}"
-                       th:text="${error}">Validation error</p>
-                </div>
-
-
-                <div class="form-group">
-                    <button type="submit" class="btn btn-success">Register</button>
-                    <span>Already registered? <a href="/" th:href="@{/login}">Login
-        here</a></span>
-                </div>
-
-            </form>
         </div>
     </div>
-</div>
 
 <script type="text/javascript"
         th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>

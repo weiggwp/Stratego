@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import Stratego.model.User;
 import Stratego.service.UserService;
-import Stratego.UserDto;
+import Stratego.dto.UserDto;
 
 @Controller
 @RequestMapping("/register")
@@ -33,19 +30,26 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto,
-                                      BindingResult result) {
-
+    public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result,
+                                      Model model) {
+        String errorMessge = null;
+        System.out.println(userDto);
+        System.out.println(model);
         User existing = userService.findByUsername(userDto.getUsername());
-        if (existing != null) {
-            result.rejectValue("email", null, "There is already an account registered with that email");
+        if (result.hasErrors()) {
+            errorMessge =  "Username or Password is invalid !";
         }
 
-        if (result.hasErrors()) {
+        else if (existing != null) {
+            errorMessge = "Username occupied! Please use another username.";
+        }
+        model.addAttribute("errorMessge", errorMessge);
+        if (errorMessge!=null) {
             return "register";
         }
 
         userService.register(userDto);
-        return "redirect:/register?success";
+
+        return "redirect:/login";
     }
 }
