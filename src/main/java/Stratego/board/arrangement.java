@@ -8,11 +8,21 @@ import java.util.Random;
 public class arrangement {
     private static ArrayList blue;
     private static ArrayList red;
+    private static String selected;
     public arrangement()
     {
         blue = populate(1);
         red = populate(7);
+        selected = "";
 
+    }
+    public void select(String id)
+    {
+        this.selected=id;
+    }
+    public String getSelected()
+    {
+        return this.selected;
     }
     public static Boolean compare(int row,int col)
     {

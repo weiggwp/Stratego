@@ -5,6 +5,15 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+<script type="text/javascript">
+    function myFunction(id)
+    {
+        document.getElementById(id).innerHTML = "YOU CLICKED ME!";
+        //alert("clicked");
+    }
+</script>
 <p th:text="'Hello, ' + ${name} + '!'" />
+<button id="demo" onclick="myFunction(this.id)" >Click me</button>
+
 </body>
 </html>
