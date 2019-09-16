@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Royal_blue.iml" filepath="$PROJECT_DIR$/.idea/Royal_blue.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.test.iml" />
     </modules>
   </component>
 </project>

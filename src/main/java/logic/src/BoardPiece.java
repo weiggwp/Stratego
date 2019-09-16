@@ -1,3 +1,5 @@
+package logic.src;
+
 public class BoardPiece {
 
     char unit;// 1-9, M (marshall), F (flag),B (bomb), 0 for empty, W for lake

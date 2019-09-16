@@ -70,7 +70,7 @@ div.board {
     position: absolute;
     border:3px;
     opacity:0.7;
-    filter: brightness(120%);
+    filter: brightness(90%);
     transition: all 0.50s;
 }
 
