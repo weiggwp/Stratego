@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import Stratego.model.Role;
 import Stratego.model.User;
-import Stratego.UserRepository;
+import Stratego.repository.UserRepository;
 import Stratego.UserDto;
 
 @Service
