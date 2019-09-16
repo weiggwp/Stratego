@@ -1,4 +1,4 @@
-package Stratego;
+package Stratego.controllers;
 
 import javax.validation.Valid;
 
