@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Board</title>
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
-
+    <script type="text/javascript" th:inline="javascript" th:src="@{../js/on_click_handler.js}" src="../js/on_click_handler.js"></script>
 </head>
 <body>
 <<<<<<< HEAD
@@ -101,14 +101,15 @@ Stratego board made with div
 =======
                         <div class="all_pieces" th:if="${pos.getImage(i)}" >
 
-                            <div class="blue_pieces" th:if="${pos.blue(i)}" >
+                            <div class="blue_pieces" id="hello" th:if="${pos.blue(i)}" >
 
                                 <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
                                 <img class="blue_back"  src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>
-                            <div class="red_pieces" th:unless="${pos.blue(i)}">
-                                <img class="red_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                            <div class="red_pieces" th:unless="${pos.blue(i)}" th:onclick="highlight()">
+<!--                                each one gets a unique id-->
+                                <img class="red_front"  th:id="${pos.getId(i,m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" onclick="highlight(this.id)"/>
                                 <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}"/>
 
                             </div>

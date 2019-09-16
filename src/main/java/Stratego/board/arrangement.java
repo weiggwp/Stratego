@@ -8,17 +8,30 @@ import java.util.Random;
 public class arrangement {
     private static ArrayList blue;
     private static ArrayList red;
+    private static String selected;
     public arrangement()
     {
         blue = populate(1);
         red = populate(7);
+        selected = "";
 
     }
+<<<<<<< HEAD
 <<<<<<< HEAD
     static int count=0;
 
 =======
 >>>>>>> board and pieces done
+=======
+    public void select(String id)
+    {
+        this.selected=id;
+    }
+    public String getSelected()
+    {
+        return this.selected;
+    }
+>>>>>>> commit before merge w master
     public static Boolean compare(int row,int col)
     {
 

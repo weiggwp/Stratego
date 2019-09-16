@@ -78,10 +78,18 @@ div.board {
 =======
 >>>>>>> board and pieces done
 
+.highlighted {
+    background-color: #000000;
+    position: absolute;
+    border:3px;
+    opacity:0.7;
+    filter: brightness(90%);
+    transition: all 0.50s;
+}
 
-
-
-
+.red_pieces:hover{
+    opacity: 0.9;
+}
 
 .divTable{ display: table; user-select:none}
 .divTableRow { display: table-row; }
