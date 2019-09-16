@@ -49,7 +49,7 @@ public class Board {
     BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
     private void initializeGameboard() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("./Stratego/resources/board2.txt"));
+        Scanner sc = new Scanner(new File("./logic/resources/board2.txt"));
         //System.out.println(sc.nextLine());
         for (int i=0; i<4; i++){
             for (int j=0; j<10; j++){
@@ -66,7 +66,7 @@ public class Board {
                     gameboard[i][j]=new BoardPiece('0','0');
             }
         }
-         sc = new Scanner(new File("./Stratego/resources/board1.txt"));
+         sc = new Scanner(new File("./logic/resources/board1.txt"));
         for (int i=6; i<10; i++){
             for (int j=0; j<10; j++){
                 gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'B');
