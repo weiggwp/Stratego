@@ -1,0 +1,85 @@
+body {
+    background-image: url("../images/page7.jpg");
+}
+div.board {
+    background-image: url("../images/land2.jpg");
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-size:cover;
+    border: 3px solid #716155;
+    width: 600px;
+    height: 600px;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+.divTable.board .divTableCell,.divTable.board .divTableHead {
+    border: 1px solid #716155;
+    padding: 0px 0px;
+    user-select: none;
+}
+
+.pieces
+{
+    min-width: 50px;
+    min-height: 50px;
+    object-fit: fill;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+.divTableCell1
+{
+    background-image: url("../images/ocean.jpg");
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 50px;
+    min-height: 50px;
+}
+
+.blue_front
+{
+    visibility: hidden;
+    position:absolute;
+}
+.red_back
+{
+    visibility: hidden;
+    position: absolute;
+}
+.red_front
+{
+    position:absolute;
+
+}
+.blue_back
+{
+    position:absolute;
+
+
+}
+.red_pieces
+{
+    position: absolute;
+
+}
+.blue_pieces
+{
+    position: absolute;
+
+}
+.blank{
+    position: absolute;
+}
+
+
+
+
+
+
+.divTable{ display: table; user-select:none}
+.divTableRow { display: table-row; }
+.divTableHeading { display: table-header-group;}
+.divTableCell, .divTableCell1, .divTableHead {display:table-cell;width:50px ;height:50px; }
+.blue_pieces{user-select:none;}
+.divTableBody { display: table-row-group;}
