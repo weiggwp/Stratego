@@ -16,12 +16,16 @@ public class arrangement {
         selected = "";
 
     }
+<<<<<<< HEAD
 
     static int count=0;
 
 
     public void select(String id)
 
+=======
+    public void select(String id)
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
     {
         this.selected=id;
     }
@@ -29,13 +33,19 @@ public class arrangement {
     {
         return this.selected;
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
     public static Boolean compare(int row,int col)
     {
 
         if((row==5 || row==6) && (col==3 || col==4 || col==7 || col==8))
         {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
             return true;
         }
         return false;
@@ -48,9 +58,13 @@ public class arrangement {
         }
         else
         {
+<<<<<<< HEAD
 
             return false;
 
+=======
+            return false;
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
         }
 
 
@@ -59,6 +73,7 @@ public class arrangement {
     {
         return row<5;
     }
+<<<<<<< HEAD
     public static Boolean red(int row)
     {
         return row>6;
@@ -69,6 +84,8 @@ public class arrangement {
         return row==5||row==6;
 
     }
+=======
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
     public static String getId(int row,int col)
     {
         return row+"_"+col;

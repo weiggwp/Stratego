@@ -6,11 +6,16 @@
     <title>Board</title>
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
     <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
+<<<<<<< HEAD
 
 </head>
 <body>
 
 
+=======
+</head>
+<body>
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
 Stratego board made with div
 <div class="divTable board" id="board">
     <div class="divTableBody">
@@ -21,6 +26,7 @@ Stratego board made with div
 
                     <div class="divTableCell1" th:if="${pos.compare(i,m)}"></div>
 
+<<<<<<< HEAD
                     <div class="divTableCell" th:unless="${pos.compare(i,m)}">
 
                         <div class="all_pieces">
@@ -48,6 +54,24 @@ Stratego board made with div
 
 
                             </div>
+=======
+                    <div class="divTableCell"  th:unless="${pos.compare(i,m)}" >
+
+                        <div class="all_pieces" th:if="${pos.getImage(i)}" >
+
+                            <div class="blue_pieces"  th:if="${pos.blue(i)}" >
+
+                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="blue_back"  src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+
+                            </div>
+                            <div class="red_pieces"  th:unless="${pos.blue(i)}" >
+<!--                                each one gets a unique id-->
+                                <img class="red_front"  th:id="${pos.getId(i,m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" onclick="highlight(this.id)"/>
+                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}"/>
+
+                            </div>
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
                         </div>
 
 
@@ -64,4 +88,8 @@ Stratego board made with div
 </div>
 
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a

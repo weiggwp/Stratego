@@ -1,5 +1,9 @@
 let selected = undefined;
+<<<<<<< HEAD
 let moving = -1;
+=======
+
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
 
 
 function highlight(id) {
@@ -26,6 +30,7 @@ function highlight(id) {
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
+<<<<<<< HEAD
 function move(i,m) {
     if (moving==-1){
         moving=(i*10+m);
@@ -44,3 +49,5 @@ function move(i,m) {
         moving=-1
     }
 }
+=======
+>>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
