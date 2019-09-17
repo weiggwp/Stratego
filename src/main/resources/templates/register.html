@@ -42,14 +42,17 @@
 <!--</html>-->
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<head>
+<!--    <meta charset="utf-8" />-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge" />-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1" />-->
+
+<!--    <link rel="stylesheet" type="text/css"-->
+<!--          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />-->
 
     <title>Registration</title>
 </head>
@@ -88,10 +91,10 @@
                             <!--password-->
                             <tr>
                                 <td>Password:</td>
-                                <td> <input type='text' name='password' value=''> </td>
+                                <td> <input type='password' name='password' value=''> </td>
                             </tr>
                         </table>
-
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 <!--                        <div class="form-group">-->
 <!--                            <label for="password" class="control-label">Password</label>-->
 <!--                            <input-->
