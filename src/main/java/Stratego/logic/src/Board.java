@@ -1,4 +1,4 @@
-package logic.src;
+package Stratego.logic.src;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -146,7 +146,7 @@ public class Board {
     }
 
     /*Returns 0 on 1 wins, 1 on 2 wins, 2 on draw*/
-    private int attack(char unit1, char unit2){
+    public int attack(char unit1, char unit2){
         if (unit1=='3'&&unit2=='B') return 0;
         if (unit1=='1'&&unit2=='M') return 0;
         if (unit2=='F') {
