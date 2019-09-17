@@ -15,10 +15,7 @@ public class arrangement {
 
     }
     static int count=0;
-    public static int printTest(int s){
-        System.out.println("received "+s+"!"+count++);
-        return 0;
-    }
+
     public static Boolean compare(int row,int col)
     {
 
