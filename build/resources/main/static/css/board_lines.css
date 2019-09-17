@@ -85,7 +85,20 @@ div.board {
 .red_pieces:hover{
     opacity: 0.9;
 }
+.btn-primary{
 
+    width:8%;
+    display:block;
+   margin-left: auto;
+    margin-right: auto;
+
+}
+.center {
+    margin: auto;
+    width: 60%;
+    color: white;
+    padding: 10px;
+}
 .divTable{ display: table; user-select:none}
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}

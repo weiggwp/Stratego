@@ -1,7 +1,7 @@
 let selected = undefined;
 
 let moving = -1;
-
+let started=false;
 function highlight(id) {
 
 
@@ -26,9 +26,17 @@ function highlight(id) {
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
-
-function move(i,m) {
+function start(){
+    started=true;
+    document.getElementsByClassName('blank').draggable = false;
+    document.getElementById('startBtn').style.visibility="hidden";
+    document.getElementById('startText').style.visibility="hidden";
+}
+function swap(i,m){
+    if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
+    else console.log(document.getElementById((i*10+m).toString()).src);
     if (moving==-1){
+
         moving=(i*10+m);
         highlight(moving);
 
@@ -37,6 +45,42 @@ function move(i,m) {
     }
 
     if (moving>=0) {
+        if (moving==i*10+m){
+            highlight(moving)
+            moving=-1;
+            return;
+        }
+        //  alert("moving from " + moving + " to " +(i*10+m));
+        let tempSrc=document.getElementById((i*10+m).toString()).src;
+        document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
+        document.getElementById(moving.toString()).src=tempSrc;
+        highlight(moving);
+        moving=-1
+    }
+}
+function move(i,m) {
+    if (!started){
+
+        swap(i,m);
+        return;
+    }
+    if (moving==-1){
+        if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
+        else console.log(document.getElementById((i*10+m).toString()).src);
+
+        moving=(i*10+m);
+        highlight(moving);
+
+        //alert(moving);
+        return;
+    }
+
+    if (moving>=0) {
+        if (moving==i*10+m){
+            highlight(moving)
+            moving=-1;
+            return;
+        }
         //  alert("moving from " + moving + " to " +(i*10+m));
         document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
         document.getElementById(moving.toString()).style.opacity=".02";
