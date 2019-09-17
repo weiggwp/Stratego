@@ -1,5 +1,5 @@
 let selected = undefined;
-
+let moving = -1;
 
 
 function highlight(id) {
@@ -25,4 +25,22 @@ function highlight(id) {
     }
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
+}
+function move(i,m) {
+    if (moving==-1){
+        moving=(i*10+m);
+        highlight(moving);
+
+        //alert(moving);
+        return;
+    }
+
+    if (moving>=0) {
+        //  alert("moving from " + moving + " to " +(i*10+m));
+        document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
+        document.getElementById(moving.toString()).style.opacity=".02";
+        document.getElementById(moving.toString()).style.borderStyle='none';
+        document.getElementById((i*10+m).toString()).style.opacity="1";
+        moving=-1
+    }
 }

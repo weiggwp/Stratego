@@ -3,12 +3,10 @@ package Stratego.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-<<<<<<< HEAD
-import Stratego.board.*;
-=======
-import Stratego.board.arrangement;
->>>>>>> board and pieces done
 
+import Stratego.board.*;
+
+import Stratego.board.arrangement;
 
 @Controller
 public class boardController {
@@ -24,11 +22,9 @@ public class boardController {
         model.addAttribute("inner",inner);
 
         model.addAttribute("pos",new arrangement());
-<<<<<<< HEAD
-=======
 
->>>>>>> board and pieces done
-        return "board";
+
+        return "board" ;
     }
 
 

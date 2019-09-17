@@ -31,13 +31,10 @@ div.board {
 .divTableCell1
 {
     background-image: url("../images/ocean.jpg");
-<<<<<<< HEAD
     margin-left: auto;
     margin-right: auto;
     min-width: 50px;
     min-height: 50px;
-=======
->>>>>>> board and pieces done
 }
 
 .blue_front
@@ -71,12 +68,10 @@ div.board {
     position: absolute;
 
 }
-<<<<<<< HEAD
+
 .blank{
     position: absolute;
 }
-=======
->>>>>>> board and pieces done
 
 .highlighted {
     background-color: #000000;
