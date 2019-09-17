@@ -79,7 +79,7 @@ public class arrangement {
     }
     public static String getId(int row,int col)
     {
-        return "piece"+row+col;
+        return row+"_"+col;
     }
     public static String assign(int row,int col)
     {
