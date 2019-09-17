@@ -31,13 +31,10 @@ div.board {
 .divTableCell1
 {
     background-image: url("../images/ocean.jpg");
-<<<<<<< HEAD
     margin-left: auto;
     margin-right: auto;
     min-width: 50px;
     min-height: 50px;
-=======
->>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
 }
 
 .blue_front
@@ -72,13 +69,10 @@ div.board {
 
 }
 
-<<<<<<< HEAD
 .blank{
     position: absolute;
 }
 
-=======
->>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
 .highlighted {
     background-color: #000000;
     position: absolute;
