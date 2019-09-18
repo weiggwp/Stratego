@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Board</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
     <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
 
@@ -39,9 +41,15 @@ Stratego board made with div
 
                             </div>
 
+<<<<<<< HEAD
                             <div class="blank" th:if="${pos.blank(i)}">
                                 <img class="blue_back" style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"
                                      th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
+=======
+                            <div class="blank" draggable="false" th:if="${pos.blank(i)}"
+                                 th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
+                                <img class="blue_back" draggable="false"  style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+>>>>>>> refs/remotes/origin/ying
 
 
                             </div>
@@ -55,8 +63,12 @@ Stratego board made with div
 
 
     </div>
-</div>
 
+</div>
+<div class="center">
+    <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
+</div>
+<button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
 </body>
 
 </html>

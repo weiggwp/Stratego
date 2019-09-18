@@ -1,4 +1,4 @@
-package logic.src;
+package Stratego.logic.src;
 
 public class BoardPiece {
 
