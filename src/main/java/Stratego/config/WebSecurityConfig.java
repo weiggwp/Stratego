@@ -134,8 +134,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/register**",
+                        "/board/**",
                         "/js/**",
                         "/css/**",
+                        "/images/**",
                         "/img/**",
                         "/webjars/**").permitAll()
                 .anyRequest().authenticated()

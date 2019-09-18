@@ -103,10 +103,11 @@ public class arrangement {
 
         char[] values={'B','2','8','7','3','4','5','6'};
         int[] counts ={6,8,2,3,5,4,4,4};
-        if(user)
+        if(!user)
             start = "1"; //now beginning to add pieces that repeat more than once
         else
             start = "7";
+
         for(int i = 1;i<=8;i++)
         {
             int piece_index = i+2;
