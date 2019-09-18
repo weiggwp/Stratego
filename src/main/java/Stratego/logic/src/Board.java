@@ -2,34 +2,20 @@ package Stratego.logic.src;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
-    public void startGame(){
-        try {
-            initializeGameboard();
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        Scanner sc = new Scanner(System.in);
-        while (gameWinner==0){
-            displayGameBoard();
-            //starting row, starting col, ending row, ending col
-            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt());
 
-        }
-        if (gameWinner==1)
-            System.out.println("You win!");
-        else
-            System.out.println("You lose.");
-    }
-
+private boolean initialized=false;
+public boolean isInitialzied(){
+    return initialized;
+}
     private void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
                 if (gameboard[i][j].getColor()=='R') {
-                    System.out.print((char)27 + "[31m" );
+                    System.out.print((char)27 + "[37m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
                 else if (gameboard[i][j].getColor()=='B') {
@@ -38,7 +24,7 @@ public class Board {
 
                 }
                 else{
-                    System.out.print((char)27 + "[37m" );
+                    System.out.print((char)27 + "[31m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
 
@@ -50,13 +36,41 @@ public class Board {
 
     BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
-    private void initializeGameboard() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("./Stratego/resources/board2.txt"));
+    private char readListItem(String s){
+        if (s.endsWith("piece1.png")||s.endsWith("piece21.png"))
+            return 'F';
+        if (s.endsWith("piece2.png")||s.endsWith("piece22.png"))
+            return '1';
+        if (s.endsWith("piece3.png")||s.endsWith("piece23.png"))
+            return 'M';
+        if (s.endsWith("piece4.png")||s.endsWith("piece24.png"))
+            return '9';
+        if (s.endsWith("piece13.png")||s.endsWith("piece73.png"))
+            return '8';
+        if (s.endsWith("piece14.png")||s.endsWith("piece74.png"))
+            return '7';
+        if (s.endsWith("piece15.png")||s.endsWith("piece75.png"))
+            return '3';
+        if (s.endsWith("piece16.png")||s.endsWith("piece76.png"))
+            return '4';
+        if (s.endsWith("piece17.png")||s.endsWith("piece77.png"))
+            return '5';
+        if (s.endsWith("piece18.png")||s.endsWith("piece78.png"))
+            return '6';
+        if (s.endsWith("piece11.png")||s.endsWith("piece71.png"))
+            return 'B';
+        if (s.endsWith("piece12.png")||s.endsWith("piece72.png"))
+            return '2';
+        return '0';
+    }
+
+    public void initializeGameboard(ArrayList<String> blue, ArrayList<String> red) throws FileNotFoundException {
+
         //System.out.println(sc.nextLine());
         for (int i=0; i<4; i++){
             for (int j=0; j<10; j++){
                // System.out.println(i+"  "+j);
-                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'R');
+                gameboard[i][j]=new BoardPiece(readListItem(blue.get(j+i*10)),'R');
             }
         }
         for (int i=4; i<6; i++){
@@ -68,16 +82,18 @@ public class Board {
                     gameboard[i][j]=new BoardPiece('0','0');
             }
         }
-         sc = new Scanner(new File("./Stratego/resources/board1.txt"));
+
         for (int i=6; i<10; i++){
             for (int j=0; j<10; j++){
-                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'B');
+                gameboard[i][j]=new BoardPiece(readListItem(red.get(j+(i-6)*10)),'B');
             }
         }
+        displayGameBoard();
+        initialized=true;
     }
 
     /*Returns false on illegal move, true on legal move.*/
-    private boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
+    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
@@ -167,10 +183,10 @@ public class Board {
     }
 
     /*Attempt to move unit to a tile*/
-    private void move(int startingX, int startingY, int endingX, int endingY){
+    public boolean move(int startingX, int startingY, int endingX, int endingY){
         if (!isLegalMove(startingX,startingY,endingX,endingY)) {
             illegalMove();
-            return;
+            return false;
         }
         int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
         if (result==0){
@@ -187,7 +203,7 @@ public class Board {
         else if (result==3){
             gameWinner=1;
         }
-
+        return true;
 
     }
 

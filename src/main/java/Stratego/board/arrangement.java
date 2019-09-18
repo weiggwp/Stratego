@@ -19,7 +19,12 @@ public class arrangement {
 
     static int count=0;
 
-
+    public ArrayList getBlue(){
+        return blue;
+    }
+    public ArrayList getRed(){
+        return red;
+    }
     public void select(String id)
 
     {
@@ -92,7 +97,7 @@ public class arrangement {
     private static ArrayList populate(int row)
     {
         ArrayList<String> collect = new ArrayList<String>();
-        int[] counts ={6,8,2,3,5,4,4,4};
+        int[] counts ={6,8,2,3,5,4,4,4}; //B,2,8,3,7,6,5,4
         String src="../images/pieces/piece"; // directory
         String ext=".png";
         String sr; // relative directory

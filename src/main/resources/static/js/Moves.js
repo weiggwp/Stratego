@@ -5,6 +5,7 @@ let clicked=false;
 yellow=-1;
 yellowBorder=-1;
 let started=false;
+let legal=0;
 function highlight(id) {
 
 
@@ -89,12 +90,25 @@ function move(i,m) {
             moving=-1;
             return;
         }
-        //  alert("moving from " + moving + " to " +(i*10+m));
+        let response=sendMoveRequest(0,moving/10-1,(moving-1)%10,i-1,m-1);
+
+        if (legal==2) {
+            console.log("aight ima haed out");
+            legal=0;
+            return;
+        }
+        legal=0;
+        /*let moveObj=JSON.parse(response);
+        moveObj.user.status.isLegalMove*/
+
+          console.log("moving from " + moving + " to " +(i*10+m));
         document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
         document.getElementById(moving.toString()).style.opacity=".02";
         document.getElementById(moving.toString()).style.borderStyle='none';
         document.getElementById((i*10+m).toString()).style.opacity="1";
         moving=-1;
+
+
 
         aiMove();
     }
@@ -109,34 +123,34 @@ function getPiece(location){
 }
 function aiMove() {
     var ran = Math.floor(Math.random() * 100) + 11;
-    console.log("from " + ran);
+   // console.log("from " + ran);
     while (true) {
         ran = Math.floor(Math.random() * 100) + 11;
-        console.log("from "+ran);
+       // console.log("from "+ran);
         if (!notLake(ran)) continue;
-        console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+       // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
             && document.getElementById((ran).toString()).style.opacity != .02)
             break;
 
 
     }
-    console.log("from " + ran);
+    //console.log("from " + ran);
     var from = ran;
     ran = Math.floor(Math.random() * 100) + 11;
-    console.log("to " + ran);
+   // console.log("to " + ran);
     while (true) {
         ran = Math.floor(Math.random() * 100) + 11;
-         console.log("to "+ran);
+        // console.log("to "+ran);
         if (!notLake(ran)) continue;
-        console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+       // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (!document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
             && document.getElementById((ran).toString()).style.opacity != .02)
             break;
 
 
     }
-    console.log("to " + ran);
+    //console.log("to " + ran);
     var to = ran;
     var taking = document.getElementById((to).toString()).src != '../images/pieces/blue_back.png';
     document.getElementById((to).toString()).src = document.getElementById(from.toString()).src
@@ -164,4 +178,46 @@ function angleBetween(x1,x2, y1,y2){
     slope1=0;
     slope2=(y2-y1)/(x2-x1);
     return Math.atan((slope1+slope2)/(1+slope1*slope2));
+}
+
+
+function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y)
+{
+
+    var http = new XMLHttpRequest();
+    var url = "/post_greet";    //-> will be changed to another uri maybe action?=move
+    var params = JSON.stringify({
+        GameID: GameID,
+        player: "user",
+        start_x: starting_x,
+        start_y: starting_y,
+        end_x: target_x,
+        end_y: target_y,
+        status: undefined});
+    //TODO: this method needs to be moved to Moves.js since we need prev_move coordinates
+    //start_x and start_y need to be filled in to validate move
+
+    http.open("POST", url, true);
+
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.setRequestHeader("Content-length", params.length);
+    http.setRequestHeader("Connection", "close");
+
+    http.send(params);
+
+    //will prob need to separate and make a more sophisticated function
+    http.onload = function() {
+        if (http.status != 200) { // analyze HTTP status of the response
+            alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
+        } else { // show the result
+            //alert(`Done, got ${http.response.length} bytes`); // responseText is the server
+            alert(http.response.toString());
+            console.log(http.response.toString());
+            if (http.response.toString()=='legal') legal=1;
+            else legal=2;
+        }
+    };
+
+
+
 }
