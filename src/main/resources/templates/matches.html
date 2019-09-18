@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<table id="tableId" class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Username</th>
+        <th scope="col">Outcome</th>
+        <th scope="col">Date</th>
+        <th scope="col">PieceCapturedByPlayer</th>
+        <th scope="col">PieceCapturedByAI</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="match: ${matches}">
+
+        <tr>
+            <th scope="row">1</th>
+            <td>Bob_placeholder</td>
+            <td>${matchup.outcome}</td>
+            <td>${matchup.date}</td>
+            <td>123</td>
+            <td>123</td>
+
+        </tr>
+
+
+    </div>
+
+    <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Win</td>
+        <td>10:55</td>
+        <td>123</td>
+        <td>123</td>
+    </tr>
+
+    <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Lost</td>
+        <td>10:22</td>
+        <td>123</td>
+        <td>123</td>
+    </tr>
+
+    <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Lost</td>
+        <td>10:22</td>
+        <td>123</td>
+        <td>123</td>
+    </tr>
+
+    <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Win</td>
+        <td>10:55</td>
+        <td>123</td>
+        <td>123</td>
+    </tr>
+
+    <tr>
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Lost</td>
+        <td>10:22</td>
+        <td>123</td>
+        <td>123</td>
+    </tr>
+
+    </tbody>
+</table>
+
+<script>
+
+    function colorOutcome() {
+        var table = document.getElementById("tableId");
+        for (var i = 1; i < table.rows.length; i ++) {
+            var currentRow = table.rows[i];
+            var cell = currentRow.getElementsByTagName("td")[1];
+            var outcome = cell.innerHTML;
+            if (outcome === "Win") {
+                currentRow.className = "table-primary";
+            } else {
+                currentRow.className = "table-danger"
+            }
+        }
+    }
+    window.onload = colorOutcome();
+
+
+</script>
+
+<script>
+
+    function addRowHandlers() {
+        var table = document.getElementById("tableId");
+        var rows = table.getElementsByTagName("tr");
+        for (i = 0; i < rows.length; i++) {
+            var currentRow = table.rows[i];
+            var createClickHandler =
+                function(row)
+                {
+                    return function() {
+                        var cell = row.getElementsByTagName("td")[1];
+                        var id = cell.innerHTML;
+                        alert("id:" + id);
+                    };
+                };
+
+            currentRow.onclick = createClickHandler(currentRow);
+        }
+    }
+    window.onload = addRowHandlers();
+
+
+</script>
+
+</body>
+</html>
