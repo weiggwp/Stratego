@@ -11,11 +11,11 @@
 <body>
 
 Stratego board made with div
+
 <div class="divTable board" id="board">
     <div class="divTableBody">
         <th:block th:each="i: ${#numbers.sequence(1, count)}">
             <div class="divTableRow">
-
                 <th:block th:each="m: ${#numbers.sequence(1,inner)}">
 
                     <div class="divTableCell1" th:if="${pos.compare(i,m)}"></div>
@@ -25,24 +25,23 @@ Stratego board made with div
                         <div class="all_pieces">
 
 
-                            <div class="blue_pieces"  th:if="${pos.blue(i)}"
-                                 th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
+                            <div class="blue_pieces"  th:if="${pos.blue(i)}"  th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
 
-                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" />
                                 <img class="blue_back" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>
                             <div class="red_pieces" th:if="${pos.red(i)}"
                                  >
                                 <!--th:onclick="${pos.printTest(5)}"  -->
-                                <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
-                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}"/>
+                                <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" th:onclick="'javascript:highlight(' + ${i} + ','+${m}+')'"  />
+                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
 
                             </div>
 
-                            <div class="blank" th:if="${pos.blank(i)}"
-                                 th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
-                                <img class="blue_back" style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+                            <div class="blank" th:if="${pos.blank(i)}">
+                                <img class="blue_back" style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"
+                                     th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
 
 
                             </div>

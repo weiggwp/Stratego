@@ -1,13 +1,10 @@
 package Stratego.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import Stratego.board.*;
-
 import Stratego.board.arrangement;
-
 
 @Controller
 public class boardController {

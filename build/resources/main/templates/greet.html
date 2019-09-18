@@ -3,6 +3,7 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" th:inline="javascript" th:src="@{../js/MethodController.js}" src="../js/MethodController.js"></script>
 </head>
 <body>
 <script type="text/javascript">
@@ -14,6 +15,7 @@
 </script>
 <p th:text="'Hello, ' + ${name} + '!'" />
 <button id="demo" onclick="myFunction(this.id)" >Click me</button>
+<div><button name="i'm a button" style="display:block;margin-left:auto; margin-right:auto;" onclick="sendRequest()">odd</button></div>
 
 </body>
 </html>
