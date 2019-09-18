@@ -1,5 +1,8 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 88d09fbaabebe80faaca15943a0d4ea80e0037db
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -100,6 +103,7 @@ exit /b 1
 if "%OS%"=="Windows_NT" endlocal
 
 :omega
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
@@ -207,3 +211,5 @@ if "%OS%"=="Windows_NT" endlocal
 >>>>>>> board and pieces done
 =======
 >>>>>>> 11efd43e7c196492252151482d1b78d8006c569a
+=======
+>>>>>>> 88d09fbaabebe80faaca15943a0d4ea80e0037db

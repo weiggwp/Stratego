@@ -1,6 +1,5 @@
 HELP.md
 .gradle
-.gradle/buildOutputCleanup/outputFiles.bin
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**
