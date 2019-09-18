@@ -87,7 +87,17 @@ public class arrangement {
         }
 
     }
-
+    /*
+     There are twice unique pieces in total for each user
+     this method creates them in order with respect to their image src
+     */
+    private piece[] create_pieces(boolean user)
+    {
+        //piece[]
+        return null;
+    }
+    //TODO: Instead of storing strings encapsulate it in piece class
+    //
     //randomly populates the 40 spots, works for both red and blue team
     private static ArrayList populate(int row)
     {

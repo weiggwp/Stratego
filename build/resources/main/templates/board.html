@@ -41,15 +41,10 @@ Stratego board made with div
 
                             </div>
 
-<<<<<<< HEAD
-                            <div class="blank" th:if="${pos.blank(i)}">
-                                <img class="blue_back" style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"
-                                     th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
-=======
                             <div class="blank" draggable="false" th:if="${pos.blank(i)}"
                                  th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
                                 <img class="blue_back" draggable="false"  style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
->>>>>>> refs/remotes/origin/ying
+
 
 
                             </div>

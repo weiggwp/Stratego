@@ -53,6 +53,8 @@ public class Board {
 
     BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
+
+    //TODO: need to modify this to populate array entries with piece objects
     private void initializeGameboard() throws FileNotFoundException {
         // TODO: get the path from currrent directory
         Scanner sc = new Scanner(new File("src/main/java/Stratego/logic/board2.txt"));
