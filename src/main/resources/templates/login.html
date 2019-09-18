@@ -3,9 +3,17 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Login </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="../css/home.css" th:href="@{/css/home.css}" rel="stylesheet"/>
+
 </head>
 <body>
-<h1> Welcome to Stratego!</h1>
+
+<div class="d-flex align-items-center justify-content-center">
+    <h1> Welcome to Stratego!</h1>
+</div>
+
 
 <!--<div th:if="${param.error}">-->
 <!--    Invalid username and password.-->
@@ -13,34 +21,67 @@
 <!--<div th:if="${param.logout}">-->
 <!--    You have been logged out.-->
 <!--</div>-->
-<div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red" > </div>
+
 
 <br>
 
-<form th:action="@{/login}" method="post">
-<!--    <div><label> Username : <input type="text" name="username"/> </label></div>-->
-<!--    <div><label> Password: <input type="password" name="password"/> </label></div>-->
-<!--    <div><input type="submit" value="Sign In"/></div>-->
-    <table>
-        <tr>
-            <td>Username:</td>
-            <td><label>
-                <input type='text' name='username' value=''>
-            </label></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><label>
-                <input type='password' name='password' />
-            </label></td>
-        </tr>
-        <tr>
-            <td colspan='2'><input name="submit" type="submit" value="sign in" /></td>
-        </tr>
-    </table>
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+<div class="center" >
+    <div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red"></div>
 
-    <p>Click <a th:href="@{/register}">here</a> to register.</p>
+</div>
+
+<form th:action="@{/login}" method="post">
+    <!--    <div><label> Username : <input type="text" name="username"/> </label></div>-->
+    <!--    <div><label> Password: <input type="password" name="password"/> </label></div>-->
+    <!--    <div><input type="submit" value="Sign In"/></div>-->
+
+
+    <form>
+        <div class="form-group row d-flex justify-content-center">
+            <label class="col-sm-auto col-form-label">Username</label>
+            <div class="col-sm-auto">
+                <input type="text" class="form-control" id="inputUsername" placeholder="Username" name="username">
+            </div>
+        </div>
+        <div class="form-group row d-flex justify-content-center">
+            <label for="inputPassword" class="col-sm-auto col-form-label">Password</label>
+            <div class="col-sm-auto">
+                <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
+            </div>
+        </div>
+
+        <div class="form-group row col-sm-auto d-flex justify-content-center">
+            <div class="col-sm-auto">
+                <input name="submit" class="form-control col-sm-auto" type="submit" value="Sign in" />
+            </div>
+
+            <a th:href="@{/register}">
+                <input type="button" class="form-control" value="Register"/>
+            </a>
+        </div>
+    </form>
+
+
+    <!--    <table>-->
+    <!--        <tr>-->
+    <!--            <td>Username:</td>-->
+    <!--            <td><label>-->
+<!--                    <input type='text' class="form-control" name='username' value=''>-->
+    <!--            </label></td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td>Password:</td>-->
+    <!--            <td><label>-->
+    <!--                <input type='password' class="form-control" name='password' />-->
+    <!--            </label></td>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <td colspan='2'><input name="submit" class="form-control" type="submit" value="Sign in" /></td>-->
+    <!--        </tr>-->
+    <!--    </table>-->
+    <!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
+
 </form>
+
 </body>
 </html>
