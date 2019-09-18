@@ -2,16 +2,34 @@ package Stratego.logic.src;
 
 public class BoardPiece {
 
-    char unit;// 1-9, M (marshall), F (flag),B (bomb), 0 for empty, W for lake
-    char color; // R or B when occupied by a tile,0 otherwise
+    private char unit;// 1-9, M (marshall), F (flag),B (bomb), 0 for empty, W for lake
+    private String img_src;
+    private char color; // R or B when occupied by a tile,0 otherwise
+
+    public BoardPiece(char unit, char color){
+        this.unit=unit;
+        this.color=color;
+        this.img_src="";
+    }
+    public BoardPiece(char unit,String img,char color)
+    {
+        this.unit=unit;
+        this.img_src=img;
+        this.color=color;
+    }
 
     public void reset(){
         unit='0';
         color='0';
     }
+    public String toString()
+    {
+        return this.img_src;
+    }
     public void newPiece(BoardPiece b){
         unit=b.getUnit();
         color=b.getColor();
+        img_src=b.toString();
     }
     public char getUnit() {
         return unit;
@@ -29,17 +47,14 @@ public class BoardPiece {
         this.color = color;
     }
 
-    public BoardPiece(char unit, char color){
-        this.unit=unit;
-        this.color=color;
-    }
-    boolean isEmpty(){
+
+    public boolean isEmpty(){
         return unit=='0';
     }
-    boolean isLake(){
+    public boolean isLake(){
         return unit=='W';
     }
-    boolean isScout(){
+    public boolean isScout(){
         return unit=='2';
     }
 

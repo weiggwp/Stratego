@@ -11,6 +11,15 @@ public class Move_status {
     private String captured;       //who is captured, capturing, or tied
     private String image_src;  /* if AI captures a user piece, it must be revealed*/
 
+    private String piece_name;
+
+    public String getPiece_name() {
+        return piece_name;
+    }
+
+    public void setPiece_name(String piece_name) {
+        this.piece_name = piece_name;
+    }
 
     public boolean isIs_valid_move() {
         return is_valid_move;
