@@ -1,6 +1,9 @@
 let selected = undefined;
 
 let moving = -1;
+let clicked=false;
+yellow=-1;
+yellowBorder=-1;
 let started=false;
 function highlight(id) {
 
@@ -26,7 +29,11 @@ function highlight(id) {
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
-function start(){
+function start() {
+    if (clicked) {
+    console.log("clicking " +moving);
+    document.getElementById(moving.toString()).click();
+}
     started=true;
     document.getElementsByClassName('blank').draggable = false;
     document.getElementById('startBtn').style.visibility="hidden";
@@ -59,6 +66,7 @@ function swap(i,m){
     }
 }
 function move(i,m) {
+    clicked=!clicked;
     if (!started){
 
         swap(i,m);
@@ -86,6 +94,74 @@ function move(i,m) {
         document.getElementById(moving.toString()).style.opacity=".02";
         document.getElementById(moving.toString()).style.borderStyle='none';
         document.getElementById((i*10+m).toString()).style.opacity="1";
-        moving=-1
+        moving=-1;
+
+        aiMove();
     }
+}
+function notLake(a){
+    if (a!=53&&a!=54&&a!=63&&a!=64&&a!=57&&a!=58&&a!=67&&a!=68)
+        return true;
+    return false;
+}
+function getPiece(location){
+    return '../images/pieces/piece12.png';
+}
+function aiMove() {
+    var ran = Math.floor(Math.random() * 100) + 11;
+    console.log("from " + ran);
+    while (true) {
+        ran = Math.floor(Math.random() * 100) + 11;
+        console.log("from "+ran);
+        if (!notLake(ran)) continue;
+        console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+        if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
+            && document.getElementById((ran).toString()).style.opacity != .02)
+            break;
+
+
+    }
+    console.log("from " + ran);
+    var from = ran;
+    ran = Math.floor(Math.random() * 100) + 11;
+    console.log("to " + ran);
+    while (true) {
+        ran = Math.floor(Math.random() * 100) + 11;
+         console.log("to "+ran);
+        if (!notLake(ran)) continue;
+        console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+        if (!document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
+            && document.getElementById((ran).toString()).style.opacity != .02)
+            break;
+
+
+    }
+    console.log("to " + ran);
+    var to = ran;
+    var taking = document.getElementById((to).toString()).src != '../images/pieces/blue_back.png';
+    document.getElementById((to).toString()).src = document.getElementById(from.toString()).src
+    //document.getElementById(from.toString()).style.opacity=".02";
+    document.getElementById(from.toString()).style.borderStyle = 'none';
+    document.getElementById((to).toString()).style.opacity = "1";
+
+    document.getElementById(from.toString()).src = "../images/Moved.jpg"
+    document.getElementById(to.toString()).style.borderColor = 'yellow';
+    document.getElementById(to.toString()).style.borderStyle = 'solid';
+    if (taking) {
+        let piece = getPiece(from);
+        document.getElementById(to.toString()).src = piece;
+    }
+    if (yellow!=-1){
+        document.getElementById(yellow.toString()).style.opacity=".02";
+        document.getElementById(yellowBorder.toString()).style.borderStyle='none';
+        document.getElementById(yellowBorder.toString()).src='../images/pieces/blue_back.png';
+    }
+    yellow=from;
+    yellowBorder=to;
+
+}
+function angleBetween(x1,x2, y1,y2){
+    slope1=0;
+    slope2=(y2-y1)/(x2-x1);
+    return Math.atan((slope1+slope2)/(1+slope1*slope2));
 }

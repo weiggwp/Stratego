@@ -30,7 +30,7 @@ Stratego board made with div
                             <div class="blue_pieces"  th:if="${pos.blue(i)}"
                                  th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
 
-                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+                                <img class="blue_front" th:id ="${100*(i*10+m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
                                 <img class="blue_back" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>
