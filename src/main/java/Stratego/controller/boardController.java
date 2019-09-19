@@ -1,11 +1,11 @@
 package Stratego.controller;
 
+import Stratego.board.Move;
 import Stratego.logic.src.Board;
-<<<<<<< HEAD
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-=======
->>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,13 +37,13 @@ Board board=new Board();
 
     }
 
-    @RequestMapping(value = "/post_greet", method = RequestMethod.POST)
+    @RequestMapping(value = "/post_move", method = RequestMethod.POST)
     public ResponseEntity<String> post_greet(@RequestBody Move m) throws Exception
     // RequestBody String some)
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
         if (!board.isInitialzied()||m.getMoveNum()==0) {
-            System.out.println("reinitializing " + board.isInitialzied()+ " " + m.getMoveNum());
+          //  System.out.println("reinitializing " + board.isInitialzied()+ " " + m.getMoveNum());
             board.initializeGameboard(arr.getBlue(), arr.getRed());
         }
         String status=board.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());

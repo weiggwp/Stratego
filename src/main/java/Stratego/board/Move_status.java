@@ -1,8 +1,7 @@
 package Stratego.board;
 
 public class Move_status {
-<<<<<<< HEAD
-=======
+
     private boolean is_valid_move;
     private String error_message;   //display err_msg on board if invalid move
 
@@ -95,5 +94,5 @@ public class Move_status {
     public void setImage_src(String image_src) {
         this.image_src = image_src;
     }
->>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
+
 }

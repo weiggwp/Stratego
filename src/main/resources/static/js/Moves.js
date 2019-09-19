@@ -127,7 +127,7 @@ function aiMove() {
 
 
     }
-<<<<<<< HEAD
+
 
 
    // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
@@ -143,7 +143,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 {
 
     var http = new XMLHttpRequest();
-    var url = "/post_greet";    //-> will be changed to another uri maybe action?=move
+    var url = "/post_move";    //-> will be changed to another uri maybe action?=move
     var params = JSON.stringify({
         GameID: GameID,
         player: "user",
@@ -166,13 +166,15 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
     http.send(params);
 
     //will prob need to separate and make a more sophisticated function
+
     http.onload = function() {
+
         if (http.status != 200) { // analyze HTTP status of the response
             alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
         } else { // show the result
             //alert(`Done, got ${http.response.length} bytes`); // responseText is the server
            // alert(http.response.toString());
-            console.log(http.response.toString());
+            console.log("RESPONSE IS "+http.response.toString());
             resp = http.response.toString();
 
                 if (color=='B') {
@@ -250,12 +252,9 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
 
             }
-
-
-    };
-
-
-
-=======
->>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
+    }
 }
+
+
+
+

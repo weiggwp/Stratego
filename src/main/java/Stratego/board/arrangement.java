@@ -13,29 +13,17 @@ public class arrangement {
     private static ArrayList<BoardPiece> blue;
     private static ArrayList<BoardPiece> red;
     private static String selected;
-    public arrangement()
-    {
-<<<<<<< HEAD
-        blue = populate(1);
-        red = populate(7);
-        selected = "";
-
-    }
-
-    static int count=0;
-
     public ArrayList getBlue(){
         return blue;
     }
     public ArrayList getRed(){
         return red;
     }
-    public void select(String id)
-=======
+    public arrangement()
+    {
         blue = create_pieces(false,'B');
         red = create_pieces(true,'R');
 
->>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
 
     }
 
@@ -57,7 +45,7 @@ public class arrangement {
         else
         {
 
-            return false;
+            return true;
         }
 
 
@@ -97,6 +85,24 @@ public class arrangement {
             return red.get(pos);
         }
     }
+    public static String getPieceSrc(int row,int col)
+    {
+        row-=1;
+        col-=1;
+
+        if(row<5)//blue
+        {
+            int pos = (row)*(10) + col;
+
+            return blue.get(pos).getImg_src();
+        }
+        else
+        {
+            int ro = row-6;
+            int pos = ro*10+col;
+            return red.get(pos).getImg_src();
+        }
+    }
     public static String assign(int row,int col)
     {
 
@@ -129,7 +135,7 @@ public class arrangement {
 
         if(user)   //blue pieces start at offset 21
             start="2";
-             //flag goes last
+        //flag goes last
         BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
         collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
         collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
@@ -174,7 +180,7 @@ public class arrangement {
     private static ArrayList populate(int row)
     {
         ArrayList<String> collect = new ArrayList<String>();
-        int[] counts ={6,8,2,3,5,4,4,4}; //B,2,8,3,7,6,5,4
+        int[] counts ={6,8,2,3,5,4,4,4};
         String src="../images/pieces/piece"; // directory
         String ext=".png";
         String sr; // relative directory
@@ -207,7 +213,7 @@ public class arrangement {
                 collect.add(s);
 
             }
-           // System.out.println("after adding "+s+" "+collect);
+            // System.out.println("after adding "+s+" "+collect);
         }
         Collections.shuffle(collect);
         //blue flag goes first row, red flag goes last row

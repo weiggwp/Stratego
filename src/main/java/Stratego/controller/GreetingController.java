@@ -20,17 +20,10 @@ public class GreetingController {
         return "greet";
     }
 
-<<<<<<< HEAD
+
+
+
+
 
 }
-=======
-    @RequestMapping(value = "/post_greet", method = RequestMethod.POST)
-    public ResponseEntity<String> post_greet(@RequestBody Move m) throws Exception
-    // RequestBody String some)
-    {
 
-        return new ResponseEntity<String>("hello from server side, ", HttpStatus.OK);
-
-    }
-}
->>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
