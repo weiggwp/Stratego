@@ -127,6 +127,7 @@ function aiMove() {
 
 
     }
+<<<<<<< HEAD
 
 
    // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
@@ -255,4 +256,6 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
 
 
+=======
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
 }

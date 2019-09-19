@@ -1,11 +1,74 @@
 package Stratego.logic.src;
 
+import Stratego.board.arrangement;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Board {
+<<<<<<< HEAD
+=======
+    private BoardPiece[][] gameboard= new BoardPiece[10][10];
+    int gameWinner=0; //0 means no winner yet
+    private arrangement setup;
+
+    public void start()
+    {
+        setup = new arrangement();
+        initializeGameboard();
+        System.out.println("initialized game board");
+        System.out.println(gameboard.toString());
+    }
+
+    private void initializeGameboard() {
+
+        for (int i=0; i<4; i++){    //blue set up
+            for (int j=0; j<10; j++){
+               // System.out.println(i+"  "+j);
+                gameboard[i][j]=setup.getPiece(i,j);
+                        //new BoardPiece(sc.next().charAt(0),'R');
+            }
+        }
+        for (int i=4; i<6; i++){
+            for (int j=0; j<10; j++){
+                if (j==2||j==3||j==6||j==7){
+                    gameboard[i][j]=new BoardPiece('W','0');
+                }
+                else
+                    gameboard[i][j]=new BoardPiece('0','0');
+            }
+        }
+
+        for (int i=6; i<10; i++){
+            for (int j=0; j<10; j++){
+                gameboard[i][j]=setup.getPiece(i,j);
+            }
+        }
+    }
+
+    public void startGame(){
+        try {
+           // initializeGameboard();
+            //TODO: need to make a new initialize Gameboard method, that takes in the preset config
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        Scanner sc = new Scanner(System.in);
+        while (gameWinner==0){
+            displayGameBoard();
+            //starting row, starting col, ending row, ending col
+            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt());
+
+        }
+        if (gameWinner==1)
+            System.out.println("You win!");
+        else
+            System.out.println("You lose.");
+    }
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
 
 private boolean initialized=false;
 public boolean isInitialzied(){
@@ -34,6 +97,7 @@ public boolean isInitialzied(){
         System.out.print((char)27 + "[37m" );
     }
 
+<<<<<<< HEAD
     BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
     private char readListItem(String s){
@@ -67,6 +131,11 @@ public boolean isInitialzied(){
 
     public void initializeGameboard(ArrayList<String> blue, ArrayList<String> red) throws FileNotFoundException {
 
+=======
+/*
+    private void initializeGameboard() throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("./Stratego/resources/board2.txt"));
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
         //System.out.println(sc.nextLine());
         for (int i=0; i<4; i++){
             for (int j=0; j<10; j++){
@@ -92,7 +161,7 @@ public boolean isInitialzied(){
         displayGameBoard();
         initialized=true;
     }
-
+*/
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());

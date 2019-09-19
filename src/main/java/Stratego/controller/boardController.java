@@ -1,19 +1,18 @@
 package Stratego.controller;
 
 import Stratego.logic.src.Board;
+<<<<<<< HEAD
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+=======
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import Stratego.board.*;
-
 import Stratego.board.arrangement;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
 
 @Controller
 public class boardController {
@@ -24,6 +23,8 @@ Board board=new Board();
         int count = 10;
         int inner = 10;
         boardController control = new boardController();
+        Board game = new Board();
+        game.start();
         //render board.html
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);

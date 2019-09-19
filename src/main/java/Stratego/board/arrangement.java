@@ -1,16 +1,21 @@
 package Stratego.board;
 
+
+import Stratego.logic.src.BoardPiece;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 //shuffles and gives positions of pieces
 public class arrangement {
-    private static ArrayList blue;
-    private static ArrayList red;
+    private static ArrayList<BoardPiece> blue;
+    private static ArrayList<BoardPiece> red;
     private static String selected;
     public arrangement()
     {
+<<<<<<< HEAD
         blue = populate(1);
         red = populate(7);
         selected = "";
@@ -26,14 +31,14 @@ public class arrangement {
         return red;
     }
     public void select(String id)
+=======
+        blue = create_pieces(false,'B');
+        red = create_pieces(true,'R');
 
-    {
-        this.selected=id;
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
+
     }
-    public String getSelected()
-    {
-        return this.selected;
-    }
+
     public static Boolean compare(int row,int col)
     {
 
@@ -75,6 +80,23 @@ public class arrangement {
     {
         return row+"_"+col;
     }
+    //public static BoardPiece
+    public static BoardPiece getPiece(int row,int col)
+    {
+
+        if(row<5)//blue
+        {
+            int pos = (row)*(10) + col;
+
+            return blue.get(pos);
+        }
+        else
+        {
+            int ro = row-6;
+            int pos = ro*10+col;
+            return red.get(pos);
+        }
+    }
     public static String assign(int row,int col)
     {
 
@@ -92,7 +114,62 @@ public class arrangement {
         }
 
     }
+    /*
+     There are twice unique pieces in total for each user
+     this method creates them in order with respect to their image src
+     do the same as create_pieces except now we populate the arraylist with objects containing value+image_src
+     */
+    private ArrayList<BoardPiece> create_pieces(boolean user, char color)
+    {
+        ArrayList<BoardPiece> collect = new ArrayList<BoardPiece>();
 
+        String src="../images/pieces/piece"; // directory
+        String start="";
+        String ext=".png";
+
+        if(user)   //blue pieces start at offset 21
+            start="2";
+             //flag goes last
+        BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
+        collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
+        collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
+        collect.add(new BoardPiece('9',src+start+'4'+ext,color));       //9
+
+        char[] values={'B','2','8','7','3','4','5','6'};
+        int[] counts ={6,8,2,3,5,4,4,4};
+        if(!user)
+            start = "1"; //now beginning to add pieces that repeat more than once
+        else
+            start = "7";
+
+
+        for(int i = 1;i<=8;i++)
+        {
+            int piece_index = i+2;
+            int count = counts[i-1];
+            char value = values[i-1];
+
+            String img_src= src + start + i + ext;//finish path
+
+            for(int k=0;k<count;k++) {
+                collect.add(new BoardPiece(value,img_src,color));  //create new unique objects with same values
+
+            }
+            // System.out.println("after adding "+s+" "+collect);
+        }
+        Collections.shuffle(collect);
+        //blue flag goes first row, red flag goes last row
+
+        if(!user)
+            collect.add((new Random()).nextInt(10),flag);
+        else
+            collect.add((new Random()).nextInt(10)+30,flag);
+
+
+        return collect;
+    }
+    //TODO: Instead of storing strings encapsulate it in piece class
+    //
     //randomly populates the 40 spots, works for both red and blue team
     private static ArrayList populate(int row)
     {

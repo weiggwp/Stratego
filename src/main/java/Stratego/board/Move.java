@@ -7,6 +7,7 @@ public class Move {
     private int start_y;
     private int end_x;
     private int end_y;
+<<<<<<< HEAD
     private char color;
     private int moveNum;
     private Move_status status; //response about the attempted move
@@ -22,6 +23,10 @@ public class Move {
     public char getColor(){
         return color;
     }
+=======
+    private Move_status status; //response about the attempted move
+
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
     public void setGameID(String gameID) {
         GameID = gameID;
     }
@@ -77,4 +82,8 @@ public class Move {
     public String getGameID() {
         return GameID;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> e69e4b5bcec05759001baa44c3c66668a098b7eb
