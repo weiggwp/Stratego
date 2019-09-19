@@ -1,7 +1,7 @@
 package Stratego.board;
 
 public class Move {
-    private String GameID;
+    private long GameID;
     private String player; //either computer or user
     private int start_x;
     private int start_y;
@@ -9,8 +9,15 @@ public class Move {
     private int end_y;
     private Move_status status; //response about the attempted move
 
-    public void setGameID(String gameID) {
+
+    public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
         GameID = gameID;
+        this.player = player;
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.status = status;
     }
 
     public String getPlayer() {
@@ -61,7 +68,7 @@ public class Move {
         this.status = status;
     }
 
-    public String getGameID() {
+    public long getGameID() {
         return GameID;
     }
 }
