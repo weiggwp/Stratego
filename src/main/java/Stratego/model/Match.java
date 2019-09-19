@@ -3,6 +3,8 @@ package Stratego.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Entity
@@ -19,6 +21,10 @@ public class Match {
     @Column(name = "outcome")
     @NotNull
     private String outcome;
+    @Column(name = "unix_time")
+    @NotNull
+    private long unixTime;
+
 
 
     public Match() {
@@ -26,6 +32,12 @@ public class Match {
     public Match(long userId, String outcome) {
         this.userId = userId;
         this.outcome = outcome;
+    }
+
+    public Match(@NotNull long userId, @NotNull String outcome, @NotNull long unixTime) {
+        this.userId = userId;
+        this.outcome = outcome;
+        this.unixTime = unixTime;
     }
 
     public Match(long matchId, long userId, String outcome) {
@@ -54,6 +66,13 @@ public class Match {
         return outcome;
     }
 
+    public long getUnixTime() {
+        return unixTime;
+    }
+
+    public void setUnixTime(long unixTime) {
+        this.unixTime = unixTime;
+    }
 
     public void setOutcome(String outcome) {
         this.outcome = outcome;
@@ -65,6 +84,20 @@ public class Match {
                 "matchId=" + matchId +
                 ", userId=" + userId +
                 ", outcome='" + outcome + '\'' +
+                ", unixTime=" + unixTime +
                 '}';
     }
+
+
+    public String convertUnixTime() {
+
+        Date date = new Date(this.unixTime);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/New_York"));
+        String formattedDate = sdf.format(date);
+        return formattedDate;
+
+    }
+
+
 }
