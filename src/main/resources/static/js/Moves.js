@@ -1,5 +1,5 @@
 let selected = undefined;
-
+let numMoves=0;
 let moving = -1;
 let clicked=false;
 yellow=-1;
@@ -35,6 +35,7 @@ function start() {
     console.log("clicking " +moving);
     document.getElementById(moving.toString()).click();
 }
+    numMoves=0;
     started=true;
     document.getElementsByClassName('blank').draggable = false;
     document.getElementById('startBtn').style.visibility="hidden";
@@ -90,27 +91,10 @@ function move(i,m) {
             moving=-1;
             return;
         }
-        let response=sendMoveRequest(0,moving/10-1,(moving-1)%10,i-1,m-1);
-
-        if (legal==2) {
-            console.log("aight ima haed out");
-            legal=0;
-            return;
-        }
-        legal=0;
-        /*let moveObj=JSON.parse(response);
-        moveObj.user.status.isLegalMove*/
-
-          console.log("moving from " + moving + " to " +(i*10+m));
-        document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
-        document.getElementById(moving.toString()).style.opacity=".02";
-        document.getElementById(moving.toString()).style.borderStyle='none';
-        document.getElementById((i*10+m).toString()).style.opacity="1";
-        moving=-1;
+        numMoves++;
+        let response=sendMoveRequest(0,(moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves);
 
 
-
-        aiMove();
     }
 }
 function notLake(a){
@@ -141,35 +125,25 @@ function aiMove() {
    // console.log("to " + ran);
     while (true) {
         ran = Math.floor(Math.random() * 100) + 11;
-        // console.log("to "+ran);
+         console.log("to "+ran);
+
         if (!notLake(ran)) continue;
+        console.log(document.getElementById((ran).toString()).src);
        // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
-        if (!document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
+        if (!(document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png"))
             && document.getElementById((ran).toString()).style.opacity != .02)
             break;
+        if ((document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png"))
+            && document.getElementById((ran).toString()).style.opacity == .02){
+            break;
+        }
 
 
     }
     //console.log("to " + ran);
     var to = ran;
-    var taking = document.getElementById((to).toString()).src != '../images/pieces/blue_back.png';
-    document.getElementById((to).toString()).src = document.getElementById(from.toString()).src
-    //document.getElementById(from.toString()).style.opacity=".02";
-    document.getElementById(from.toString()).style.borderStyle = 'none';
-    document.getElementById((to).toString()).style.opacity = "1";
-
-    document.getElementById(from.toString()).src = "../images/Moved.jpg"
-    document.getElementById(to.toString()).style.borderColor = 'yellow';
-    document.getElementById(to.toString()).style.borderStyle = 'solid';
-    if (taking) {
-        let piece = getPiece(from);
-        document.getElementById(to.toString()).src = piece;
-    }
-    if (yellow!=-1){
-        document.getElementById(yellow.toString()).style.opacity=".02";
-        document.getElementById(yellowBorder.toString()).style.borderStyle='none';
-        document.getElementById(yellowBorder.toString()).src='../images/pieces/blue_back.png';
-    }
+   // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
+    sendMoveRequest(0,(from-1)/10-1,(from-1)%10,(to-1)/10-1,(to-1)%10,'R',++numMoves)
     yellow=from;
     yellowBorder=to;
 
@@ -181,7 +155,7 @@ function angleBetween(x1,x2, y1,y2){
 }
 
 
-function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y)
+function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
 
     var http = new XMLHttpRequest();
@@ -189,6 +163,8 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y)
     var params = JSON.stringify({
         GameID: GameID,
         player: "user",
+        color: color,
+        moveNum:moveNum,
         start_x: starting_x,
         start_y: starting_y,
         end_x: target_x,
@@ -211,11 +187,78 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y)
             alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
         } else { // show the result
             //alert(`Done, got ${http.response.length} bytes`); // responseText is the server
-            alert(http.response.toString());
+           // alert(http.response.toString());
             console.log(http.response.toString());
-            if (http.response.toString()=='legal') legal=1;
-            else legal=2;
-        }
+            resp = http.response.toString();
+
+                if (color=='B') {
+                    let start=(starting_x + 1) * 10 + starting_y + 1;
+                    const end = (target_x + 1) * 10 + target_y + 1;
+                    console.log("moving from " + moving + " to " + (target_x + 1 * 10 + target_y + 1));
+                    if (resp.startsWith("win")) { //it
+                        document.getElementById((end).toString()).src
+                            = document.getElementById((moving).toString()).src
+                        document.getElementById(moving.toString()).style.opacity = ".02";
+                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                        moving = -1;
+                    }
+                    if (resp.startsWith("empty")) { //it
+                        document.getElementById((end).toString()).src
+                            = document.getElementById((moving   ).toString()).src
+                        document.getElementById(moving.toString()).style.opacity = ".02";
+                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                        moving = -1;
+                    }
+                    else if (resp.startsWith("lose ")) { //it
+                        document.getElementById(moving.toString()).style.opacity = ".02";
+                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        document.getElementById((end).toString()).src=getPiece("");
+                        moving = -1;
+                    }
+                    else if (resp.startsWith("draw")){
+                        document.getElementById(moving.toString()).style.opacity = ".02";
+                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        document.getElementById(end.toString()).style.opacity = ".02";
+                        document.getElementById(end.toString()).style.borderStyle = 'none';
+                    }
+                    else if (resp=="flag"){
+                        //game over
+                    }
+                    else if (resp=="illegal")return;
+
+                    aiMove();
+                }
+                else{
+
+
+                    let x =((starting_x + 1) * 10 + starting_y + 1)
+
+
+
+
+
+                    console.log("moving from " + moving + " to " + (target_x + 1 * 10 + target_y + 1));
+                    document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((moving).toString()).src
+                    document.getElementById(x.toString()).style.opacity = ".02";
+                    document.getElementById(x.toString()).style.borderStyle = 'none';
+                    document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                    if (resp==0||true) {
+                        let piece = getPiece(x);
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = piece;
+                    }
+                    if (yellow!=-1){
+                        document.getElementById(yellow.toString()).style.opacity=".02";
+                        document.getElementById(yellowBorder.toString()).style.borderStyle='none';
+                        document.getElementById(yellowBorder.toString()).src='../images/pieces/blue_back.png';
+                    }
+                }
+
+
+            }
+
+
     };
 
 

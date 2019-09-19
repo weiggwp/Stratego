@@ -15,16 +15,16 @@ public boolean isInitialzied(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
                 if (gameboard[i][j].getColor()=='R') {
-                    System.out.print((char)27 + "[37m" );
+                    System.out.print((char)27 + "[34m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
                 else if (gameboard[i][j].getColor()=='B') {
-                    System.out.print((char)27 + "[34m" );
+                    System.out.print((char)27 + "[31m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
 
                 }
                 else{
-                    System.out.print((char)27 + "[31m" );
+                    System.out.print((char)27 + "[37m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
 
@@ -93,14 +93,14 @@ public boolean isInitialzied(){
     }
 
     /*Returns false on illegal move, true on legal move.*/
-    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
+    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
-        if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
+        if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             System.out.println("invalid starting piece");
             return false;
         }
-        if (gameboard[startingX][startingY].getColor()!='B') {
+        if (gameboard[startingX][startingY].getColor()!=color) {
             System.out.println("invalid starting color");
             return false;
         }//if moving a piece not owned by player...
@@ -137,17 +137,21 @@ public boolean isInitialzied(){
                 ending=Math.max(startingX,endingX);
 
             }
+            System.out.println("horizontal is " + horizontal);
+            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
-                if (horizontal)
-                    if (!gameboard[startingY][i].isEmpty()||gameboard[startingY][i].isLake()) {
-                        System.out.println("collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit());
+                if (horizontal) {
+                    if (!gameboard[startingX][i].isEmpty() || gameboard[startingX][i].isLake()) {
+                        System.out.println("aacollision at " + startingX + " " + i + "; " + gameboard[startingY][i].getUnit());
                         return false;
                     }
-                else
-                    if (!gameboard[i][startingX].isEmpty()||gameboard[i][startingX].isLake()) {
-                        System.out.println("collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit());
+                }
+                else {
+                    if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
+                        System.out.println("bbxcollision at " + i + " " + startingX + "; " + gameboard[i][startingX].getUnit());
                         return false;
                     }
+                }
             }
         }
 
@@ -161,8 +165,9 @@ public boolean isInitialzied(){
         return false;
     }
 
-    /*Returns 0 on 1 wins, 1 on 2 wins, 2 on draw*/
+    /*Returns 0 on 1 wins, 1 on 2 wins, 2 on draw, 3 on flag capture, 4 on moving to blank space*/
     public int attack(char unit1, char unit2){
+        if (unit2=='0') return 4;
         if (unit1=='3'&&unit2=='B') return 0;
         if (unit1=='1'&&unit2=='M') return 0;
         if (unit2=='F') {
@@ -183,27 +188,44 @@ public boolean isInitialzied(){
     }
 
     /*Attempt to move unit to a tile*/
-    public boolean move(int startingX, int startingY, int endingX, int endingY){
-        if (!isLegalMove(startingX,startingY,endingX,endingY)) {
+    public String move(int startingX, int startingY, int endingX, int endingY,char color){
+
+        System.out.println();System.out.println();
+        displayGameBoard();
+
+        if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
             illegalMove();
-            return false;
+            return "illegal";
         }
         int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
         if (result==0){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
+
+            return "win "+a; // mover wins
         }
         else if (result==1){
+            char a = gameboard[startingX][startingY].getUnit();
             gameboard[startingX][startingY].reset();
+            return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[startingX][startingY].reset();
             gameboard[endingX][endingY].reset();
+            return "draw " +a;
         }
         else if (result==3){
             gameWinner=1;
+            return "flag"; //mover wins the videogame
         }
-        return true;
+        if (result==4){
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
+            return "empty"; // mover moved to empty space
+        }
+        return "This will never happen.";
 
     }
 

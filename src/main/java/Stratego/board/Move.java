@@ -7,8 +7,21 @@ public class Move {
     private int start_y;
     private int end_x;
     private int end_y;
+    private char color;
+    private int moveNum;
     private Move_status status; //response about the attempted move
-
+    public int getMoveNum(){
+        return moveNum;
+    }
+    public void setMoveNum(int moveNum){
+        this.moveNum=moveNum;
+    }
+    public void setColor(char color){
+        this.color=color;
+    }
+    public char getColor(){
+        return color;
+    }
     public void setGameID(String gameID) {
         GameID = gameID;
     }

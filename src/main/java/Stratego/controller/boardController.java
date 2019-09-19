@@ -41,13 +41,16 @@ Board board=new Board();
     // RequestBody String some)
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-        if (!board.isInitialzied())
-            board.initializeGameboard(arr.getBlue(),arr.getRed());
-        boolean success=board.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y());
-        if (success)
-            return new ResponseEntity<String>("legal" , HttpStatus.OK);
-        else
-            return new ResponseEntity<String>("illegal" , HttpStatus.OK);
+        if (!board.isInitialzied()||m.getMoveNum()==0) {
+            System.out.println("reinitializing " + board.isInitialzied()+ " " + m.getMoveNum());
+            board.initializeGameboard(arr.getBlue(), arr.getRed());
+        }
+        String status=board.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
+
+        return new ResponseEntity<String>(status, HttpStatus.OK);
+
+
+
 
     }
 }
