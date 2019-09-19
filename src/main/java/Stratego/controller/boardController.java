@@ -1,6 +1,6 @@
 package Stratego.controller;
 
-
+import Stratego.logic.src.Board;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +14,8 @@ public class boardController {
         int count = 10;
         int inner = 10;
         boardController control = new boardController();
+        Board game = new Board();
+        game.start();
         //render board.html
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);

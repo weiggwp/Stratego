@@ -7,11 +7,12 @@ public class Move_status {
     private boolean game_ended;    //indicates if game has ended
     private String game_result;    //if game ended, either be win:lose:draw:null (game did not end)
 
-    private boolean capture;
-    private String captured;       //who is captured, capturing, or tied
-    private String image_src;  /* if AI captures a user piece, it must be revealed*/
+    private int fight_result;   //-1 for no fight, 0 user win, 1 user lose, 2 tie
+    private String piece_captured_by_player;
+    private String piece_captured_by_ai;
+    private String image_src;  //what is left on the board /* if AI captures a user piece, it must be revealed*/
 
-    private String piece_name;
+    private String piece_name; // name/rank of the piece
 
     public String getPiece_name() {
         return piece_name;
@@ -30,7 +31,7 @@ public class Move_status {
         if(!is_valid_move)
         {
             this.game_ended=false;
-            this.capture=false;
+            this.fight_result=-1;
 
         }
     }
@@ -59,24 +60,34 @@ public class Move_status {
         this.game_result = game_result;
     }
 
-    public boolean isCapture() {
-        return capture;
-    }
 
-    public void setCapture(boolean capture) {
-        this.capture = capture;
-    }
-
-    public String getCaptured() {
-        return captured;
-    }
-
-    public void setCaptured(String captured) {
-        this.captured = captured;
-    }
 
     public String getImage_src() {
         return image_src;
+    }
+
+    public int getFight_result() {
+        return fight_result;
+    }
+
+    public void setFight_result(int fight_result) {
+        this.fight_result = fight_result;
+    }
+
+    public String getPiece_captured_by_player() {
+        return piece_captured_by_player;
+    }
+
+    public void setPiece_captured_by_player(String piece_captured_by_player) {
+        this.piece_captured_by_player = piece_captured_by_player;
+    }
+
+    public String getPiece_captured_by_ai() {
+        return piece_captured_by_ai;
+    }
+
+    public void setPiece_captured_by_ai(String piece_captured_by_ai) {
+        this.piece_captured_by_ai = piece_captured_by_ai;
     }
 
     public void setImage_src(String image_src) {

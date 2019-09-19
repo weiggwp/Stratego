@@ -10,8 +10,8 @@ import java.util.Random;
 
 //shuffles and gives positions of pieces
 public class arrangement {
-    private static ArrayList blue;
-    private static ArrayList red;
+    private static ArrayList<BoardPiece> blue;
+    private static ArrayList<BoardPiece> red;
     private static String selected;
     public arrangement()
     {
@@ -63,6 +63,22 @@ public class arrangement {
         return row+"_"+col;
     }
     //public static BoardPiece
+    public static BoardPiece getPiece(int row,int col)
+    {
+
+        if(row<5)//blue
+        {
+            int pos = (row)*(10) + col;
+
+            return blue.get(pos);
+        }
+        else
+        {
+            int ro = row-6;
+            int pos = ro*10+col;
+            return red.get(pos);
+        }
+    }
     public static String assign(int row,int col)
     {
 
@@ -88,15 +104,15 @@ public class arrangement {
     private ArrayList<BoardPiece> create_pieces(boolean user, char color)
     {
         ArrayList<BoardPiece> collect = new ArrayList<BoardPiece>();
-        piece[] pieces = new piece[12];
+
         String src="../images/pieces/piece"; // directory
         String start="";
         String ext=".png";
 
-        if(!user)   //blue pieces start at offset 21
+        if(user)   //blue pieces start at offset 21
             start="2";
              //flag goes last
-
+        BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
         collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
         collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
         collect.add(new BoardPiece('9',src+start+'4'+ext,color));       //9
@@ -107,6 +123,7 @@ public class arrangement {
             start = "1"; //now beginning to add pieces that repeat more than once
         else
             start = "7";
+
 
         for(int i = 1;i<=8;i++)
         {
@@ -124,7 +141,7 @@ public class arrangement {
         }
         Collections.shuffle(collect);
         //blue flag goes first row, red flag goes last row
-        BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
+
         if(!user)
             collect.add((new Random()).nextInt(10),flag);
         else
