@@ -44,30 +44,30 @@ public class MoveService {
 
     }
 
-    public List<String> getOverallPieceLostPlayer(long matchId) {
+    public String getOverallPieceLostPlayer(long matchId) {
         return findLostPieces(matchId, 1);
     }
 
-    public List<String> getOverallPieceLostOpponent(long matchId) {
+    public String getOverallPieceLostOpponent(long matchId) {
         return findLostPieces(matchId, 0);
     }
 
-    private List<String> findLostPieces(long matchId, int isPlayer) {
+    private String findLostPieces(long matchId, int isPlayer) {
+        StringBuilder stringBuilder = new StringBuilder("");
         List<Reposition> allRepositions = readMoves(matchId);
-        List<String> pieceLostList = new ArrayList<>();
 
         if (isPlayer == 1) {
             for (Reposition reposition : allRepositions) {
                 if (!reposition.getPieceCapturedByOpponent().equals("None"))
-                    pieceLostList.add(reposition.getPieceCapturedByOpponent());
+                    stringBuilder.append(reposition.getPieceCapturedByOpponent());
             }
         } else {
             for (Reposition reposition : allRepositions) {
                 if (!reposition.getPieceCapturedByPlayer().equals("None"))
-                    pieceLostList.add(reposition.getPieceCapturedByPlayer());
+                    stringBuilder.append(reposition.getPieceCapturedByPlayer());
             }
         }
 
-        return pieceLostList;
+        return stringBuilder.toString();
     }
 }

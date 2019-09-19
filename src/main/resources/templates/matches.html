@@ -14,73 +14,27 @@
     <thead>
     <tr>
         <th scope="col">#</th>
-        <th scope="col">Username</th>
-        <th scope="col">Outcome</th>
         <th scope="col">Date</th>
+        <th scope="col">Outcome</th>
         <th scope="col">PieceCapturedByPlayer</th>
         <th scope="col">PieceCapturedByAI</th>
     </tr>
     </thead>
     <tbody>
-    <div th:each="match: ${matches}">
+    <div th:each="match,iter: ${matches}">
 
         <tr>
-            <th scope="row">1</th>
-            <td>Bob_placeholder</td>
-            <td>${matchup.outcome}</td>
-            <td>${matchup.date}</td>
-            <td>123</td>
-            <td>123</td>
+            <th scope="row" th:text="${iter.index}"></th>
+<!--            <td th:text="${match.name}"></td>-->
+            <td th:text="${match.date}"></td>
+            <td th:text="${match.outcome}"></td>
+            <td th:text="${match.piecesLostPlayer}"></td>
+            <td th:text="${match.piecesLostComputer}"></td>
 
         </tr>
 
 
     </div>
-
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Win</td>
-        <td>10:55</td>
-        <td>123</td>
-        <td>123</td>
-    </tr>
-
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Lost</td>
-        <td>10:22</td>
-        <td>123</td>
-        <td>123</td>
-    </tr>
-
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Lost</td>
-        <td>10:22</td>
-        <td>123</td>
-        <td>123</td>
-    </tr>
-
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Win</td>
-        <td>10:55</td>
-        <td>123</td>
-        <td>123</td>
-    </tr>
-
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Lost</td>
-        <td>10:22</td>
-        <td>123</td>
-        <td>123</td>
-    </tr>
 
     </tbody>
 </table>
@@ -126,9 +80,6 @@
         }
     }
     window.onload = addRowHandlers();
-
-
 </script>
-
 </body>
 </html>

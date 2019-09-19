@@ -1,4 +1,4 @@
-package Stratego.Util;
+package Stratego.util;
 
 import Stratego.board.Move;
 import Stratego.board.Move_status;
