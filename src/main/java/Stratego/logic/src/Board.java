@@ -64,6 +64,7 @@ public boolean isInitialzied(){
         return '0';
     }
 
+
     public void initializeGameboard(ArrayList<String> blue, ArrayList<String> red) throws FileNotFoundException {
 
         //System.out.println(sc.nextLine());
