@@ -1,16 +1,13 @@
 package Stratego.logic.src;
 
 import Stratego.board.arrangement;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Board {
     private BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
     private arrangement setup;
-
+    private String err_msg;
     public void start()
     {
         setup = new arrangement();
@@ -89,61 +86,40 @@ public class Board {
         System.out.print((char)27 + "[37m" );
     }
 
-/*
-    private void initializeGameboard() throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("./Stratego/resources/board2.txt"));
-        //System.out.println(sc.nextLine());
-        for (int i=0; i<4; i++){
-            for (int j=0; j<10; j++){
-               // System.out.println(i+"  "+j);
-                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'R');
-            }
-        }
-        for (int i=4; i<6; i++){
-            for (int j=0; j<10; j++){
-                if (j==2||j==3||j==6||j==7){
-                    gameboard[i][j]=new BoardPiece('W','0');
-                }
-                else
-                    gameboard[i][j]=new BoardPiece('0','0');
-            }
-        }
-         sc = new Scanner(new File("./Stratego/resources/board1.txt"));
-        for (int i=6; i<10; i++){
-            for (int j=0; j<10; j++){
-                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'B');
-            }
-        }
-    }
-*/
     /*Returns false on illegal move, true on legal move.*/
     private boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
+            err_msg="invalid starting piece";
             System.out.println("invalid starting piece");
             return false;
         }
         if (gameboard[startingX][startingY].getColor()!='B') {
+            err_msg="invalid starting color";
             System.out.println("invalid starting color");
             return false;
         }//if moving a piece not owned by player...
         if (gameboard[endingX][endingY].isLake()){
+            err_msg="cant move to lake";
             System.out.println("cant move to lake");
             return false;
         }
         //if moving into lake...
         if (gameboard[endingX][endingY].getColor()==gameboard[startingX][startingY].getColor()) {
+            err_msg="cant capture friendly unit";
             System.out.println("cant capture friendly unit");
             return false;
         }/* if moving
         onto a space occupied by another piece owned by the player...*/
         if ((Math.abs(startingX-endingX)>=1&&Math.abs(startingY-endingY)>=1)) {
+            err_msg="cant move diagonally";
             System.out.println("cant move diagonally");
             return false;
         }
         if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)
                 )){ //if it moves too far...
+            err_msg="too far, not a scout";
             System.out.println("too far, not a scout");
             return false;
         }
@@ -165,10 +141,12 @@ public class Board {
                 if (horizontal)
                     if (!gameboard[startingY][i].isEmpty()||gameboard[startingY][i].isLake()) {
                         System.out.println("collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit());
+                        err_msg = "collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit();
                         return false;
                     }
                 else
                     if (!gameboard[i][startingX].isEmpty()||gameboard[i][startingX].isLake()) {
+                        err_msg = "collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit();
                         System.out.println("collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit());
                         return false;
                     }
@@ -176,7 +154,7 @@ public class Board {
         }
 
 
-
+        err_msg = "";
         return true;
     }
     private boolean isDigit(char s){
@@ -225,6 +203,7 @@ public class Board {
             gameboard[endingX][endingY].reset();
         }
         else if (result==3){
+
             gameWinner=1;
         }
 
