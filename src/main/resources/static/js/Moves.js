@@ -80,8 +80,10 @@ function swap(i,m){
         let tempSrc=document.getElementById((i*10+m).toString()).src;
         document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
         document.getElementById(moving.toString()).src=tempSrc;
+        sendSwapRequest(0,x,y,i,m,'B');
         highlight(i,m);
         moving=-1;
+        console.log("swapping from " + x + y+ " to " + i + m);
         // clear_coordinates();
     }
 }
@@ -152,8 +154,35 @@ function aiMove() {
     yellowBorder=to;*/
 
 }
+function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
+{
+    var http = new XMLHttpRequest();
+    let url = "/swap_piece";    //-> will be changed to another uri maybe action?=move
+    //sent json file is 0-based index
+    var params = JSON.stringify({
+        'GameID': GameID,
+        'player': "user",
+        'color': color,
+        'moveNum':0,
+        'start_x': starting_x,
+        'start_y': starting_y,
+        'end_x': target_x,
+        'end_y': target_y,
+        'status': undefined});
+    //start_x and start_y need to be filled in to validate move
+
+    http.open("POST", url, true);
+
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    // http.setRequestHeader("Content-length", params.length);
+    // http.setRequestHeader("Connection", "close");
+
+    http.send(params);
+
+    //don't really need a response here, just check if it returns error
 
 
+}
 
 function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {

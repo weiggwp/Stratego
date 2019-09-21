@@ -6,7 +6,6 @@ import Stratego.logic.src.Board;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
@@ -39,10 +38,9 @@ public class boardController {
 
     @RequestMapping(value = "/make_move", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity<String> post_greet(@RequestBody Move m)
+    public ResponseEntity<String> move(@RequestBody Move m)
     // RequestBody String some)
     {
-        System.out.println("in right controller");
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
         if (!board.isInitialzied()) {
           //  System.out.println("reinitializing " + board.isInitialzied()+ " " + m.getMoveNum());
@@ -51,6 +49,19 @@ public class boardController {
         String status=board.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
 
         return new ResponseEntity<String>(status, HttpStatus.OK);
+
+
+
+
+    }
+
+    @RequestMapping(value = "/swap_piece", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity swap(@RequestBody Move m)
+    {
+        board.swap(m.getStart_x()-1,m.getStart_y()-1,m.getEnd_x()-1,m.getEnd_y()-1);
+
+        return new ResponseEntity(HttpStatus.OK);
 
 
 

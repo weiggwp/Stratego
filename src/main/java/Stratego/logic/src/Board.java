@@ -75,7 +75,16 @@ public class Board {
         }
         System.out.print((char)27 + "[37m" );
 }
-
+    public void swap (int startingX, int startingY, int endingX, int endingY)
+    {
+        System.out.println("swapping "+ startingX +" "+startingY+" with "+ endingX +" "+endingY);
+        BoardPiece start = gameboard[startingX][startingY];
+        BoardPiece end = gameboard[endingX][endingY];
+        gameboard[startingX][startingY] = end;
+        gameboard[endingX][endingY] = start;
+        System.out.println("swapping "+ start.getUnit()+" with "+end.getUnit());
+        displayGameBoard();
+    }
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
         System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
