@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
     <title>Board</title>
@@ -11,8 +11,6 @@
 
 </head>
 <body>
-
-Stratego board made with div
 
 <div class="divTable board" id="board">
     <div class="divTableBody">
@@ -29,7 +27,11 @@ Stratego board made with div
 
                             <div class="blue_pieces"  th:if="${pos.blue(i)}"  th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
 
+
+                                <img class="blue_front" th:id ="${100*(i*10+m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+
                                 <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" />
+
                                 <img class="blue_back" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>

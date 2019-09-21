@@ -13,10 +13,16 @@ public class arrangement {
     private static ArrayList<BoardPiece> blue;
     private static ArrayList<BoardPiece> red;
     private static String selected;
+    public ArrayList getBlue(){
+        return blue;
+    }
+    public ArrayList getRed(){
+        return red;
+    }
     public arrangement()
     {
-        blue = create_pieces(false,'B');
-        red = create_pieces(true,'R');
+        blue = create_pieces(false,'R');
+        red = create_pieces(true,'B');
 
 
     }
@@ -39,7 +45,7 @@ public class arrangement {
         else
         {
 
-            return false;
+            return true;
         }
 
 
@@ -62,10 +68,9 @@ public class arrangement {
     {
         return row+"_"+col;
     }
-    //public static BoardPiece
+
     public static BoardPiece getPiece(int row,int col)
     {
-
         if(row<5)//blue
         {
             int pos = (row)*(10) + col;
@@ -86,13 +91,13 @@ public class arrangement {
         {
             int pos = (row-1)*(10) + (col-1);
 
-            return blue.get(pos).toString();
+            return (blue.get(pos)).toString();
         }
         else
         {
             int ro = row-7;
             int pos = ro*10+col-1;
-            return red.get(pos).toString();
+            return (red.get(pos)).toString();
         }
 
     }
@@ -111,7 +116,7 @@ public class arrangement {
 
         if(user)   //blue pieces start at offset 21
             start="2";
-             //flag goes last
+        //flag goes last
         BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
         collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
         collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
@@ -189,7 +194,7 @@ public class arrangement {
                 collect.add(s);
 
             }
-           // System.out.println("after adding "+s+" "+collect);
+            // System.out.println("after adding "+s+" "+collect);
         }
         Collections.shuffle(collect);
         //blue flag goes first row, red flag goes last row

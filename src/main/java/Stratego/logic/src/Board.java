@@ -1,19 +1,20 @@
 package Stratego.logic.src;
 
 import Stratego.board.arrangement;
-import java.util.Scanner;
 
 public class Board {
+
     private BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
     private arrangement setup;
     private String err_msg;
+
     public void start()
     {
         setup = new arrangement();
         initializeGameboard();
         System.out.println("initialized game board");
-        System.out.println(gameboard.toString());
+        displayGameBoard();
     }
 
     private void initializeGameboard() {
@@ -40,38 +41,27 @@ public class Board {
                 gameboard[i][j]=setup.getPiece(i,j);
             }
         }
+        initialized = true;
     }
 
-    public void startGame(){
-        try {
-           // initializeGameboard();
-            //TODO: need to make a new initialize Gameboard method, that takes in the preset config
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        Scanner sc = new Scanner(System.in);
-        while (gameWinner==0){
-            displayGameBoard();
-            //starting row, starting col, ending row, ending col
-            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt());
 
-        }
-        if (gameWinner==1)
-            System.out.println("You win!");
-        else
-            System.out.println("You lose.");
+
+
+    private boolean initialized=false;
+    public boolean isInitialzied(){
+        return initialized;
+
     }
 
     private void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
                 if (gameboard[i][j].getColor()=='R') {
-                    System.out.print((char)27 + "[31m" );
+                    System.out.print((char)27 + "[34m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
                 else if (gameboard[i][j].getColor()=='B') {
-                    System.out.print((char)27 + "[34m" );
+                    System.out.print((char)27 + "[31m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
 
                 }
@@ -84,19 +74,19 @@ public class Board {
             System.out.println();
         }
         System.out.print((char)27 + "[37m" );
-    }
+}
 
     /*Returns false on illegal move, true on legal move.*/
-    private boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
+    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
-        if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
+        if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             err_msg="invalid starting piece";
             System.out.println("invalid starting piece");
             return false;
         }
-        if (gameboard[startingX][startingY].getColor()!='B') {
-            err_msg="invalid starting color";
+
+        if (gameboard[startingX][startingY].getColor()!=color) {
             System.out.println("invalid starting color");
             return false;
         }//if moving a piece not owned by player...
@@ -137,19 +127,24 @@ public class Board {
                 ending=Math.max(startingX,endingX);
 
             }
+            System.out.println("horizontal is " + horizontal);
+            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
-                if (horizontal)
-                    if (!gameboard[startingY][i].isEmpty()||gameboard[startingY][i].isLake()) {
-                        System.out.println("collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit());
-                        err_msg = "collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit();
+
+                if (horizontal) {
+                    if (!gameboard[startingX][i].isEmpty() || gameboard[startingX][i].isLake()) {
+                        System.out.println("aacollision at " + startingX + " " + i + "; " + gameboard[startingX][i].getUnit());
                         return false;
                     }
-                else
-                    if (!gameboard[i][startingX].isEmpty()||gameboard[i][startingX].isLake()) {
-                        err_msg = "collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit();
-                        System.out.println("collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit());
+                }
+                else {
+                    if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
+                        err_msg = "collision at "+i+" "+startingY+ "; " +gameboard[i][startingY].getUnit();
+                        System.out.println("bbxcollision at " + i + " " + startingY + "; " + gameboard[i][startingY].getUnit());
+
                         return false;
                     }
+                }
             }
         }
 
@@ -163,8 +158,9 @@ public class Board {
         return false;
     }
 
-    /*Returns 0 on 1 wins, 1 on 2 wins, 2 on draw*/
+    /*Returns 0 on 1 wins, 1 on 2 wins, 2 on draw, 3 on flag capture, 4 on moving to blank space*/
     public int attack(char unit1, char unit2){
+        if (unit2=='0') return 4;
         if (unit1=='3'&&unit2=='B') return 0;
         if (unit1=='1'&&unit2=='M') return 0;
         if (unit2=='F') {
@@ -185,28 +181,45 @@ public class Board {
     }
 
     /*Attempt to move unit to a tile*/
-    private void move(int startingX, int startingY, int endingX, int endingY){
-        if (!isLegalMove(startingX,startingY,endingX,endingY)) {
+    public String move(int startingX, int startingY, int endingX, int endingY,char color){
+
+        System.out.println();System.out.println();
+        displayGameBoard();
+
+        if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
             illegalMove();
-            return;
+            return "illegal";
         }
         int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
         if (result==0){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
+
+            return "win "+a; // mover wins
         }
         else if (result==1){
+            char a = gameboard[startingX][startingY].getUnit();
             gameboard[startingX][startingY].reset();
+            return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[startingX][startingY].reset();
             gameboard[endingX][endingY].reset();
+            return "draw " +a;
         }
         else if (result==3){
 
             gameWinner=1;
+            return "flag"; //mover wins the videogame
         }
-
+        if (result==4){
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
+            return "empty"; // mover moved to empty space
+        }
+        return "This will never happen.";
 
     }
 

@@ -22,10 +22,7 @@ public class BoardPiece {
         unit='0';
         color='0';
     }
-    public String toString()
-    {
-        return this.img_src;
-    }
+
     public void newPiece(BoardPiece b){
         unit=b.getUnit();
         color=b.getColor();
@@ -45,6 +42,11 @@ public class BoardPiece {
 
     public void setColor(char color) {
         this.color = color;
+    }
+
+    @Override
+    public String toString(){
+        return img_src;
     }
 
 

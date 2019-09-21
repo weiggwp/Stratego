@@ -130,7 +130,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
+                .csrf().disable()   //allow post requests
                 .authorizeRequests()
                 .antMatchers(
                         "/register**",
@@ -141,7 +143,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/img/**",
                         "/webjars/**").permitAll()
                 .anyRequest().authenticated()
-                .and()
+                .and()  //authethicated for anyRequest(), i changed it
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
@@ -151,7 +153,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/login?logout")
-                .permitAll();
+                .permitAll()
+        ;
     }
 
     @Bean

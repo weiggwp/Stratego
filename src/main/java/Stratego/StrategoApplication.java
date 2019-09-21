@@ -11,4 +11,5 @@ public class StrategoApplication {
         SpringApplication.run(StrategoApplication.class, args);
     }
 
+
 }
