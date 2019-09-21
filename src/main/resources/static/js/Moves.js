@@ -47,10 +47,10 @@ function set_coordinates(i,m)
 }
 
 function start() {
-//    if (clicked) {
-//     console.log("clicking " +moving);
-//     document.getElementById(moving.toString()).click();
-// }
+    if (clicked) {
+    // console.log("clicking " +moving);
+    document.getElementById(moving.toString()).click();
+ }
     numMoves=0;
     started=true;
     document.getElementsByClassName('blank').draggable = false;
@@ -60,6 +60,7 @@ function start() {
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);
     if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
+    if (document.getElementById((i*10+m).toString()).style.opacity=='.02') return;
     else console.log(document.getElementById((i*10+m).toString()).src);
     if (moving==-1){
 
@@ -81,11 +82,35 @@ function swap(i,m){
         document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
         document.getElementById(moving.toString()).src=tempSrc;
         sendSwapRequest(0,x,y,i,m,'B');
-        highlight(i,m);
+        highlight(Math.floor(moving/10),moving%10);
         moving=-1;
         console.log("swapping from " + x + y+ " to " + i + m);
         // clear_coordinates();
     }
+}
+function isImmovable( s){
+    if (isBlue(s)) return true;
+    if (s.endsWith("/images/pieces/piece71.png") )return true;
+    if (s.endsWith("/images/pieces/piece21.png") )return true;
+    if (s.endsWith("/images/pieces/Moved.png") )return true;
+    if (s.endsWith("/images/pieces/blank.png") )return true;
+    return false;
+}
+function isBlue(s){
+    if (s.endsWith("/images/pieces/blue_back.png"))return true;
+    if (s.endsWith("/images/pieces/piece11.png") )return true;
+    if (s.endsWith("/images/pieces/piece12.png") )return true;
+    if (s.endsWith("/images/pieces/piece13.png") )return true;
+    if (s.endsWith("/images/pieces/piece14.png") )return true;
+    if (s.endsWith("/images/pieces/piece15.png") )return true;
+    if (s.endsWith("/images/pieces/piece16.png") )return true;
+    if (s.endsWith("/images/pieces/piece17.png") )return true;
+    if (s.endsWith("/images/pieces/piece18.png") )return true;
+    if (s.endsWith("/images/pieces/piece1.png") )return true;
+    if (s.endsWith("/images/pieces/piece2.png") )return true;
+    if (s.endsWith("/images/pieces/piece3.png") )return true;
+    if (s.endsWith("/images/pieces/piece4.png") )return true;
+    return false;
 }
 function move(i,m) {
     clicked=!clicked;
@@ -95,8 +120,9 @@ function move(i,m) {
         return;
     }
     if (moving==-1){
-        if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
-        else console.log(document.getElementById((i*10+m).toString()).src);
+        if (isImmovable(document.getElementById((i*10+m).toString()).src)) return;
+        if (document.getElementById((i*10+m)).style.opacity=='.02') return;
+        //else console.log(document.getElementById((i*10+m).toString()).src);
 
         moving=(i*10+m);
         highlight(i,m);
@@ -126,34 +152,37 @@ function getPiece(location){
     return '../images/pieces/piece12.png';
 }
 function aiMove() {
-
-    let next_x=0;
-    let next_y=0;
-    let ran = 0;
+    var ran = Math.floor(Math.random() * 100) + 11;
+    // console.log("from " + ran);
+    let to=0;
+    let from=0;
     while (true) {
-        //offset start at index (1,1)
-        next_x = Math.floor(Math.random()*9)+1;  //from 1 - 10 (1+9) across board
-        next_y = Math.floor(Math.random()*9)+1;
-        ran = next_x*10+y;
+        ran = Math.floor(Math.random() * 90) + 11;
+        console.log("from "+ran);
         if (!notLake(ran)||!notLake(ran+10)) continue;
-       // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
-        if(document.getElementById((ran).toString())===null)
-            continue;
+        // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
-            && document.getElementById((ran).toString()).style.opacity != .02&&
+            &&( document.getElementById((ran).toString()).style.opacity != .02)&&
             (
-                 document.getElementById((ran+10).toString()).style.opacity == .02)){
-                break;
+                document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
+            from=ran;
+            to=ran+10;
+            break;
         }
+
+
 
     }
 
-   // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
-    sendMoveRequest(0,next_x-1,next_y-1,next_x,next_y,'R',++numMoves)
+
+
+    // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
+    sendMoveRequest(0,Math.floor((from-1)/10-1),(from-1)%10,Math.floor((to-1)/10-1),(to-1)%10,'R',++numMoves)
     /*  yellow=from;
-    yellowBorder=to;*/
+      yellowBorder=to;*/
 
 }
+
 function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
 {
     var http = new XMLHttpRequest();
@@ -238,15 +267,17 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     if (resp.startsWith("empty")) { //it
                         document.getElementById((end).toString()).src
                             = document.getElementById((moving   ).toString()).src
+                        document.getElementById(end.toString()).style.opacity='1';
                         document.getElementById(moving.toString()).style.opacity = ".02";
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
                         moving = -1;
                     }
                     else if (resp.startsWith("lose ")) { //it
+                        console.log(resp.substring(resp.lastIndexOf(" ")+1));
                         document.getElementById(moving.toString()).style.opacity = ".02";
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
-                        document.getElementById((end).toString()).src=getPiece("");
+                        document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
                         moving = -1;
                     }
                     else if (resp.startsWith("draw")){
@@ -254,13 +285,14 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
                         document.getElementById(end.toString()).style.opacity = ".02";
                         document.getElementById(end.toString()).style.borderStyle = 'none';
+                        moving=-1;
                     }
                     else if (resp=="flag"){
                         //game over
                     }
                     else if (resp=="illegal")return;
 
-                   // aiMove();
+                    aiMove();
                 }
                 else{
 
@@ -271,19 +303,35 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
 
                     console.log("moving from " + x + " to " + ((target_x + 1 )* 10 + target_y + 1));
-                    document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
+                    //document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
                     //document.getElementById(x.toString()).style.opacity = ".02";
                     document.getElementById(x.toString()).style.borderStyle = 'none';
                     document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
-                    if (resp==0||true) {
-                        let piece = getPiece(x);
+                    if (resp.startsWith("empty")) {
+                        let piece = '../images/pieces/blue_back.png';
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = piece;
                     }
-
+                    if (resp.startsWith("win")) {
+                        let piece = '../images/pieces/blue_back.png';
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = (resp.substring(resp.lastIndexOf(" ")+1));
+                        //document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
+                    }
+                    else if (resp.startsWith(("lose"))){
+                        //document.getElementById(x).style.opacity='.02';
+                    }
+                    else if (resp.startsWith("draw")){
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src='images/pieces/blank.png'
+                    }
                     if (yellow!=-1){
-                        document.getElementById(yellow.toString()).style.opacity=".02";
+                        if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')
+                            ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
+                            if (yellow!=((target_x + 1 )* 10 + target_y + 1))
+                            document.getElementById(yellow.toString()).style.opacity=".02";
+                           // console.log("x is " + x + " yellow is " + yellow);
+
                         document.getElementById(yellowBorder.toString()).style.borderStyle='none';
-                        document.getElementById(yellowBorder.toString()).src='../images/pieces/blue_back.png';
+                        if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
+                        document.getElementById(yellowBorder.toString()).style.opacity='.02';
                     }
                     yellow=x;
                     yellowBorder=((target_x + 1) * 10 + target_y + 1);

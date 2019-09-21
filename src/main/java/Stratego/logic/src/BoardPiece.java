@@ -28,6 +28,9 @@ public class BoardPiece {
         color=b.getColor();
         img_src=b.toString();
     }
+    public String getImg_src(){
+        return img_src;
+    }
     public char getUnit() {
         return unit;
     }

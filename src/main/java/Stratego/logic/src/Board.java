@@ -194,29 +194,31 @@ public class Board {
     public String move(int startingX, int startingY, int endingX, int endingY,char color){
 
         System.out.println();System.out.println();
-        displayGameBoard();
+
 
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
             illegalMove();
-            return "illegal";
+             return "illegal";
         }
         int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
         if (result==0){
-            char a = gameboard[endingX][endingY].getUnit();
+            String a = gameboard[startingX][startingY].getImg_src();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
-
+            displayGameBoard();
             return "win "+a; // mover wins
         }
         else if (result==1){
-            char a = gameboard[startingX][startingY].getUnit();
+            String a = gameboard[endingX][endingY].getImg_src();
             gameboard[startingX][startingY].reset();
+            displayGameBoard();
             return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
-            char a = gameboard[endingX][endingY].getUnit();
+            String a = gameboard[endingX][endingY].getImg_src();
             gameboard[startingX][startingY].reset();
             gameboard[endingX][endingY].reset();
+            displayGameBoard();
             return "draw " +a;
         }
         else if (result==3){
@@ -227,6 +229,7 @@ public class Board {
         if (result==4){
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
+            displayGameBoard();
             return "empty"; // mover moved to empty space
         }
         return "This will never happen.";
