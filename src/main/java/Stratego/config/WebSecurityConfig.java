@@ -137,8 +137,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/register**",
                         "/board/**",
+                        "/history/**",
                         "/js/**",
-                        "/css/**",
+                        "/static/**",
                         "/images/**",
                         "/img/**",
                         "/webjars/**").permitAll()

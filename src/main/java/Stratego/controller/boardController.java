@@ -22,8 +22,7 @@ public class boardController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        Board game = new Board();
-        game.start();
+        board.start();
         //render board.html
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);

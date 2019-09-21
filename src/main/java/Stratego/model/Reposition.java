@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Move {
+public class Reposition {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long moveId;
@@ -20,11 +20,11 @@ public class Move {
     private String pieceCapturedByPlayer;
     private String pieceCapturedByOpponent;
 
-    public Move() {
+    public Reposition() {
     }
 
-    public Move(long matchId, int turnId, int startX, int startY, int curX, int curY,
-                String pieceName, String pieceCapturedByPlayer, String pieceCapturedByOpponent) {
+    public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY,
+                      String pieceName, String pieceCapturedByPlayer, String pieceCapturedByOpponent) {
         this.matchId = matchId;
         this.turnId = turnId;
         this.startX = startX;
@@ -118,7 +118,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "Move{" +
+        return "Reposition{" +
                 "moveId=" + moveId +
                 ", matchId=" + matchId +
                 ", turnId=" + turnId +

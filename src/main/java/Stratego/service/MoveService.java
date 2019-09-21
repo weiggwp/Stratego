@@ -1,6 +1,6 @@
 package Stratego.service;
 
-import Stratego.model.Move;
+import Stratego.model.Reposition;
 import Stratego.repository.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,24 +14,24 @@ public class MoveService {
     @Autowired
     private MoveRepository moveRepository;
 
-    public void addMoves(Iterable<Move> moves) {
+    public void addMoves(Iterable<Reposition> moves) {
         moveRepository.saveAll(moves);
     }
 
-    public void addMove(Move move) {
-        moveRepository.save(move);
+    public void addMove(Reposition reposition) {
+        moveRepository.save(reposition);
     }
 
 
-    public List<Move> readMoves(long matchId) {
-        List<Move> moves = new ArrayList<>();
-        for(Move move: moveRepository.findAll()) {
-            if (move.getMatchId() == matchId) {
-                System.out.println(move);
-                moves.add(move);
+    public List<Reposition> readMoves(long matchId) {
+        List<Reposition> repositions = new ArrayList<>();
+        for(Reposition reposition : moveRepository.findAll()) {
+            if (reposition.getMatchId() == matchId) {
+                System.out.println(reposition);
+                repositions.add(reposition);
             }
         }
-        return moves;
+        return repositions;
     }
 
     public void updateMove() {
@@ -44,30 +44,30 @@ public class MoveService {
 
     }
 
-    public List<String> getOverallPieceLostPlayer(long matchId) {
+    public String getOverallPieceLostPlayer(long matchId) {
         return findLostPieces(matchId, 1);
     }
 
-    public List<String> getOverallPieceLostOpponent(long matchId) {
+    public String getOverallPieceLostOpponent(long matchId) {
         return findLostPieces(matchId, 0);
     }
 
-    private List<String> findLostPieces(long matchId, int isPlayer) {
-        List<Move> allMoves = readMoves(matchId);
-        List<String> pieceLostList = new ArrayList<>();
+    private String findLostPieces(long matchId, int isPlayer) {
+        StringBuilder stringBuilder = new StringBuilder("");
+        List<Reposition> allRepositions = readMoves(matchId);
 
         if (isPlayer == 1) {
-            for (Move move: allMoves) {
-                if (!move.getPieceCapturedByOpponent().equals("None"))
-                    pieceLostList.add(move.getPieceCapturedByOpponent());
+            for (Reposition reposition : allRepositions) {
+                if (!reposition.getPieceCapturedByOpponent().equals("None"))
+                    stringBuilder.append(reposition.getPieceCapturedByOpponent());
             }
         } else {
-            for (Move move: allMoves) {
-                if (!move.getPieceCapturedByPlayer().equals("None"))
-                    pieceLostList.add(move.getPieceCapturedByPlayer());
+            for (Reposition reposition : allRepositions) {
+                if (!reposition.getPieceCapturedByPlayer().equals("None"))
+                    stringBuilder.append(reposition.getPieceCapturedByPlayer());
             }
         }
 
-        return pieceLostList;
+        return stringBuilder.toString();
     }
 }

@@ -41,13 +41,14 @@ public class MatchService {
 
     public List<Match> getMatchesByUserId(long userId) {
         /* filter games, only the ones played by userId */
-        List<Match> matches = new ArrayList<>();
-        for (Match match: matchRepository.findAll()) {
-            if (match.getUserId() == userId){
-                matches.add(match);
-            }
-        }
-        return matches;
+        return matchRepository.findByUserIdOrderByDateDesc(userId);
+//        List<Match> matches = new ArrayList<>();
+//        for (Match match: matchRepository.findAll()) {
+//            if (match.getUserId() == userId){
+//                matches.add(match);
+//            }
+//        }
+//        return matches;
     }
 
     public int countWins(long userId) {

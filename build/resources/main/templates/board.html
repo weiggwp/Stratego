@@ -38,8 +38,11 @@
                             <div class="red_pieces" th:if="${pos.red(i)}"
                                  >
                                 <!--th:onclick="${pos.printTest(5)}"  -->
+
                                 <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'" />
+<!--                                th:onclick="'javascript:highlight(' + ${i} + ','+${m}+')'" -->
                                 <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
+
 
                             </div>
 

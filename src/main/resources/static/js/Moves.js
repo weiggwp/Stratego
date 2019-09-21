@@ -1,4 +1,6 @@
 let selected = undefined;
+let x = undefined;
+let y = undefined;
 let numMoves=0;
 let moving = -1;
 let clicked=false;
@@ -6,12 +8,10 @@ let yellow=-1;
 let yellowBorder=-1;
 let started=false;
 let legal=0;
-function highlight(id) {
+function highlight(i,m) {
+    let id = i*10+m;
+    let cur_image = document.getElementById(id.toString());
 
-
-    let cur_image = document.getElementById(id);
-    let dimensions = cur_image.getBoundingClientRect();
-    console.log(dimensions);
     //current_image.classList.remove("highlighted");
     if(selected!==undefined && selected!==cur_image)
     {
@@ -23,18 +23,34 @@ function highlight(id) {
     if(selected===cur_image)
     {
         selected=undefined;
+        moving = -1;
+        clear_coordinates();
+
     }
     else{
         selected=cur_image;
+        set_coordinates(i,m);
+
     }
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
-function start() {
-    if (clicked) {
-    console.log("clicking " +moving);
-    document.getElementById(moving.toString()).click();
+function clear_coordinates()
+{
+    x = undefined;
+    y = undefined;
 }
+function set_coordinates(i,m)
+{
+    x = i;
+    y = m;
+}
+
+function start() {
+//    if (clicked) {
+//     console.log("clicking " +moving);
+//     document.getElementById(moving.toString()).click();
+// }
     numMoves=0;
     started=true;
     document.getElementsByClassName('blank').draggable = false;
@@ -42,12 +58,13 @@ function start() {
     document.getElementById('startText').style.visibility="hidden";
 }
 function swap(i,m){
+    console.log(document.getElementById((i*10+m).toString()).src);
     if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
     else console.log(document.getElementById((i*10+m).toString()).src);
     if (moving==-1){
 
         moving=(i*10+m);
-        highlight(moving);
+        highlight(i,m);
 
         //alert(moving);
         return;
@@ -55,7 +72,7 @@ function swap(i,m){
 
     if (moving>=0) {
         if (moving==i*10+m){
-            highlight(moving)
+            highlight(i,m);
             moving=-1;
             return;
         }
@@ -63,8 +80,9 @@ function swap(i,m){
         let tempSrc=document.getElementById((i*10+m).toString()).src;
         document.getElementById((i*10+m).toString()).src=document.getElementById(moving.toString()).src
         document.getElementById(moving.toString()).src=tempSrc;
-        highlight(moving);
-        moving=-1
+        highlight(i,m);
+        moving=-1;
+        // clear_coordinates();
     }
 }
 function move(i,m) {
@@ -79,7 +97,7 @@ function move(i,m) {
         else console.log(document.getElementById((i*10+m).toString()).src);
 
         moving=(i*10+m);
-        highlight(moving);
+        highlight(i,m);
 
         //alert(moving);
         return;
@@ -87,13 +105,13 @@ function move(i,m) {
 
     if (moving>=0) {
         if (moving==i*10+m){
-            highlight(moving)
+            highlight(i,m)
             moving=-1;
             return;
         }
         numMoves++;
-        let response=sendMoveRequest(0,Math.floor(moving/10-1),Math.floor(moving%10-1),i-1,m-1,'B',numMoves);
-
+        let response=sendMoveRequest(0,x-1,y-1,i-1,m-1,'B',numMoves);
+        //clear_coordinates();
 
     }
 }
@@ -106,33 +124,31 @@ function getPiece(location){
     return '../images/pieces/piece12.png';
 }
 function aiMove() {
-    var ran = Math.floor(Math.random() * 100) + 11;
-   // console.log("from " + ran);
-    let to=0;
-    let from=0;
+
+    let next_x=0;
+    let next_y=0;
+    let ran = 0;
     while (true) {
-        ran = Math.floor(Math.random() * 90) + 11;
-        console.log("from "+ran);
+        //offset start at index (1,1)
+        next_x = Math.floor(Math.random()*9)+1;  //from 1 - 10 (1+9) across board
+        next_y = Math.floor(Math.random()*9)+1;
+        ran = next_x*10+y;
         if (!notLake(ran)||!notLake(ran+10)) continue;
        // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+        if(document.getElementById((ran).toString())===null)
+            continue;
         if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
             && document.getElementById((ran).toString()).style.opacity != .02&&
             (
                  document.getElementById((ran+10).toString()).style.opacity == .02)){
-                from=ran;
-                to=ran+10;
                 break;
         }
 
-
-
     }
 
-
-
    // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
-    sendMoveRequest(0,Math.floor((from-1)/10-1),(from-1)%10,Math.floor((to-1)/10-1),(to-1)%10,'R',++numMoves)
-  /*  yellow=from;
+    sendMoveRequest(0,next_x-1,next_y-1,next_x,next_y,'R',++numMoves)
+    /*  yellow=from;
     yellowBorder=to;*/
 
 }
@@ -144,6 +160,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
     var http = new XMLHttpRequest();
     let url = "/make_move";    //-> will be changed to another uri maybe action?=move
+    //sent json file is 0-based index
     var params = JSON.stringify({
         'GameID': GameID,
         'player': "user",
@@ -154,7 +171,6 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
         'end_x': target_x,
         'end_y': target_y,
         'status': undefined});
-    alert(params);
     //start_x and start_y need to be filled in to validate move
 
     http.open("POST", url, true);
@@ -180,8 +196,8 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
                 if (color=='B') {
                     let start=(starting_x + 1) * 10 + starting_y + 1;
-                    const end = (target_x + 1) * 10 + target_y + 1;
-                    console.log("moving from " + moving + " to " + (target_x + 1 * 10 + target_y + 1));
+                    let end = (target_x + 1) * 10 + target_y + 1;
+                    console.log("moving from " + moving + " to " + ((target_x + 1) * 10 + target_y + 1));
                     if (resp.startsWith("win")) { //it
                         document.getElementById((end).toString()).src
                             = document.getElementById((moving).toString()).src
@@ -215,7 +231,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     }
                     else if (resp=="illegal")return;
 
-                    aiMove();
+                   // aiMove();
                 }
                 else{
 
@@ -223,9 +239,6 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     target_y);
                     let x =((starting_x + 1) * 10 + starting_y + 1)
                     console.log("x is " +x);
-
-
-
 
 
                     console.log("moving from " + x + " to " + ((target_x + 1 )* 10 + target_y + 1));

@@ -78,6 +78,7 @@ public class Board {
 
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
+        System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
@@ -86,10 +87,10 @@ public class Board {
             return false;
         }
 
-        if (gameboard[startingX][startingY].getColor()!=color) {
+        /*if (gameboard[startingX][startingY].getColor()!=color) {
             System.out.println("invalid starting color");
             return false;
-        }//if moving a piece not owned by player...
+        }//if moving a piece not owned by player...*/
         if (gameboard[endingX][endingY].isLake()){
             err_msg="cant move to lake";
             System.out.println("cant move to lake");

@@ -15,6 +15,25 @@ public class Move_status {
 
     private String piece_name; // name/rank of the piece
 
+    private String pieceCapturedByPlayer;
+    private String pieceCapturedByComputer;
+
+    public String getPieceCapturedByPlayer() {
+        return pieceCapturedByPlayer;
+    }
+
+    public void setPieceCapturedByPlayer(String pieceCapturedByPlayer) {
+        this.pieceCapturedByPlayer = pieceCapturedByPlayer;
+    }
+
+    public String getPieceCapturedByComputer() {
+        return pieceCapturedByComputer;
+    }
+
+    public void setPieceCapturedByComputer(String pieceCapturedByComputer) {
+        this.pieceCapturedByComputer = pieceCapturedByComputer;
+    }
+
     public String getPiece_name() {
         return piece_name;
     }

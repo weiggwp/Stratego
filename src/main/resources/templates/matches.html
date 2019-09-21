@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Stratego</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</nav>
+
+
+<table id="tableId" class="table table-hover">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Date</th>
+        <th scope="col">Outcome</th>
+        <th scope="col">PieceCapturedByPlayer</th>
+        <th scope="col">PieceCapturedByAI</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="match,iter: ${matches}">
+
+        <tr>
+            <th scope="row" th:text="${iter.index}"></th>
+<!--            <td th:text="${match.name}"></td>-->
+
+            <td th:text="${match.date}"></td>
+            <td th:text="${match.outcome}"></td>
+            <td th:text="${match.piecesLostPlayer}"></td>
+            <td th:text="${match.piecesLostComputer}"></td>
+        </tr>
+
+
+    </div>
+
+    </tbody>
+</table>
+
+<script>
+
+    function colorOutcome() {
+        var table = document.getElementById("tableId");
+        for (var i = 1; i < table.rows.length; i ++) {
+            var currentRow = table.rows[i];
+            var cell = currentRow.getElementsByTagName("td")[1];
+            var outcome = cell.innerHTML;
+            if (outcome === "Win") {
+                currentRow.className = "table-primary";
+            } else {
+                currentRow.className = "table-danger"
+            }
+        }
+    }
+    window.onload = colorOutcome();
+
+
+</script>
+
+<script>
+
+    function addRowHandlers() {
+        var table = document.getElementById("tableId");
+        var rows = table.getElementsByTagName("tr");
+        for (i = 0; i < rows.length; i++) {
+            var currentRow = table.rows[i];
+            var createClickHandler =
+                function(row)
+                {
+                    return function() {
+                        // simulate an HTTP redirect
+                        // "/history/user/matchid"
+                        // TODO: redirect to the replay page
+
+                        window.location.href = "/history/" + userName + "/" +
+                        var cell = row.getElementsByTagName("td")[1];
+                        var id = cell.innerHTML;
+                        alert("id:" + id);
+                    };
+                };
+
+            currentRow.onclick = createClickHandler(currentRow);
+        }
+    }
+    window.onload = addRowHandlers();
+
+</script>
+</body>
+</html>
