@@ -11,6 +11,7 @@ public class Move {
     private char color;
     private int moveNum;
     private Move_status status; //response about the attempted move
+
     public int getMoveNum(){
         return moveNum;
     }
@@ -23,9 +24,6 @@ public class Move {
     public char getColor(){
         return color;
     }
-
-
-
 
 
     public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
