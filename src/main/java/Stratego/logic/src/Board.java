@@ -66,8 +66,6 @@ public class Board {
     }
 
 
-
-
     private boolean initialized=false;
     public boolean isInitialzied(){
         return initialized;
@@ -112,5 +110,6 @@ public class Board {
             return true;
         return false;
     }
+
 
 }
