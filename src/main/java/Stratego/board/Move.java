@@ -27,7 +27,13 @@ public class Move {
 
 
 
-
+    public Move(char player_color, int start_x, int start_y, int end_x, int end_y) {
+        this.color = player_color;
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+    }
     public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
         GameID = gameID;
         this.player = player;

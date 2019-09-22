@@ -14,7 +14,19 @@ public class Board {
         setup = new arrangement();
         initializeGameboard();
         System.out.println("initialized game board");
-        displayGameBoard();
+//        displayGameBoard();
+
+        while(gameWinner==0){
+            displayGameBoard();
+//            playerMove();
+//            aiMove();
+        }
+        if (gameWinner==1)
+            System.out.println("Player win!");
+        else
+            System.out.println("Player lose.");
+
+
     }
 
     private void initializeGameboard() {
@@ -45,8 +57,6 @@ public class Board {
     }
 
 
-
-
     private boolean initialized=false;
     public boolean isInitialzied(){
         return initialized;
@@ -75,8 +85,8 @@ public class Board {
         }
         System.out.print((char)27 + "[37m" );
 }
-    public void swap (int startingX, int startingY, int endingX, int endingY)
-    {
+
+    public void swap (int startingX, int startingY, int endingX, int endingY) {
         System.out.println("swapping "+ startingX +" "+startingY+" with "+ endingX +" "+endingY);
         BoardPiece start = gameboard[startingX][startingY];
         BoardPiece end = gameboard[endingX][endingY];
@@ -206,7 +216,7 @@ public class Board {
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
 
-            return "win "+a; // mover wins
+            return "win "+ a; // mover wins
         }
         else if (result==1){
             char a = gameboard[startingX][startingY].getUnit();
@@ -232,6 +242,10 @@ public class Board {
         return "This will never happen.";
 
     }
+    public BoardPiece getPiece(int x, int y){
+        return gameboard[x][y];
+    }
+    public boolean move_left()
 
 
 }
