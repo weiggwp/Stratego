@@ -54,6 +54,12 @@ function start() {
     numMoves=0;
     started=true;
     document.getElementsByClassName('blank').draggable = false;
+    let i=0;
+    for (i=11; i<111; i++){
+        if (notLake(i))
+        document.getElementById(i.toString()).draggable=false;
+    }
+    document.getElementsByClassName('blank').draggable = false;
     document.getElementById('startBtn').style.visibility="hidden";
     document.getElementById('startText').style.visibility="hidden";
 }
@@ -121,7 +127,8 @@ function move(i,m) {
     }
     if (moving==-1){
         if (isImmovable(document.getElementById((i*10+m).toString()).src)) return;
-        if (document.getElementById((i*10+m)).style.opacity=='.02') return;
+        if (document.getElementById((i*10+m).toString()).style.opacity=='.02'||document.getElementById((i*10+m).toString()).style.opacity==.02) return;
+        console.log(document.getElementById((i*10+m).toString()).style.opacity);
         //else console.log(document.getElementById((i*10+m).toString()).src);
 
         moving=(i*10+m);
@@ -151,6 +158,7 @@ function notLake(a){
 function getPiece(location){
     return '../images/pieces/piece12.png';
 }
+var test=false;
 function aiMove() {
     var ran = Math.floor(Math.random() * 100) + 11;
     // console.log("from " + ran);
@@ -165,6 +173,7 @@ function aiMove() {
             &&( document.getElementById((ran).toString()).style.opacity != .02)&&
             (
                 document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
+            //if (test&&!document.getElementById((ran+10).toString()).src.endsWith("Moved.png"))continue;
             from=ran;
             to=ran+10;
             break;
@@ -173,7 +182,7 @@ function aiMove() {
 
 
     }
-
+test=true;
 
 
     // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
@@ -212,7 +221,19 @@ function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
 
 
 }
-
+function lose(){
+    document.getElementById('startText').outerHTML='You lost. Press restart to restart';
+    //document.getElementById('startText').style.visibility='visible';
+    document.getElementById('restartBtn').style.visibility='visible';
+}
+function win(){
+    document.getElementById('startText').outerHTML='You win! Press restart to restart';
+    //document.getElementById('startText').style.visibility='visible';
+    document.getElementById('restartBtn').style.visibility='visible';
+}
+function restart(){
+location.reload()
+}
 function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
 
@@ -288,7 +309,14 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                         moving=-1;
                     }
                     else if (resp=="flag"){
-                        //game over
+                        document.getElementById((end).toString()).src
+                            = document.getElementById((moving).toString()).src
+                        document.getElementById(moving.toString()).style.opacity = ".02";
+                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                        moving = -1;
+                        win();
+                        return;
                     }
                     else if (resp=="illegal")return;
 
@@ -321,6 +349,9 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     }
                     else if (resp.startsWith("draw")){
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src='images/pieces/blank.png'
+                    }
+                    else if (resp.startsWith("flag")){
+                        lose();
                     }
                     if (yellow!=-1){
                         if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')

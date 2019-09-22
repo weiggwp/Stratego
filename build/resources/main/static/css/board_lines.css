@@ -93,6 +93,12 @@ div.board {
     margin-right: auto;
 
 }
+.btn-restart{
+
+
+    visibility: hidden;
+
+}
 .center {
     margin: auto;
     width: 60%;

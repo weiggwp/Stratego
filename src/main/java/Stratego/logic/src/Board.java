@@ -93,7 +93,7 @@ public class Board {
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             err_msg="invalid starting piece";
             System.out.println("invalid starting piece");
-            return false;
+            //return false;
         }
 
         /*if (gameboard[startingX][startingY].getColor()!=color) {
