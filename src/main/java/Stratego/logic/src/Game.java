@@ -22,6 +22,11 @@ public class Game {
         err_msg = "";
         load_board();
     }
+
+    public Board getBoard(){
+        return this.board;
+    }
+
     public arrangement getGameSetup()
     {
         return this.board.getSetup();
