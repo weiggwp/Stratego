@@ -48,7 +48,7 @@ public class Board {
 
 
     private boolean initialized=false;
-    public boolean isInitialzied(){
+    public boolean isInitialized(){
         return initialized;
 
     }

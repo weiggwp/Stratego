@@ -42,7 +42,7 @@ public class boardController {
     // RequestBody String some)
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-        if (!board.isInitialzied()) {
+        if (!board.isInitialized()) {
           //  System.out.println("reinitializing " + board.isInitialzied()+ " " + m.getMoveNum());
             board.start();
         }
