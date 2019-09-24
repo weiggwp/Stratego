@@ -4,7 +4,6 @@ public class Round {    //entity being send back to the front end
 
     private Move user;  //move consists of coordinate changes, move validation info,
                         //move result, and game status
-
     private Move ai;
 
     public Move getUser() {

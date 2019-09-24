@@ -18,10 +18,10 @@ public class Extractor {
         int turn, playerStartX, playerStartY, playerEndX, playerEndY, isPlayer = 1;
         int computerStartX, computerStartY, computerEndX, computerEndY;
 
-        String pieceCapturedByPlayer, pieceCapturedByComputer;
-        String pieceCapturedByPlayer_1, pieceCapturedByComputer_1;
+        char pieceCapturedByPlayer, pieceCapturedByComputer;
+        char pieceCapturedByPlayer_1, pieceCapturedByComputer_1;
 
-        String playerPieceName, computerPieceName;
+        char playerPieceName, computerPieceName;
         long matchId;
 
         int turns = 0;

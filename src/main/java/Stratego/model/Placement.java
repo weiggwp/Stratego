@@ -15,10 +15,10 @@ public class Placement {
     private long matchId;
     private int  x;
     private int  y;
-    private String pieceName;
+    private char pieceName;
     private int isPlayer;
 
-    public Placement(long matchId, int x, int y, String pieceName, int isPlayer) {
+    public Placement(long matchId, int x, int y, char pieceName, int isPlayer) {
         this.matchId = matchId;
         this.x = x;
         this.y = y;
@@ -69,11 +69,11 @@ public class Placement {
         this.y = y;
     }
 
-    public String getPieceName() {
+    public char getPieceName() {
         return pieceName;
     }
 
-    public void setPieceName(String pieceName) {
+    public void setPieceName(char pieceName) {
         this.pieceName = pieceName;
     }
 
