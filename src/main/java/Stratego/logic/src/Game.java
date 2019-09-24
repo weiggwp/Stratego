@@ -50,6 +50,11 @@ public class Game {
     {
         return this.gameWinner;
     }
+
+    public Board getBoard(){
+        return this.board;
+    }
+
     public arrangement getGameSetup()
     {
         return this.board.getSetup();

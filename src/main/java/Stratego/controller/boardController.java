@@ -4,7 +4,11 @@ import Stratego.board.Move;
 import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
+import Stratego.logic.src.BoardPiece;
 import Stratego.logic.src.Game;
+import Stratego.model.Placement;
+import Stratego.service.PlacementService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +20,11 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class boardController {
     private long GameID=0;
+
+    @Autowired
+    PlacementService placementService;
+
+
     Game game;
     @GetMapping("/board")
     public ModelAndView greeting(Model model) {
@@ -23,6 +32,27 @@ public class boardController {
         int inner = 10;
         //boardController control = new boardController();
         game = new Game(++GameID);
+
+        long gameId = GameID;
+        Board board = game.getBoard();
+
+        if (board.isInitialzied()) {
+            BoardPiece[][] boardPiece = board.getBoard();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    BoardPiece piece = boardPiece[i][j];
+
+                    // attributes to saved
+                    int x = i;
+                    int y = j;
+                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
+                    char pieceName = piece.getUnit();
+
+                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
+                    placementService.addPlacement(placement);
+                }
+            }
+        }
 
 
         //render board.html

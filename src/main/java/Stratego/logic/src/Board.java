@@ -22,7 +22,7 @@ public class Board {
         return this.setup;
     }
 
-    protected BoardPiece[][] getBoard()
+    public BoardPiece[][] getBoard()
     {
         return this.gameboard;
     }
