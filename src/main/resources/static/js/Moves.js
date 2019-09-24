@@ -206,7 +206,7 @@ function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
         'start_y': starting_y,
         'end_x': target_x,
         'end_y': target_y,
-        'status': undefined});
+        'status': null});
     //start_x and start_y need to be filled in to validate move
 
     http.open("POST", url, true);
@@ -249,7 +249,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
         'start_y': starting_y,
         'end_x': target_x,
         'end_y': target_y,
-        'status': undefined});
+        'status': null});
     //start_x and start_y need to be filled in to validate move
 
     http.open("POST", url, true);
@@ -274,12 +274,13 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let response = JSON.parse(http.response.toString());
             let legal = response.user.status.is_valid_move;
             let fight_result = response.user.status.fight_result;
-            let game_result = response.user.status.game_ended;
-            let img_src = response.user.status.img_src;
+
 
                 //http.response.toString();
 
                 if (color==='B') {
+                    let game_result = response.user.status.game_ended;
+                    let img_src = response.user.status.image_src;
                     let start=(starting_x + 1) * 10 + starting_y + 1;
                     let end = (target_x + 1) * 10 + target_y + 1;
                     console.log("moving from " + moving + " to " + ((target_x + 1) * 10 + target_y + 1));
@@ -309,7 +310,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                    // else if (resp.startsWith("lose ")) { //it
                     else if(fight_result===1)
                     {
-                        console.log(resp.substring(resp.lastIndexOf(" ")+1));
+                        //console.log(resp.substring(resp.lastIndexOf(" ")+1));
                         document.getElementById(moving.toString()).style.opacity = ".02";
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
                         document.getElementById((end).toString()).src=img_src;

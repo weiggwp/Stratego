@@ -145,21 +145,24 @@ public class Game {
         BoardPiece you = board.getPieceAtLocation(startingX,startingY);
         this.move_stat.setPiece_name(you.getUnit());
         if (result==0){
-            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+
             capture(color,you.getUnit());   //return unit for now
-            String a = opponent.getImg_src();//opponent's piece
+            String a = you.getImg_src();
+
+            this.move_stat.setImage_src(a);
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
-            this.move_stat.setImage_src(a);
             return "win "+a; // mover wins
         }
         else if (result==1){
 
-            String a = you.getImg_src();
+            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+            String a = opponent.getImg_src();//opponent's piece
             capture((color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
-            board.clearPieceInfo(startingX,startingY);
             this.move_stat.setImage_src(a);
+            System.out.println("winning source: "+a);
+            board.clearPieceInfo(startingX,startingY);
             return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
@@ -170,10 +173,10 @@ public class Game {
 
             capture(color,opponent.getUnit());//you captured the opponent's unit
             capture((color=='R')?'B':'R',you.getUnit());//opponent captured your piece as well
+            this.move_stat.setImage_src(a);
 
             board.clearPieceInfo(startingX,startingY);
             board.clearPieceInfo(endingX,endingY);
-            this.move_stat.setImage_src(a);
             return "draw " +a;
         }
         else if (result==3){

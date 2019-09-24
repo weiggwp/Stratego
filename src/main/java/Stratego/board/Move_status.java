@@ -93,7 +93,7 @@ public class Move_status {
 
 
     public String getImage_src() {
-        return image_src;
+        return new String(image_src);
     }
 
     public int getFight_result() {
