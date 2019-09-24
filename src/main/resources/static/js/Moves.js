@@ -166,7 +166,7 @@ function aiMove() {
     let from=0;
     while (true) {
         ran = Math.floor(Math.random() * 90) + 11;
-        console.log("from "+ran);
+       // console.log("from "+ran);
         if (!notLake(ran)||!notLake(ran+10)) continue;
         // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
@@ -278,7 +278,8 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let legal = response.user.status.is_valid_move;
             let fight_result = response.user.status.fight_result;
             let game_result = response.user.status.game_ended;
-            let img_src = response.user.status.img_src;
+            let img_src = response.user.status.image_src;
+            console.log("its " +response.user.status.toString());
 
                 //http.response.toString();
 
@@ -288,13 +289,13 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     console.log("moving from " + moving + " to " + ((target_x + 1) * 10 + target_y + 1));
                     //if (resp.startsWith("win")) { //it
                     if (legal===false)return;
-                    if(fight_result===0)
+                    if(fight_result===0) //mover wins
                     {
                         document.getElementById((end).toString()).src
-                            = document.getElementById((moving).toString()).src;
+                            = document.getElementById((start).toString()).src;
                         document.getElementById(moving.toString()).style.opacity = ".02";
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
-                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                        document.getElementById((end).toString()).style.opacity = "1";
                         moving = -1;
                     }
                     //if (resp.startsWith("empty")) { //it
@@ -312,10 +313,11 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                    // else if (resp.startsWith("lose ")) { //it
                     else if(fight_result===1)
                     {
-                        console.log(resp.substring(resp.lastIndexOf(" ")+1));
+
                         document.getElementById(moving.toString()).style.opacity = ".02";
                         document.getElementById(moving.toString()).style.borderStyle = 'none';
                         document.getElementById((end).toString()).src=img_src;
+                        console.log(img_src);
                             //(resp.substring(resp.lastIndexOf(" ")+1));
                         moving = -1;
                     }
@@ -387,7 +389,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                             ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
                             if (yellow!=((target_x + 1 )* 10 + target_y + 1))
                             document.getElementById(yellow.toString()).style.opacity=".02";
-                           // console.log("x is " + x + " yellow is " + yellow);
+                            console.log("x is " + ((target_x + 1 )* 10 + target_y + 1) + " yellow is " + yellow);
 
                         document.getElementById(yellowBorder.toString()).style.borderStyle='none';
                         if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
