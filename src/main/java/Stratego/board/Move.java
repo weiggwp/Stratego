@@ -35,6 +35,21 @@ public class Move {
         this.end_y = end_y;
         this.status = status;
     }
+    public String getStart()
+    {
+        return this.getStart_x()+","+this.getStart_y();
+    }
+    public String getEnd()
+    {
+        return this.getEnd_x()+","+this.getEnd_y();
+    }
+    public boolean movedBack(int startingX, int startingY, int endingX, int endingY)
+    {
+        String start = startingX+","+startingY;
+        String end = endingX+","+endingY;
+        //[1,1]->[2,2]   [2,2]->[1,1]
+        return this.getEnd().equals(start) && this.getStart().equals(end);
+    }
 
     public String getPlayer() {
         return player;

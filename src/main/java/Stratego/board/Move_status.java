@@ -8,37 +8,45 @@ public class Move_status {
     private boolean game_ended;    //indicates if game has ended
     private String game_result;    //if game ended, either be win:lose:draw:null (game did not end)
 
-    private int fight_result;   //-1 for no fight, 0 user win, 1 user lose, 2 tie
-    private String piece_captured_by_player;
-    private String piece_captured_by_ai;
+    private int fight_result;   //4 for no fight, 0 user win, 1 user lose, 2 tie, 3 game_over
+    private char pieceCapturedByPlayer=' ';
+    private char pieceCapturedByComputer=' ';
+
     private String image_src;  //what is left on the board /* if AI captures a user piece, it must be revealed*/
 
-    private String piece_name; // name/rank of the piece
+    private char piece_name; // name/rank of the piece
 
-    private String pieceCapturedByPlayer;
-    private String pieceCapturedByComputer;
 
-    public String getPieceCapturedByPlayer() {
+    public char getPieceCapturedByPlayer() {
         return pieceCapturedByPlayer;
     }
 
-    public void setPieceCapturedByPlayer(String pieceCapturedByPlayer) {
+    public void setPieceCapturedByPlayer(char pieceCapturedByPlayer) {
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
     }
-
-    public String getPieceCapturedByComputer() {
+    public Move_status()
+    {
+        this.notValid(false,"");    //initialize to not valid
+        this.game_ended = false;
+    }
+    public void notValid(boolean is_valid,String error)  //if invalid, don't need to set anything else
+    {
+        this.is_valid_move = is_valid;
+        this.error_message = error;
+    }
+    public char getPieceCapturedByComputer() {
         return pieceCapturedByComputer;
     }
 
-    public void setPieceCapturedByComputer(String pieceCapturedByComputer) {
+    public void setPieceCapturedByComputer(char pieceCapturedByComputer) {
         this.pieceCapturedByComputer = pieceCapturedByComputer;
     }
 
-    public String getPiece_name() {
+    public char getPiece_name() {
         return piece_name;
     }
 
-    public void setPiece_name(String piece_name) {
+    public void setPiece_name(char piece_name) {
         this.piece_name = piece_name;
     }
 
@@ -68,9 +76,12 @@ public class Move_status {
         return game_ended;
     }
 
-    public void setGame_ended(boolean game_ended) {
-        this.game_ended = game_ended;
+    public void gameEnded()
+    {
+        this.game_ended = true;
+        this.game_result = "win";
     }
+
 
     public String getGame_result() {
         return game_result;
@@ -79,7 +90,6 @@ public class Move_status {
     public void setGame_result(String game_result) {
         this.game_result = game_result;
     }
-
 
 
     public String getImage_src() {
@@ -92,22 +102,6 @@ public class Move_status {
 
     public void setFight_result(int fight_result) {
         this.fight_result = fight_result;
-    }
-
-    public String getPiece_captured_by_player() {
-        return piece_captured_by_player;
-    }
-
-    public void setPiece_captured_by_player(String piece_captured_by_player) {
-        this.piece_captured_by_player = piece_captured_by_player;
-    }
-
-    public String getPiece_captured_by_ai() {
-        return piece_captured_by_ai;
-    }
-
-    public void setPiece_captured_by_ai(String piece_captured_by_ai) {
-        this.piece_captured_by_ai = piece_captured_by_ai;
     }
 
     public void setImage_src(String image_src) {

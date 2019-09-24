@@ -1,17 +1,23 @@
 package Stratego.logic.src;
 
 import Stratego.board.Move;
+import Stratego.board.Move_status;
+import Stratego.board.Round;
 import Stratego.board.arrangement;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 //a game has a board and moves associated with it
 public class Game {
     private Board board;    //a unique board per game
-    private ArrayList<Move> moves;  //variable length of moves
+    private ArrayList<Round> moves;  //variable length of moves
     private long GameID; //
-    int gameWinner;
+    private int gameWinner;
     private String err_msg;
+    private Move current_move;
+    private Move_status move_stat;
+    //HashMap<String, ArrayList> piecesLost;    - will be updating per move
 
     public Game(long id)
     {
@@ -21,6 +27,28 @@ public class Game {
         gameWinner = 0;
         err_msg = "";
         load_board();
+        move_stat = new Move_status();
+       /* piecesLost = new HashMap<>();
+        piecesLost.put("R",new ArrayList());
+        piecesLost.put("B",new ArrayList());
+        */
+
+    }
+    public Move_status getMoveInfo()
+    {
+        return this.move_stat;
+    }
+    public void setCurrent_move(Move move)
+    {
+        this.current_move = move;
+    }
+    public String getErr_msg()
+    {
+        return this.getErr_msg();
+    }
+    public int gameEnded()
+    {
+        return this.gameWinner;
     }
     public arrangement getGameSetup()
     {
@@ -34,59 +62,124 @@ public class Game {
     public void swap(int startingX, int startingY, int endingX, int endingY)
     {
         board.swap(startingX,startingY,endingX,endingY);
-
     }
-    public void madeMove(Move m)    //also should have move status
+    public void madeMove(Round m)    //also should have move status
     {
         this.moves.add(m);
+    }
+    public boolean madeLoopMove(int startingX, int startingY, int endingX, int endingY,char color)
+    {
+        //[1,1]->[1,2]      initial
+        // [1,2]->[1,1]     second
+        // [1,1]-> [1,2] (current attempted move)
+        if(moves.size()<2)
+            return false;   //need at least 2 moves
+        System.out.println("currently in round"+moves.size()+" color:"+color);
+        String current_start = startingX+","+startingY;
+        String current_end = endingX+","+endingY;
+        Move lastMove;
+        Move firstMove;
+        if(color=='R')  //computer
+        {
+            lastMove = moves.get(moves.size()-1).getAi(); //get the last valid move user made
+            firstMove = moves.get(moves.size()-2).getAi();
+        }
+        else
+        {
+            lastMove = moves.get(moves.size()-1).getUser(); //get the last valid move user made
+            firstMove = moves.get(moves.size()-2).getUser();
+        }
+
+        if(lastMove.movedBack(startingX,startingY,endingX,endingY))
+        {
+            if(current_start.equals(firstMove.getStart()) && current_end.equals(firstMove.getEnd()))
+            {
+                return true;
+            }
+            return false;
+        }
+        return false;
+
+    }
+    public Round makeIllegalMove()
+    {
+        Round round = new Round();
+        round.setUser(current_move);
+        round.getUser().setStatus(new Move_status());
+        return round;
+    }
+    public void capture(char color,char piece)
+    {
+        if(color=='R')//computer
+        {
+            this.move_stat.setPieceCapturedByComputer(piece);
+        }
+        else//user
+        {
+            this.move_stat.setPieceCapturedByPlayer(piece);
+        }
+
+    }
+    public Move_status getMove_stat()
+    {
+        return this.move_stat;
     }
     public String move(int startingX, int startingY, int endingX, int endingY,char color){
 
         System.out.println();System.out.println();
         board.displayGameBoard();
-
+        this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
+
+            this.move_stat.setError_message(err_msg);   //by default invalid move
             return "illegal";
         }
         int result=attack(board.getPieceAtLocation(startingX,startingY).getUnit(),board.getPieceAtLocation(endingX,endingY).getUnit());
+        this.move_stat.setFight_result(result);
+        this.move_stat.setIs_valid_move(true);
+        BoardPiece you = board.getPieceAtLocation(startingX,startingY);
+        this.move_stat.setPiece_name(you.getUnit());
         if (result==0){
-            char a = board.getPieceAtLocation(endingX,endingY).getUnit();
-            //char a = gameboard[endingX][endingY].getUnit();
-            //gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+            capture(color,you.getUnit());   //return unit for now
+            String a = opponent.getImg_src();//opponent's piece
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
-
+            this.move_stat.setImage_src(a);
             return "win "+a; // mover wins
         }
         else if (result==1){
-            char a = board.getPieceAtLocation(startingX,startingY).getUnit();
-                    //gameboard[startingX][startingY].getUnit();
+
+            String a = you.getImg_src();
+            capture((color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
+                    //board.getPieceAtLocation(startingX,startingY).getImg_src();
             board.clearPieceInfo(startingX,startingY);
-            //gameboard[startingX][startingY].reset();
+            this.move_stat.setImage_src(a);
             return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
             //tie and clear both
-            char a = board.getPieceAtLocation(endingX,endingY).getUnit();
-                    //gameboard[endingX][endingY].getUnit();
+            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+            String a = opponent.getImg_src();
+                    //board.getPieceAtLocation(endingX,endingY).getImg_src();
+
+            capture(color,opponent.getUnit());//you captured the opponent's unit
+            capture((color=='R')?'B':'R',you.getUnit());//opponent captured your piece as well
+
             board.clearPieceInfo(startingX,startingY);
             board.clearPieceInfo(endingX,endingY);
-            //gameboard[startingX][startingY].reset();
-           // gameboard[endingX][endingY].reset();
-
-
+            this.move_stat.setImage_src(a);
             return "draw " +a;
         }
         else if (result==3){
 
             gameWinner=1;
+            this.move_stat.gameEnded();
             return "flag"; //mover wins the videogame
         }
         if (result==4){
             board.redefinePieceInfo(startingX,startingY,endingX,endingY);
-            //gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             board.clearPieceInfo(startingX,startingY);
-            //gameboard[startingX][startingY].reset();
             return "empty"; // mover moved to empty space
         }
         return "This will never happen.";
@@ -109,11 +202,20 @@ public class Game {
             return false;
         }
 
+        /*if(madeLoopMove(startingX,startingY,endingX,endingY,color))
+        {
+            err_msg="illegal: making repeated moves";
+            System.out.println("illegal: making repeated moves");
+            return false;
+        }*/
+
+        //TODO: madeLoopMove is currently commented out since no ai moves are made in backend , waiting for ai implementation
+
         /*if (gameboard[startingX][startingY].getColor()!=color) {
             System.out.println("invalid starting color");
             return false;
         }//if moving a piece not owned by player...*/
-        //if (gameboard[endingX][endingY].isLake()){
+
         if(board.getPieceAtLocation(endingX,endingY).isLake())
         {
             err_msg="cant move to lake";
@@ -121,7 +223,7 @@ public class Game {
             return false;
         }
         //if moving into lake...
-        //if (gameboard[endingX][endingY].getColor()==gameboard[startingX][startingY].getColor()) {
+
         if(board.getPieceAtLocation(endingX,endingY).getColor()==board.getPieceAtLocation(startingX,startingY).getColor())
         {
             err_msg="cant capture friendly unit";

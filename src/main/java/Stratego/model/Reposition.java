@@ -16,15 +16,15 @@ public class Reposition {
     private int startY;
     private int curX;
     private int curY;
-    private String pieceName;
-    private String pieceCapturedByPlayer;
-    private String pieceCapturedByOpponent;
+    private char pieceName;
+    private char pieceCapturedByPlayer;
+    private char pieceCapturedByOpponent;
 
     public Reposition() {
     }
 
     public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY,
-                      String pieceName, String pieceCapturedByPlayer, String pieceCapturedByOpponent) {
+                      char pieceName, char pieceCapturedByPlayer, char pieceCapturedByOpponent) {
         this.matchId = matchId;
         this.turnId = turnId;
         this.startX = startX;
@@ -92,27 +92,27 @@ public class Reposition {
         this.curY = curY;
     }
 
-    public String getPieceName() {
+    public char getPieceName() {
         return pieceName;
     }
 
-    public void setPieceName(String pieceName) {
+    public void setPieceName(char pieceName) {
         this.pieceName = pieceName;
     }
 
-    public String getPieceCapturedByPlayer() {
+    public char getPieceCapturedByPlayer() {
         return pieceCapturedByPlayer;
     }
 
-    public void setPieceCapturedByPlayer(String pieceCapturedByPlayer) {
+    public void setPieceCapturedByPlayer(char pieceCapturedByPlayer) {
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
     }
 
-    public String getPieceCapturedByOpponent() {
+    public char getPieceCapturedByOpponent() {
         return pieceCapturedByOpponent;
     }
 
-    public void setPieceCapturedByOpponent(String pieceCapturedByOpponent) {
+    public void setPieceCapturedByOpponent(char pieceCapturedByOpponent) {
         this.pieceCapturedByOpponent = pieceCapturedByOpponent;
     }
 

@@ -1,6 +1,7 @@
 package Stratego.controller;
 
 import Stratego.board.Move;
+import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
 import Stratego.logic.src.Game;
@@ -40,14 +41,29 @@ public class boardController {
 
     @RequestMapping(value = "/make_move", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity<String> move(@RequestBody Move m)
+    public ResponseEntity<Round> move(@RequestBody Move m)
     // RequestBody String some)
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
 
         String status=game.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
+        game.setCurrent_move(m);//  filling in move_status from game
+        if(!status.equals("illegal"))
+        {
+            //TODO: fill in computer move info
+            Round round = new Round();//suppose to send back computer move as well, for now empty
 
-        return new ResponseEntity<String>(status, HttpStatus.OK);
+            round.setUser(m);//user move
+            round.getUser().setStatus(game.getMove_stat());
+            game.madeMove(round);
+
+            return new ResponseEntity<Round>(round,HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<Round>(game.makeIllegalMove(),HttpStatus.OK);
+        }
+
 
 
     }
@@ -59,8 +75,6 @@ public class boardController {
         game.swap(m.getStart_x()-1,m.getStart_y()-1,m.getEnd_x()-1,m.getEnd_y()-1);
         //need to save the move in game
         return new ResponseEntity(HttpStatus.OK);
-
-
 
 
     }
