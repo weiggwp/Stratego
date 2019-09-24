@@ -232,7 +232,10 @@ function win(){
     document.getElementById('restartBtn').style.visibility='visible';
 }
 function restart(){
-location.reload()
+    location.reload()
+}
+function back(){
+
 }
 function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
