@@ -6,8 +6,14 @@ import Stratego.logic.src.Board;
 
 import Stratego.logic.src.BoardPiece;
 import Stratego.logic.src.Game;
+import Stratego.model.Match;
 import Stratego.model.Placement;
+import Stratego.model.Reposition;
+import Stratego.service.MatchService;
+import Stratego.service.MoveService;
 import Stratego.service.PlacementService;
+import Stratego.service.UserService;
+import Stratego.util.Extractor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +23,21 @@ import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+import java.util.List;
+
 @RestController
 public class boardController {
     private long GameID=0;
 
     @Autowired
     PlacementService placementService;
+    @Autowired
+    MatchService matchService;
+    @Autowired
+    MoveService moveService;
+    @Autowired
+    UserService userService;
 
 
     Game game;
@@ -80,6 +95,27 @@ public class boardController {
         game.setCurrent_move(m);//  filling in move_status from game
         if(!status.equals("illegal"))
         {
+            // Game ended. Save match
+            if (game.gameEnded() == 1 || game.gameEnded() == 2) {
+                long gameId = game.getGameID();
+                Date date = new Date();
+//                long userId = userService.findByUsername(userName);
+                int gameEnded = game.gameEnded();
+                String outcome = gameEnded == 1 ? "Win" : gameEnded == 2 ? "Lost" : "Tied";
+                Match match = new Match(gameId, 25, outcome, date.getTime());
+                matchService.addMatch(match);
+
+                // ---------------------------------
+                // Add all the moves
+                List<Round> rounds = game.getRounds();
+                List<Reposition> moves = Extractor.extractMoves(rounds);
+                for (Reposition move: moves)
+                    System.out.println(move.toString());
+                moveService.addMoves(moves);
+                // ---------------------------------
+
+            }
+
             //TODO: fill in computer move info
             Round round = new Round();//suppose to send back computer move as well, for now empty
 

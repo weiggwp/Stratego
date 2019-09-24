@@ -7,6 +7,7 @@ import Stratego.board.arrangement;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 //a game has a board and moves associated with it
 public class Game {
@@ -50,6 +51,8 @@ public class Game {
     {
         return this.gameWinner;
     }
+    public List<Round> getRounds(){return this.moves;}
+    public long getGameID() {return this.GameID;}
 
     public Board getBoard(){
         return this.board;

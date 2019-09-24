@@ -24,7 +24,7 @@ public class Move {
         return color;
     }
 
-
+    public Move(){}
     public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
         GameID = gameID;
         this.player = player;
@@ -34,6 +34,19 @@ public class Move {
         this.end_y = end_y;
         this.status = status;
     }
+
+    public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, char color, int moveNum, Move_status status) {
+        GameID = gameID;
+        this.player = player;
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.color = color;
+        this.moveNum = moveNum;
+        this.status = status;
+    }
+
     public String getStart()
     {
         return this.getStart_x()+","+this.getStart_y();
