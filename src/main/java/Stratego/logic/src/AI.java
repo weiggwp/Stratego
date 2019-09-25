@@ -19,9 +19,10 @@ public class AI {
         Move best_move = null;
 
         for (Move move : all_moves) {
-            board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+            BoardPiece[][] new_board = Board.move(board.getGameboard(),move.getStart_x(),move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+//            board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
             // get the score for current move
-            double score = negamax(board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
+            double score = negamax(new_board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
             if (score > max_score) {
                 max_score = score;
                 best_move = move;
@@ -52,7 +53,7 @@ public class AI {
 //        if α ≥ β then
 //            break (* cut-off *)
 //            return value
-    public double negamax(Board board, int depth, double alpha, double beta, char player_color){
+    public double negamax(BoardPiece[][] board, int depth, double alpha, double beta, char player_color){
         if(depth==0 || board.gameEnded){
             return new BoardEvaluator(board).evaluate(player_color);
         }
@@ -76,8 +77,6 @@ public class AI {
 
 
     }
-
-
 
     /**
      * Generates all the possible moves on the board

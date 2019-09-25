@@ -71,13 +71,25 @@ public class BoardPiece {
     public boolean isEmpty(){
         return unit=='0';
     }
+
+    public BoardPiece(char unit, String img_src, char color, boolean moved, boolean revealed) {
+        this.unit = unit;
+        this.img_src = img_src;
+        this.color = color;
+        this.moved = moved;
+        this.revealed = revealed;
+    }
+
     public boolean isLake(){
         return unit=='W';
     }
     public boolean isScout(){
         return unit=='2';
     }
+    public BoardPiece clone() {
+        return new BoardPiece(this.unit,this.img_src,this.color,this.moved,this.revealed);
 
+    }
 
 
 }
