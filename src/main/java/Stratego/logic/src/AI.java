@@ -149,7 +149,7 @@ public class AI {
                 piece_X_new++;
                 boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
                 if (valid_move) {
-                    moves.add(new Move(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
+                    moves.add(new SimulationMove(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
                 }
             }while(unit==2 && piece_X_new<9);
 
