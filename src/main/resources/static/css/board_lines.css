@@ -87,7 +87,7 @@ div.board {
 }
 .btn-primary{
 
-     width:40%;
+     width:80%;
      display:block;
      margin:auto;
 
@@ -96,6 +96,7 @@ div.board {
     color:white;
     font-size:20px;
     list-style: none;
+
 }
 .sidebarImage{
     width:20%;
@@ -111,7 +112,7 @@ div.board {
 
 }
 .rectangle {
-    height: 600px;
+    height: 700px;
     width: 200px;
     border-radius: 25px;
     background-color: #000072;

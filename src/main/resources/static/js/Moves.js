@@ -8,6 +8,9 @@ let yellow=-1;
 let yellowBorder=-1;
 let started=false;
 let legal=0;
+
+let revealedOne=-1;
+let revealedTwo=-1;
 function highlight(i,m) {
     let id = i*10+m;
     let cur_image = document.getElementById(id.toString());
@@ -46,7 +49,21 @@ function updateSidebar(src){
     let finalRet = document.getElementById(numString).innerHTML.substring(0,document.getElementById(numString).innerHTML.length-1).concat(newNum);
     document.getElementById(numString).innerHTML=finalRet;
 
+
 }
+function concede(){
+    if (confirm("Are you sure you wish to concede the game? This cannot be undone."))lose();
+
+}
+function hidePieceNums(){
+    if (revealedOne!=-1)
+        document.getElementById(revealedOne.toString()).src='../images/pieces/blue_back.png'
+    if (revealedTwo!=-1)
+        document.getElementById(revealedTwo.toString()).src='../images/pieces/blue_back.png'
+    revealedOne=-1;
+    revealedTwo=-1;
+}
+
 function clear_coordinates()
 {
     x = undefined;
@@ -101,6 +118,7 @@ function start() {
     document.getElementById('startBtn').style.visibility="hidden";
     document.getElementById('startText').style.visibility="hidden";
     document.getElementById('fastForwardBtn').style.visibility='visible';
+    document.getElementById('concedeBtn').style.visibility='visible';
 }
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);
@@ -184,6 +202,7 @@ function move(i,m) {
             return;
         }
         numMoves++;
+        hidePieceNums();
         let response=sendMoveRequest(0,x-1,y-1,i-1,m-1,'B',numMoves);
         //clear_coordinates();
 
@@ -265,6 +284,7 @@ function lose(){
     //document.getElementById('startText').style.visibility='visible';
     document.getElementById('restartBtn').style.visibility='visible';
     document.getElementById('fastForwardBtn').style.visibility='hidden';
+    document.getElementById('concedeBtn').style.visibility='hidden';
 
 }
 function win(){
@@ -272,6 +292,7 @@ function win(){
     //document.getElementById('startText').style.visibility='visible';
     document.getElementById('restartBtn').style.visibility='visible';
     document.getElementById('fastForwardBtn').style.visibility='hidden';
+    document.getElementById('concedeBtn').style.visibility='hidden';
 }
 function restart(){
     location.reload()
@@ -314,21 +335,21 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
         } else { // show the result
             //alert(`Done, got ${http.response.length} bytes`); // responseText is the server
            // alert(http.response.toString());
-            console.log("RESPONSE IS "+http.response.toString());
+            //console.log("RESPONSE IS "+http.response.toString());
 
             let response = JSON.parse(http.response.toString());
             let legal = response.user.status.is_valid_move;
             let fight_result = response.user.status.fight_result;
             let game_result = response.user.status.game_ended;
             let img_src = response.user.status.image_src;
-            console.log("its " +response.user.status.image_src);
+            //console.log("its " +response.user.status.image_src);
 
                 //http.response.toString();
 
                 if (color==='B') {
                     let start=(starting_x + 1) * 10 + starting_y + 1;
                     let end = (target_x + 1) * 10 + target_y + 1;
-                    console.log("moving from " + moving + " to " + ((target_x + 1) * 10 + target_y + 1));
+                    console.log("moving from " + start + " to " + ((target_x + 1) * 10 + target_y + 1));
                     //if (resp.startsWith("win")) { //it
                     if (legal===false)return;
                     if(fight_result===0) //mover wins
@@ -360,6 +381,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                         document.getElementById(start.toString()).style.opacity = ".02";
                         document.getElementById(start.toString()).style.borderStyle = 'none';
                         document.getElementById((end).toString()).src=img_src;
+                        revealedOne=end;
                         console.log(img_src);
                             //(resp.substring(resp.lastIndexOf(" ")+1));
                         moving = -1;
@@ -388,13 +410,13 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                 }
                 else{
 
-                    console.log("starting x is " + starting_x + " starting y is " + starting_y + "ending x is " +target_x+ " ending y is " +
-                    target_y);
+                    //console.log("starting x is " + starting_x + " starting y is " + starting_y + "ending x is " +target_x+ " ending y is " +
+                    //target_y);
                     let x =((starting_x + 1) * 10 + starting_y + 1)
-                    console.log("x is " +x);
+                   // console.log("x is " +x);
 
 
-                    console.log("moving from " + x + " to " + ((target_x + 1 )* 10 + target_y + 1));
+                    console.log("bot moving from " + x + " to " + ((target_x + 1 )* 10 + target_y + 1));
                     //document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
                     //document.getElementById(x.toString()).style.opacity = ".02";
                     document.getElementById(x.toString()).style.borderStyle = 'none';
@@ -403,14 +425,16 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     if(fight_result===4)
                     {
                         let piece = '../images/pieces/blue_back.png';
-                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = piece;
+                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src  =document.getElementById((x).toString()).src
                     }
                     //if (resp.startsWith("win")) {
                     if(fight_result===0)
                     {
 
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src =
-                            document.getElementById((x).toString()).src
+                            img_src
+                        revealedTwo=((target_x + 1) * 10 + target_y + 1);
+                        if (revealedOne==revealedTwo)revealedTwo=-1;
                             //(resp.substring(resp.lastIndexOf(" ")+1));
                         //document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
                     }
