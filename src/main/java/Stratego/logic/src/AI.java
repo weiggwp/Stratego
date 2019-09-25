@@ -1,7 +1,6 @@
 package Stratego.logic.src;
 
 
-import Stratego.board.Move;
 
 import java.util.*;
 
@@ -12,16 +11,16 @@ public class AI {
     public AI() {
     }
 
-    public Move AI_Move(Board board, char player_color){
+    public SimulationMove AI_Move(Board board, char player_color){
 
         SimulationBoard simulationBoard = new SimulationBoard(board);
 
-        List<Move> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
+        List<SimulationMove> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
         int depth = 3;
         double max_score = Integer.MIN_VALUE;
-        Move best_move = null;
+        SimulationMove best_move = null;
 
-        for (Move move : all_moves) {
+        for (SimulationMove move : all_moves) {
             simulationBoard.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
             // get the score for current move
             double score = negamax(simulationBoard, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
@@ -31,6 +30,8 @@ public class AI {
             }
             simulationBoard.undo_move();
         }
+
+        //convert simulation move to move
         return best_move;
 
     }
@@ -59,10 +60,10 @@ public class AI {
         if(depth==0 || board.isGameEnded()){
             return new BoardEvaluator(board).evaluate(player_color);
         }
-        List<Move> all_moves = calculate_all_possible_moves(board,player_color);
+        List<SimulationMove> all_moves = calculate_all_possible_moves(board,player_color);
         double value = Integer.MIN_VALUE;
 
-        for (Move move : all_moves) {
+        for (SimulationMove move : all_moves) {
             board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
             // get the score for current move
             value = max(value, -negamax(board, depth-1, -beta, -alpha, reverse_player_color(player_color)));
@@ -85,16 +86,16 @@ public class AI {
      * @param player_color: which player to move
      * @return A hashmap of list of move for each piece
      */
-    public List<Move> calculate_all_possible_moves(SimulationBoard board, char player_color){
+    public List<SimulationMove> calculate_all_possible_moves(SimulationBoard board, char player_color){
         // for each piece in board, if color == player_color -> calculate_possible_moves
         // save in a disctionary
 //        HashMap<BoardPiece, List<Move>> move_map = new HashMap<>();
-        List<Move> all_moves = new ArrayList<>();
+        List<SimulationMove> all_moves = new ArrayList<>();
         for(int i=0;i<10;i++){
             for(int j=0;j<10;j++){
                 BoardPiece piece = board.getPiece(i,j);
                 if(piece.getColor()==player_color){
-                    List<Move> moves = calculate_all_possible_moves(board,player_color,i,j);
+                    List<SimulationMove> moves = calculate_all_possible_moves(board,player_color,i,j);
                     all_moves.addAll(moves);
 //                    move_map.put(piece,moves);
                 }
@@ -106,11 +107,11 @@ public class AI {
 
     }
     //TODO: Test calculate_all_possible_moves
-    public List<Move> calculate_all_possible_moves(SimulationBoard board, char player_color, int piece_X, int piece_Y){
+    public List<SimulationMove> calculate_all_possible_moves(SimulationBoard board, char player_color, int piece_X, int piece_Y){
         // get the piece, move in 4 directions
         // if its a 2/scout, try move further
 
-        List<Move> moves = new ArrayList<>();
+        List<SimulationMove> moves = new ArrayList<>();
         //piece to move
         BoardPiece piece = board.getPiece(piece_X,piece_Y);
 
@@ -134,7 +135,7 @@ public class AI {
                 piece_X_new--;
                 boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
                 if (valid_move) {
-                    moves.add(new Move(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
+                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
                 }
             }while(unit==2 && piece_X_new>0);
         }
@@ -149,7 +150,8 @@ public class AI {
                 piece_X_new++;
                 boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
                 if (valid_move) {
-                    moves.add(new Move(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
+                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+
                 }
             }while(unit==2 && piece_X_new<9);
 
@@ -165,7 +167,8 @@ public class AI {
                 piece_Y_new++;
                 boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
                 if (valid_move) {
-                    moves.add(new Move(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
+                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+
                 }
             }while(unit==2 && piece_Y_new<9);
 
@@ -182,7 +185,8 @@ public class AI {
                 piece_Y_new--;
                 boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
                 if (valid_move) {
-                    moves.add(new Move(player_color, piece_X, piece_Y, piece_X_new, piece_Y_new));
+                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+
                 }
             }while(unit==2 && piece_Y_new>0);
 
