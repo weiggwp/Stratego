@@ -1,6 +1,7 @@
 package Stratego.controller;
 
 import Stratego.board.Move;
+import Stratego.board.Move_status;
 import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
@@ -76,22 +77,23 @@ public class boardController {
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
         System.out.println("moving");
-        String status=game.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
-        game.setCurrent_move(m);//  filling in move_status from game
-        if(!status.equals("illegal"))
+       // String status=
+        Move_status stat = game.move(m);
+                //(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
+        //game.setCurrent_move(m);//  filling in move_status from game
+        if(stat.isIs_valid_move())    //not a valid move
         {
             //TODO: fill in computer move info
             Round round = new Round();//suppose to send back computer move as well, for now empty
-
             round.setUser(m);//user move
-            round.getUser().setStatus(game.getMove_stat());
+            round.getUser().setStatus(stat);
             game.madeMove(round);
 
             return new ResponseEntity<Round>(round,HttpStatus.OK);
         }
         else
         {
-            return new ResponseEntity<Round>(game.makeIllegalMove(),HttpStatus.OK);
+            return new ResponseEntity<Round>(game.makeIllegalMove(m),HttpStatus.OK);
         }
 
 
