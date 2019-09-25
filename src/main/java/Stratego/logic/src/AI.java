@@ -13,21 +13,23 @@ public class AI {
     }
 
     public Move AI_Move(Board board, char player_color){
-        List<Move> all_moves = calculate_all_possible_moves(board,player_color);
+
+        SimulationBoard simulationBoard = new SimulationBoard(board);
+
+        List<Move> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
         int depth = 3;
         double max_score = Integer.MIN_VALUE;
         Move best_move = null;
 
         for (Move move : all_moves) {
-            BoardPiece[][] new_board = Board.move(board.getGameboard(),move.getStart_x(),move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
-//            board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+            simulationBoard.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
             // get the score for current move
-            double score = negamax(new_board, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
+            double score = negamax(simulationBoard, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
             if (score > max_score) {
                 max_score = score;
                 best_move = move;
             }
-            board.undo_move();
+            simulationBoard.undo_move();
         }
         return best_move;
 
@@ -53,8 +55,8 @@ public class AI {
 //        if α ≥ β then
 //            break (* cut-off *)
 //            return value
-    public double negamax(BoardPiece[][] board, int depth, double alpha, double beta, char player_color){
-        if(depth==0 || board.gameEnded){
+    public double negamax(SimulationBoard board, int depth, double alpha, double beta, char player_color){
+        if(depth==0 || board.isGameEnded()){
             return new BoardEvaluator(board).evaluate(player_color);
         }
         List<Move> all_moves = calculate_all_possible_moves(board,player_color);
@@ -73,10 +75,9 @@ public class AI {
         return value;
 
 
-
-
-
     }
+
+
 
     /**
      * Generates all the possible moves on the board
@@ -84,7 +85,7 @@ public class AI {
      * @param player_color: which player to move
      * @return A hashmap of list of move for each piece
      */
-    public List<Move> calculate_all_possible_moves(Board board, char player_color){
+    public List<Move> calculate_all_possible_moves(SimulationBoard board, char player_color){
         // for each piece in board, if color == player_color -> calculate_possible_moves
         // save in a disctionary
 //        HashMap<BoardPiece, List<Move>> move_map = new HashMap<>();
@@ -105,7 +106,7 @@ public class AI {
 
     }
     //TODO: Test calculate_all_possible_moves
-    public List<Move> calculate_all_possible_moves(Board board, char player_color, int piece_X, int piece_Y){
+    public List<Move> calculate_all_possible_moves(SimulationBoard board, char player_color, int piece_X, int piece_Y){
         // get the piece, move in 4 directions
         // if its a 2/scout, try move further
 

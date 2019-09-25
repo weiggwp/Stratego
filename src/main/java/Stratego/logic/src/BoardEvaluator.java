@@ -44,11 +44,11 @@ public class BoardEvaluator {
         put(FLAG,10000.0);
         put(EMPTY,0.0);
     }};
-    private Board board;
+    private SimulationBoard board;
 
 
 
-    public BoardEvaluator(Board board) {
+    public BoardEvaluator(SimulationBoard board) {
         this.board=board;
         for(char team:teams){
             team_info.put(team,new HashMap<String,Object>());
@@ -70,8 +70,8 @@ public class BoardEvaluator {
     }
 
     private void extract_info(){
-        for (int row = 0; row < Board.BOARD_SIZE[0]; row ++) {
-            for (int col = 0; col < Board.BOARD_SIZE[1]; col++) {
+        for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
+            for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
                 BoardPiece piece = board.getPiece(row, col);
 
                 char color = piece.getColor();
@@ -145,10 +145,10 @@ public class BoardEvaluator {
     }
 
     public double calcuate_overall_score(){
-        if( board.gameEnded){
-            if (board.winner ==BLUE)
+        if( board.isGameEnded()){
+            if (board.getWinner() ==BLUE)
             return 1;
-            else if (board.winner ==RED)
+            else if (board.getWinner() ==RED)
                 return -1;
             else
                 return 0;
@@ -223,8 +223,8 @@ public class BoardEvaluator {
         HashMap<Character,Integer> sums = new HashMap<>();
 
         for (char team : teams) {
-            for (int row = 0; row < Board.BOARD_SIZE[0]; row ++) {
-                for (int col = 0; col < Board.BOARD_SIZE[1]; col++) {
+            for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
+                for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
                     BoardPiece piece = board.getPiece(row, col);
 
                     char color = piece.getColor();
@@ -233,7 +233,7 @@ public class BoardEvaluator {
                     int sum = sums.getOrDefault(color, 0);
                     int offset = 0;
                     if (color == BLUE) {
-                        offset = Board.BOARD_SIZE[0] - 1;
+                        offset = SimulationBoard.BOARD_SIZE[0] - 1;
                     }
                     sum += abs(offset - row);
                     sums.put(team,sum);
@@ -252,8 +252,8 @@ public class BoardEvaluator {
         HashMap<Character,Double> sums = new HashMap<>();
         // find flag
         // for each flag calculate
-            for (int row = 0; row < Board.BOARD_SIZE[0]; row ++) {
-                for (int col = 0; col < Board.BOARD_SIZE[1]; col++) {
+            for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
+                for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
                     BoardPiece piece = board.getPiece(row, col);
 
                     char color = piece.getColor();
@@ -272,7 +272,7 @@ public class BoardEvaluator {
                             sum+=score;
                         }
                         //look right
-                        if( col==Board.BOARD_SIZE[1]-1){
+                        if( col==SimulationBoard.BOARD_SIZE[1]-1){
                             sum += bomb_score*4;
                         }
                         else {
@@ -291,7 +291,7 @@ public class BoardEvaluator {
                         }
 
                         //look down
-                        if(row==Board.BOARD_SIZE[0]-1){
+                        if(row==SimulationBoard.BOARD_SIZE[0]-1){
                             sum += bomb_score*4;
                         }
                         else {
