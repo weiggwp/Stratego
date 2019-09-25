@@ -132,7 +132,7 @@ public class Game {
     public String move(int startingX, int startingY, int endingX, int endingY,char color){
 
         System.out.println();System.out.println();
-        board.displayGameBoard();
+
         this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
@@ -152,7 +152,7 @@ public class Game {
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             this.move_stat.setImage_src(a);
-
+            board.displayGameBoard();
             return "win "+a; // mover wins
         }
         else if (result==1){
@@ -163,6 +163,7 @@ public class Game {
             board.clearPieceInfo(startingX,startingY);
             this.move_stat.setImage_src(a);
             System.out.println("src is " +a);
+            board.displayGameBoard();
             return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
@@ -177,6 +178,7 @@ public class Game {
             board.clearPieceInfo(startingX,startingY);
             board.clearPieceInfo(endingX,endingY);
             this.move_stat.setImage_src(a);
+            board.displayGameBoard();
             return "draw " +a;
         }
         else if (result==3){
@@ -184,11 +186,13 @@ public class Game {
             board.clearPieceInfo(startingX,startingY);
             gameWinner=1;
             this.move_stat.gameEnded();
+            board.displayGameBoard();
             return "flag"; //mover wins the videogame
         }
         if (result==4){
             board.redefinePieceInfo(startingX,startingY,endingX,endingY);
             board.clearPieceInfo(startingX,startingY);
+            board.displayGameBoard();
             return "empty"; // mover moved to empty space
         }
         return "This will never happen.";

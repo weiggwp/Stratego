@@ -232,6 +232,7 @@ function aiMove() {
             (
                 document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
             //if (test&&!document.getElementById((ran+10).toString()).src.endsWith("Moved.png"))continue;
+            if (document.getElementById((ran).toString()).src.endsWith("piece1.png"))continue;
             from=ran;
             to=ran+10;
             break;
@@ -303,12 +304,18 @@ function back(){
 
 }
 function revealPieces(board){
+    if (yellowBorder!=-1)
+        document.getElementById(yellowBorder.toString()).style.borderStyle='none';
     for (let i=0; i<board.length; i++){
         for (let j=0; j<board[0].length; j++){
             let startX=(i+1)*10;
             let startY=j+1;
             console.log(board[i][j].img_src);
             if (isBlue(board[i][j].img_src)){
+                if (document.getElementById((startY+startX).toString()).src.endsWith("Moved.png")){
+                    document.getElementById((startY+startX).toString()).style.opacity='.02';
+                    continue;
+                }
                 console.log("blue!");
                 if (notLake(startX+startY)){
                     console.log("notLake! val is" +(startY+startX).toString());
@@ -376,7 +383,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let fight_result = response.user.status.fight_result;
             let game_result = response.user.status.game_ended;
             let img_src = response.user.status.image_src;
-            //console.log("its " +response.user.status.image_src);
+            console.log("imgsrc is " +response.user.status.image_src);
 
                 //http.response.toString();
 
