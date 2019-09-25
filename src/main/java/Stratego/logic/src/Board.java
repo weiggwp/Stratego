@@ -2,10 +2,14 @@ package Stratego.logic.src;
 
 import Stratego.board.arrangement;
 
-public class Board {
+import javax.persistence.Table;
 
-    private BoardPiece[][] gameboard= new BoardPiece[10][10];
-    int gameWinner=0; //0 means no winner yet
+public class Board {
+    public static final int[] BOARD_SIZE = new int[]{10,10};
+
+    private BoardPiece[][] gameboard= new BoardPiece[ BOARD_SIZE[0] ][ BOARD_SIZE[1] ];
+    boolean gameEnded = false;
+    char winner;
     private arrangement setup;
     private String err_msg;
 
@@ -16,12 +20,12 @@ public class Board {
         System.out.println("initialized game board");
 //        displayGameBoard();
 
-        while(gameWinner==0){
+        while(!gameEnded){
             displayGameBoard();
 //            playerMove();
 //            aiMove();
         }
-        if (gameWinner==1)
+        if (gameEnded)
             System.out.println("Player win!");
         else
             System.out.println("Player lose.");
@@ -200,6 +204,9 @@ public class Board {
         System.out.println("Illegal move.");
     }
 
+    public void undo_move(){
+        //todo: please implement
+    }
     /*Attempt to move unit to a tile*/
     public String move(int startingX, int startingY, int endingX, int endingY,char color){
 
@@ -231,7 +238,8 @@ public class Board {
         }
         else if (result==3){
 
-            gameWinner=1;
+            gameEnded = true;
+            winner = color;
             return "flag"; //mover wins the videogame
         }
         if (result==4){
@@ -245,7 +253,6 @@ public class Board {
     public BoardPiece getPiece(int x, int y){
         return gameboard[x][y];
     }
-    public boolean move_left()
 
 
 }

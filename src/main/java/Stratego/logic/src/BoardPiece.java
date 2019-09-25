@@ -5,6 +5,8 @@ public class BoardPiece {
     private char unit;// 1-9, M (marshall), F (flag),B (bomb), 0 for empty, W for lake
     private String img_src;
     private char color; // R or B when occupied by a tile,0 otherwise
+    private boolean moved;
+    private boolean revealed;
 
     public BoardPiece(char unit, char color){
         this.unit=unit;
@@ -44,6 +46,22 @@ public class BoardPiece {
         this.color = color;
     }
 
+    public boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
+    }
+
     @Override
     public String toString(){
         return img_src;
@@ -59,5 +77,7 @@ public class BoardPiece {
     public boolean isScout(){
         return unit=='2';
     }
+
+
 
 }
