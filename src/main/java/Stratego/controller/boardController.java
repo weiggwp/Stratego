@@ -36,7 +36,7 @@ public class boardController {
         long gameId = GameID;
         Board board = game.getBoard();
 
-        if (board.isInitialzied()) {
+        if (board.isInitialized()) {
             BoardPiece[][] boardPiece = board.getBoard();
             for (int i = 0; i < 10; i++) {
                 for (int j = 0; j < 10; j++) {
@@ -75,7 +75,7 @@ public class boardController {
     // RequestBody String some)
     {
         System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-
+        System.out.println("moving");
         String status=game.move(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
         game.setCurrent_move(m);//  filling in move_status from game
         if(!status.equals("illegal"))

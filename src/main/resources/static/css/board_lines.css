@@ -22,10 +22,11 @@ div.board {
 {
     min-width: 50px;
     min-height: 50px;
-    object-fit: fill;
+    object-fit: contain;
     display: block;
     margin-left: auto;
     margin-right: auto;
+
 
 }
 .divTableCell1
@@ -41,6 +42,7 @@ div.board {
 {
     visibility: hidden;
     position:absolute;
+
 }
 .red_back
 {
@@ -50,17 +52,27 @@ div.board {
 .red_front
 {
     position:absolute;
+    max-width:58px;
+    max-height:58px;
 
 }
+
 .blue_back
 {
     position:absolute;
+    max-width:58px;
+    max-height:58px;
+    object-fit: scale-down;
+    overflow:hidden;
+    margin-left:auto;
+    margin-right:auto;
 
 
 }
 .red_pieces
 {
     position: absolute;
+
 
 }
 .blue_pieces
@@ -72,6 +84,7 @@ div.board {
 .blank{
     position: absolute;
 }
+
 
 .highlighted {
     background-color: #000000;

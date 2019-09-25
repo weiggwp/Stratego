@@ -24,10 +24,24 @@ public class Move_status {
     public void setPieceCapturedByPlayer(char pieceCapturedByPlayer) {
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
     }
+
+    public Move_status(boolean is_valid_move, String error_message, boolean game_ended, String game_result, int fight_result, char pieceCapturedByPlayer, char pieceCapturedByComputer, String image_src, char piece_name) {
+        this.is_valid_move = is_valid_move;
+        this.error_message = error_message;
+        this.game_ended = game_ended;
+        this.game_result = game_result;
+        this.fight_result = fight_result;
+        this.pieceCapturedByPlayer = pieceCapturedByPlayer;
+        this.pieceCapturedByComputer = pieceCapturedByComputer;
+        this.image_src = image_src;
+        this.piece_name = piece_name;
+    }
+
     public Move_status()
     {
         this.notValid(false,"");    //initialize to not valid
         this.game_ended = false;
+        this.image_src = "";
     }
     public void notValid(boolean is_valid,String error)  //if invalid, don't need to set anything else
     {
@@ -93,7 +107,7 @@ public class Move_status {
 
 
     public String getImage_src() {
-        return new String(image_src);
+        return new String(this.image_src);
     }
 
     public int getFight_result() {

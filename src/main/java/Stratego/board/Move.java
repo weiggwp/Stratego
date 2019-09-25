@@ -24,7 +24,6 @@ public class Move {
         return color;
     }
 
-
     public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
         GameID = gameID;
         this.player = player;

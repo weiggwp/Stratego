@@ -166,7 +166,7 @@ function aiMove() {
     let from=0;
     while (true) {
         ran = Math.floor(Math.random() * 90) + 11;
-        console.log("from "+ran);
+       // console.log("from "+ran);
         if (!notLake(ran)||!notLake(ran+10)) continue;
         // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (document.getElementById((ran).toString()).src.endsWith("/images/pieces/blue_back.png")
@@ -232,7 +232,10 @@ function win(){
     document.getElementById('restartBtn').style.visibility='visible';
 }
 function restart(){
-location.reload()
+    location.reload()
+}
+function back(){
+
 }
 function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
@@ -275,24 +278,26 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let legal = response.user.status.is_valid_move;
             let fight_result = response.user.status.fight_result;
 
+            let game_result = response.user.status.game_ended;
+            let img_src = response.user.status.image_src;
+            console.log("its " +response.user.status.toString());
 
                 //http.response.toString();
 
                 if (color==='B') {
-                    let game_result = response.user.status.game_ended;
-                    let img_src = response.user.status.image_src;
                     let start=(starting_x + 1) * 10 + starting_y + 1;
                     let end = (target_x + 1) * 10 + target_y + 1;
                     console.log("moving from " + moving + " to " + ((target_x + 1) * 10 + target_y + 1));
                     //if (resp.startsWith("win")) { //it
                     if (legal===false)return;
-                    if(fight_result===0)
+                    if(fight_result===0) //mover wins
                     {
                         document.getElementById((end).toString()).src
-                            = document.getElementById((moving).toString()).src;
-                        document.getElementById(moving.toString()).style.opacity = ".02";
-                        document.getElementById(moving.toString()).style.borderStyle = 'none';
-                        document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
+                            = document.getElementById((start).toString()).src;
+                        //document.getElementById(moving.toString()).style.opacity = ".02";
+                        //document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        unhighlight(moving);
+                        document.getElementById((end).toString()).style.opacity = "1";
                         moving = -1;
                     }
                     //if (resp.startsWith("empty")) { //it
@@ -302,33 +307,40 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                         document.getElementById((end).toString()).src
                             = document.getElementById((moving   ).toString()).src
                         document.getElementById(end.toString()).style.opacity='1';
-                        document.getElementById(moving.toString()).style.opacity = ".02";
-                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        //document.getElementById(moving.toString()).style.opacity = ".02";
+                        //document.getElementById(moving.toString()).style.borderStyle = 'none';
+
+                        unhighlight(moving);
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
                         moving = -1;
                     }
                    // else if (resp.startsWith("lose ")) { //it
                     else if(fight_result===1)
                     {
-                        //console.log(resp.substring(resp.lastIndexOf(" ")+1));
-                        document.getElementById(moving.toString()).style.opacity = ".02";
-                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+
+                       // document.getElementById(moving.toString()).style.opacity = ".02";
+                        //document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        unhighlight(moving);
                         document.getElementById((end).toString()).src=img_src;
+                        console.log(img_src);
                             //(resp.substring(resp.lastIndexOf(" ")+1));
                         moving = -1;
                     }
                     else if (fight_result===2){//draw
-                        document.getElementById(moving.toString()).style.opacity = ".02";
-                        document.getElementById(moving.toString()).style.borderStyle = 'none';
-                        document.getElementById(end.toString()).style.opacity = ".02";
-                        document.getElementById(end.toString()).style.borderStyle = 'none';
+                        //document.getElementById(moving.toString()).style.opacity = ".02";
+                        //document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        unhighlight(moving);
+                        //document.getElementById(end.toString()).style.opacity = ".02";
+                        //document.getElementById(end.toString()).style.borderStyle = 'none';
+                        unhighlight(end);
                         moving=-1;
                     }
                     else if (fight_result===3){ //game_over, a win
                         document.getElementById((end).toString()).src
                             = document.getElementById((moving).toString()).src
-                        document.getElementById(moving.toString()).style.opacity = ".02";
-                        document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        //document.getElementById(moving.toString()).style.opacity = ".02";
+                        //document.getElementById(moving.toString()).style.borderStyle = 'none';
+                        unhighlight(moving);
                         document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
                         moving = -1;
                         win();
@@ -349,7 +361,9 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     console.log("moving from " + x + " to " + ((target_x + 1 )* 10 + target_y + 1));
                     //document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
                     //document.getElementById(x.toString()).style.opacity = ".02";
-                    document.getElementById(x.toString()).style.borderStyle = 'none';
+                    //document.getElementById(x.toString()).style.borderStyle = 'none';
+                    //unhighlight(x);
+                    document.getElementById(x.toString()).style.borderStyle='none';
                     document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).style.opacity = "1";
                     //if (resp.startsWith("empty")) {
                     if(fight_result===4)
@@ -385,23 +399,46 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                             ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
                             if (yellow!=((target_x + 1 )* 10 + target_y + 1))
                             document.getElementById(yellow.toString()).style.opacity=".02";
-                           // console.log("x is " + x + " yellow is " + yellow);
+                            console.log("x is " + ((target_x + 1 )* 10 + target_y + 1) + " yellow is " + yellow);
 
+                        // document.getElementById(yellowBorder.toString()).style.borderStyle='none';
+                        // document.getElementById(yellowBorder.toString()).style.borderWidth='0';
+                        //
+                         // unhighlight(yellowBorder);
                         document.getElementById(yellowBorder.toString()).style.borderStyle='none';
+                        document.getElementById(yellowBorder.toString()).style.borderWidth='0';
+                        document.getElementById(yellowBorder.toString()).style.borderRadius= "0";
+
                         if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
                         document.getElementById(yellowBorder.toString()).style.opacity='.02';
                     }
                     yellow=x;
                     yellowBorder=((target_x + 1) * 10 + target_y + 1);
-                    document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
-                    document.getElementById(yellowBorder.toString()).style.borderStyle='solid';
-                    document.getElementById(yellowBorder.toString()).style.borderColor='Yellow';
+                    highlight_opponent();
+
 
                 }
 
 
             }
     }
+}
+
+function highlight_opponent()
+{
+    document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
+    document.getElementById(yellowBorder.toString()).style.borderStyle='solid';
+    document.getElementById(yellowBorder.toString()).style.borderWidth='2px';
+    document.getElementById(yellowBorder.toString()).style.borderColor='yellow';
+    document.getElementById(yellowBorder.toString()).style.borderRadius= "12px";
+}
+
+function unhighlight(element)
+{
+    document.getElementById(element.toString()).style.opacity = ".02";
+    document.getElementById(element.toString()).style.borderStyle='none';
+    document.getElementById(element.toString()).style.borderWidth='0';
+    document.getElementById(element.toString()).style.borderRadius= "0";
 }
 
 
