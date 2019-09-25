@@ -87,25 +87,60 @@ div.board {
 }
 .btn-primary{
 
+     width:40%;
+     display:block;
+     margin:auto;
+
+ }
+.whiteText{
+    color:white;
+    font-size:20px;
+    list-style: none;
+}
+.sidebarImage{
+    width:20%;
+    height: 20%;
+    padding-bottom: 2px;
+}
+.btn-info{
+
     width:8%;
     display:block;
-   margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
 
 }
-.btn-restart{
+.rectangle {
+    height: 600px;
+    width: 200px;
+    border-radius: 25px;
+    background-color: #000072;
+
+    float: left;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+.btn-invis{
 
 
     visibility: hidden;
 
 }
 .center {
-    margin: auto;
-    width: 60%;
-    color: white;
-    padding: 10px;
+     margin: auto;
+     width: 60%;
+     color: white;
+     padding: 10px;
+ }
+.right{
+
 }
 .divTable{ display: table; user-select:none}
+.page{margin-left:auto;
+    margin-right:auto;
+    display:table
+}
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}
 .divTableCell, .divTableCell1, .divTableHead {display:table-cell;width:50px ;height:50px; }

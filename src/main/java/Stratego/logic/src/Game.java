@@ -147,25 +147,28 @@ public class Game {
         if (result==0){
             BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
             capture(color,you.getUnit());   //return unit for now
-            String a = opponent.getImg_src();//opponent's piece
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();//opponent's piece
+            System.out.println("returning img src of " +a);
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             this.move_stat.setImage_src(a);
+
             return "win "+a; // mover wins
         }
         else if (result==1){
-
-            String a = you.getImg_src();
+            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture((color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
             board.clearPieceInfo(startingX,startingY);
             this.move_stat.setImage_src(a);
+            System.out.println("src is " +a);
             return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
             //tie and clear both
             BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
-            String a = opponent.getImg_src();
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
                     //board.getPieceAtLocation(endingX,endingY).getImg_src();
 
             capture(color,opponent.getUnit());//you captured the opponent's unit
