@@ -218,34 +218,30 @@ function getPiece(location){
 }
 var test=false;
 function aiMove() {
-    var ran = Math.floor(Math.random() * 100) + 11;
-    // console.log("from " + ran);
-    let to=0;
-    let from=0;
-    while (true) {
-        ran = Math.floor(Math.random() * 90) + 11;
-       // console.log("from "+ran);
-        if (!notLake(ran)||!notLake(ran+10)) continue;
-        // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
-        if (isBlue(document.getElementById((ran).toString()).src)
-            &&( document.getElementById((ran).toString()).style.opacity != .02)&&
-            (
-                document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
-            //if (test&&!document.getElementById((ran+10).toString()).src.endsWith("Moved.png"))continue;
-            if (document.getElementById((ran).toString()).src.endsWith("piece1.png"))continue;
-            from=ran;
-            to=ran+10;
-            break;
+    var http = new XMLHttpRequest();
+    let url = "/get_AI";
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.send();
+    http.onload = function() {
+
+        if (http.status != 200) { // analyze HTTP status of the response
+            alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
+        } else {
+            let move =JSON.parse(http.response.toString());
+            let response = JSON.parse(http.response.toString());
+
+            let starting_x=response.start_x;
+            let starting_y=response.start_y;
+            let ending_x=response.end_x;
+            let ending_y=response.end_y;
+
+            sendMoveRequest(0,starting_x,starting_y,ending_x,ending_y,'R',++numMoves);
         }
-
-
-
     }
-test=true;
-
 
     // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
-    sendMoveRequest(0,Math.floor((from-1)/10-1),(from-1)%10,Math.floor((to-1)/10-1),(to-1)%10,'R',++numMoves)
+
     /*  yellow=from;
       yellowBorder=to;*/
 

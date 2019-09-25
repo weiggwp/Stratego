@@ -10,18 +10,18 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
-    maven{
+/*    maven{
 
-    }
+    }*/
 }
 dependencyManagement {
-    imports {
+/*    imports {
         mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
-    }
+    }*/
 }
 dependencies {
-    implementation 'com.microsoft.azure:azure-spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+   /* implementation 'com.microsoft.azure:azure-spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'*/
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -48,7 +48,7 @@ test {
 ext {
     set('azureVersion', "2.1.7")
 }
-
+/*
 
 gradlePlugin {
     plugins {
@@ -57,9 +57,9 @@ gradlePlugin {
             implementationClass = project.pluginImplementationClass
         }
     }
-}
+}*/
 
-pluginBundle {
+/*pluginBundle {
     website     = 'https://github.com/lenala/azure-gradle-plugins'
     vcsUrl      = 'https://github.com/lenala/azure-gradle-plugins.git'
     description = project.projectDescription
@@ -77,4 +77,4 @@ pluginBundle {
         artifactId = project.name
         version    = project.version
     }
-}
+}*/

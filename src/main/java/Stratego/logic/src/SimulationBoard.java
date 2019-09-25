@@ -19,8 +19,8 @@ public class SimulationBoard {
 
             }
         }
-        gameEnded = board.gameEnded;
-        winner = board.winner;
+        gameEnded = false;
+        winner = '0';
     }
 
     public BoardPiece[][] getGameboard() {

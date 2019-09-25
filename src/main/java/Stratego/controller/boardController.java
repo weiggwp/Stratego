@@ -118,4 +118,14 @@ public class boardController {
 
 
     }
+
+    @RequestMapping(value = "/get_AI", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity getAI()
+    {
+
+        return new ResponseEntity<Move>(game.getAIMove(),HttpStatus.OK);
+
+
+    }
 }

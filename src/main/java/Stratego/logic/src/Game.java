@@ -17,6 +17,7 @@ public class Game {
     private String err_msg;
     private Move current_move;
     private Move_status move_stat;
+    private AI ai = new AI();
     //HashMap<String, ArrayList> piecesLost;    - will be updating per move
 
     public Game(long id)
@@ -125,6 +126,15 @@ public class Game {
         }
 
     }
+    public Move getAIMove(){
+        SimulationMove sm =ai.AI_Move(board,'R');
+        Move_status stat = new Move_status();
+        stat.setIs_valid_move(true);
+        stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
+        Move m = new Move(GameID,"ai",sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),stat);
+        System.out.println("Ai says move from "+sm.getStart_x()+","+sm.getStart_y()+" to "+sm.getEnd_x()+","+sm.getEnd_y());
+        return m;
+    }
     public Move_status getMove_stat()
     {
         return this.move_stat;
@@ -153,6 +163,7 @@ public class Game {
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             this.move_stat.setImage_src(a);
             board.displayGameBoard();
+
             return "win "+a; // mover wins
         }
         else if (result==1){

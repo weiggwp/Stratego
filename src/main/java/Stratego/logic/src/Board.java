@@ -9,7 +9,9 @@ public class Board {
     private arrangement setup;
     private String err_msg;
 
-
+    public BoardPiece getPiece(int i, int j){
+        return gameboard[i][j];
+    }
     public Board()
     {
         this.setup = new arrangement();
