@@ -8,6 +8,8 @@ public class Board {
     //int gameWinner=0; //0 means no winner yet
     private arrangement setup;
     private String err_msg;
+
+
     public Board()
     {
         this.setup = new arrangement();

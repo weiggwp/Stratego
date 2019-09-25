@@ -180,7 +180,8 @@ public class Game {
             return "draw " +a;
         }
         else if (result==3){
-
+            board.redefinePieceInfo(startingX,startingY,endingX,endingY);
+            board.clearPieceInfo(startingX,startingY);
             gameWinner=1;
             this.move_stat.gameEnded();
             return "flag"; //mover wins the videogame

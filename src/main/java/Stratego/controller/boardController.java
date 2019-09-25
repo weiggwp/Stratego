@@ -108,4 +108,14 @@ public class boardController {
 
 
     }
+
+    @RequestMapping(value = "/get_board", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity getBoard()
+    {
+
+        return new ResponseEntity<BoardPiece[][]>(game.getBoard().getBoard(),HttpStatus.OK);
+
+
+    }
 }

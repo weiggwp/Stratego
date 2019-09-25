@@ -97,7 +97,7 @@ function fastForward(){
     }
 
 
-
+    hidePieceNums();
     sendMoveRequest(0,Math.floor((from-1)/10-1),(from-1)%10,Math.floor((to-1)/10-1),(to-1)%10,'B',++numMoves)
 }
 
@@ -285,6 +285,7 @@ function lose(){
     document.getElementById('restartBtn').style.visibility='visible';
     document.getElementById('fastForwardBtn').style.visibility='hidden';
     document.getElementById('concedeBtn').style.visibility='hidden';
+    requestBoard();
 
 }
 function win(){
@@ -293,12 +294,45 @@ function win(){
     document.getElementById('restartBtn').style.visibility='visible';
     document.getElementById('fastForwardBtn').style.visibility='hidden';
     document.getElementById('concedeBtn').style.visibility='hidden';
+    requestBoard();
 }
 function restart(){
     location.reload()
 }
 function back(){
 
+}
+function revealPieces(board){
+    for (let i=0; i<board.length; i++){
+        for (let j=0; j<board[0].length; j++){
+            let startX=(i+1)*10;
+            let startY=j+1;
+            console.log(board[i][j].img_src);
+            if (isBlue(board[i][j].img_src)){
+                console.log("blue!");
+                if (notLake(startX+startY)){
+                    console.log("notLake! val is" +(startY+startX).toString());
+                    document.getElementById((startY+startX).toString()).src=board[i][j].img_src;
+                }
+            }
+        }
+    }
+}
+function requestBoard(){
+    var http = new XMLHttpRequest();
+    let url = "/get_board";
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.send();
+    http.onload = function() {
+
+        if (http.status != 200) { // analyze HTTP status of the response
+            alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
+        } else {
+                let board =JSON.parse(http.response.toString());
+                revealPieces(board);
+        }
+    }
 }
 function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
