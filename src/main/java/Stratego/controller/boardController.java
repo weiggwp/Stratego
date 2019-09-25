@@ -9,6 +9,7 @@ import Stratego.logic.src.Game;
 import Stratego.model.Match;
 import Stratego.model.Placement;
 import Stratego.model.Reposition;
+import Stratego.model.User;
 import Stratego.service.MatchService;
 import Stratego.service.MoveService;
 import Stratego.service.PlacementService;
@@ -18,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
@@ -97,22 +100,33 @@ public class boardController {
         {
             // Game ended. Save match
             if (game.gameEnded() == 1 || game.gameEnded() == 2) {
+
+                Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                String username = "";
+                if (principal instanceof UserDetails) {
+                    username = ((UserDetails)principal).getUsername();
+                } else {
+                    username = principal.toString();
+                }
+
                 long gameId = game.getGameID();
                 Date date = new Date();
-//                long userId = userService.findByUsername(userName);
+                User user = userService.findByUsername(username);
+                long userId = user.getId();
+
                 int gameEnded = game.gameEnded();
                 String outcome = gameEnded == 1 ? "Win" : gameEnded == 2 ? "Lost" : "Tied";
-                Match match = new Match(gameId, 25, outcome, date.getTime());
+                Match match = new Match(gameId, userId, outcome, date.getTime());
                 matchService.addMatch(match);
 
-                // ---------------------------------
+                // -------------------------------------------------------
                 // Add all the moves
                 List<Round> rounds = game.getRounds();
                 List<Reposition> moves = Extractor.extractMoves(rounds);
                 for (Reposition move: moves)
                     System.out.println(move.toString());
                 moveService.addMoves(moves);
-                // ---------------------------------
+                // -------------------------------------------------------
 
             }
 

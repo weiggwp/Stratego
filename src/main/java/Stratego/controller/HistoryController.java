@@ -1,6 +1,7 @@
 package Stratego.controller;
 
 import Stratego.board.Move;
+import Stratego.dto.UserDto;
 import Stratego.model.Match;
 import Stratego.model.Reposition;
 import Stratego.model.User;
@@ -8,6 +9,8 @@ import Stratego.service.MatchService;
 import Stratego.service.MoveService;
 import Stratego.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,7 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Controller
-@RequestMapping("/history")
+//@RequestMapping("/history")
 public class HistoryController {
 
     @Autowired
@@ -31,14 +34,26 @@ public class HistoryController {
     private MoveService moveService;
 
 
-    @GetMapping(path="/{userName}")
-    public String history(Model model, ModelMap modelMap, @PathVariable String userName) {
+//    @GetMapping(path="/{userName}")
+    @GetMapping("/history")
+    public String history(Model model, ModelMap modelMap) {
         // 0)
-        User user = userService.findByUsername(userName);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+
+
+        User user = userService.findByUsername(username);
         long userId = user.getId();
         System.out.print(userId);
         // 1) get the matches from database;
         List<Match> matches = matchService.getMatchesByUserId(userId);
+
+
         // 2) sort by date
         // 3) send to html
 //        modelMap.put("matches", matchList);
@@ -67,7 +82,7 @@ public class HistoryController {
         }
 
         modelMap.put("matches", matches);
-        model.addAttribute("userName", userName);
+        model.addAttribute("userName", username);
         return "matches";
     }
 }
