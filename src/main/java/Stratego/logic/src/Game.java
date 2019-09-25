@@ -160,8 +160,10 @@ public class Game {
         move_stat.setFight_result(result);
         move_stat.setIs_valid_move(true);
         BoardPiece you = board.getPieceAtLocation(startingX,startingY);
+        BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
         move_stat.setPiece_name(you.getUnit());
-        if (result==0){
+
+        if (result==0){//winning case
 
             capture(move_stat,color,you.getUnit());   //return unit for now
             String a = you.getImg_src();
@@ -173,7 +175,7 @@ public class Game {
         }
         else if (result==1){
 
-            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+//            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
             String a = opponent.getImg_src();//opponent's piece
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
@@ -184,7 +186,7 @@ public class Game {
         }
         else if (result==2){
             //tie and clear both
-            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+//            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
             String a = opponent.getImg_src();
                     //board.getPieceAtLocation(endingX,endingY).getImg_src();
 
@@ -209,6 +211,7 @@ public class Game {
         }
         //return "This will never happen.";
         System.out.println("move result"+move_stat.getFight_result());
+        board.boardAction(result,color,you,opponent);//do it after the pieces have updated
         return move_stat;
     }
 

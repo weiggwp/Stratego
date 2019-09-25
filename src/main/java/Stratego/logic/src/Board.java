@@ -21,6 +21,29 @@ public class Board {
     {
         return this.setup;
     }
+    public void boardAction(int i,char color,BoardPiece one,BoardPiece two)
+    {
+        char opponent_color = (color=='R')?'B':'R';
+        if(i==0)//win
+        {
+            setup.capturePiece(color,two,one);  //one captures two
+        }
+        if(i==1)//lose
+        {
+            setup.capturePiece(opponent_color, one,two);
+        }
+        if(i==2)//tie
+        {
+            setup.tiedMove(color,one,two);
+        }
+        if(i==4)//move
+        {
+            setup.MovedPiece(color,one,two);
+        }
+        setup.printRemainingPieces();
+        setup.printLocationOfPieces(color);
+        //if you won, you're not getting anywhereeee
+    }
 
     public BoardPiece[][] getBoard()
     {
@@ -42,24 +65,34 @@ public class Board {
 
         for (int i=0; i<4; i++){    //blue set up
             for (int j=0; j<10; j++){
-               // System.out.println(i+"  "+j);
-                gameboard[i][j]=setup.getPiece(i,j);
-                        //new BoardPiece(sc.next().charAt(0),'R');
+                BoardPiece piece = setup.getPiece(i,j);
+                piece.setPlace(i,j);    //set initial coordinate, will need to change when user swaps
+                gameboard[i][j]=piece;
             }
         }
         for (int i=4; i<6; i++){
             for (int j=0; j<10; j++){
                 if (j==2||j==3||j==6||j==7){
-                    gameboard[i][j]=new BoardPiece('W','0');
+                    BoardPiece piece = new BoardPiece('W','0'); //river piece
+                    piece.setPlace(i,j);
+                    gameboard[i][j]=piece;
+
                 }
                 else
-                    gameboard[i][j]=new BoardPiece('0','0');
+                {
+                    BoardPiece piece = new BoardPiece('0','0'); //empty space
+                    piece.setPlace(i,j);
+                    gameboard[i][j]=piece;
+                }
+
             }
         }
 
         for (int i=6; i<10; i++){
             for (int j=0; j<10; j++){
-                gameboard[i][j]=setup.getPiece(i,j);
+                BoardPiece piece = setup.getPiece(i,j);
+                piece.setPlace(i,j);    //set initial coordinate, will need to change when user swaps
+                gameboard[i][j]=piece;
             }
         }
         initialized = true;
@@ -99,10 +132,12 @@ public class Board {
         System.out.println("swapping "+ startingX +" "+startingY+" with "+ endingX +" "+endingY);
         BoardPiece start = gameboard[startingX][startingY];
         BoardPiece end = gameboard[endingX][endingY];
+        start.swapPlaces(end);//swaps both x,y fields
         gameboard[startingX][startingY] = end;
         gameboard[endingX][endingY] = start;
         System.out.println("swapping "+ start.getUnit()+" with "+end.getUnit());
         displayGameBoard();
+        setup.printLocationOfPieces('B');
     }
 
     private boolean isDigit(char s){

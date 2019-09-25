@@ -5,11 +5,35 @@ public class BoardPiece {
     private char unit;// 1-9, M (marshall), F (flag),B (bomb), 0 for empty, W for lake
     private String img_src;
     private char color; // R or B when occupied by a tile,0 otherwise
+    private int x;
+    private int y;
 
     public BoardPiece(char unit, char color){
         this.unit=unit;
         this.color=color;
         this.img_src="";
+    }
+    //allows us to find out where the pieces are after the game has started
+    //arrangement keeps an array of pieces
+    public void setPlace(int x,int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    public void swapPlaces(BoardPiece piece)
+    {
+        int newx = piece.getX();
+        int newy = piece.getY();
+        piece.setPlace(this.getX(),this.getY());
+        this.setPlace(newx,newy);
+    }
+    public int getX()
+    {
+        return this.x;
+    }
+    public int getY()
+    {
+        return this.y;
     }
     public BoardPiece(char unit,String img,char color)
     {
