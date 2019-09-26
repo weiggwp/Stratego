@@ -14,8 +14,10 @@ public class Board {
         while (gameWinner==0){
             displayGameBoard();
             //starting row, starting col, ending row, ending col
-            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt());
+            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt(),'b');
 
+            displayGameBoard();
+            move(sc.nextInt(),sc.nextInt(),sc.nextInt(),sc.nextInt(),'b');
         }
         if (gameWinner==1)
             System.out.println("You win!");
@@ -23,6 +25,18 @@ public class Board {
             System.out.println("You lose.");
     }
 
+    public void test(){
+        try {
+            initializeGameboard();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        BoardEvaluator evaluator = new BoardEvaluator(new SimulationBoard(this));
+        double score = evaluator.evaluate('B');
+        System.out.println("Score:"+score);
+    }
     private void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
@@ -75,17 +89,81 @@ public class Board {
     }
 
     /*Returns false on illegal move, true on legal move.*/
-    private boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
+//    private boolean isLegalMove(int startingX, int startingY, int endingX, int endingY){
+//        System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
+//        if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
+//                gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
+//            System.out.println("invalid starting piece");
+//            return false;
+//        }
+//        if (gameboard[startingX][startingY].getColor()!='B') {
+//            System.out.println("invalid starting color");
+//            return false;
+//        }//if moving a piece not owned by player...
+//        if (gameboard[endingX][endingY].isLake()){
+//            System.out.println("cant move to lake");
+//            return false;
+//        }
+//        //if moving into lake...
+//        if (gameboard[endingX][endingY].getColor()==gameboard[startingX][startingY].getColor()) {
+//            System.out.println("cant capture friendly unit");
+//            return false;
+//        }/* if moving
+//        onto a space occupied by another piece owned by the player...*/
+//        if ((Math.abs(startingX-endingX)>=1&&Math.abs(startingY-endingY)>=1)) {
+//            System.out.println("cant move diagonally");
+//            return false;
+//        }
+//        if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)
+//                )){ //if it moves too far...
+//            System.out.println("too far, not a scout");
+//            return false;
+//        }
+//        if (gameboard[startingX][startingY].isScout() ){ //if a scout moves through a unit or lake...
+//            int starting=0;
+//            int ending =0;
+//            boolean horizontal=false;
+//            if (endingX==startingX){
+//                starting=Math.min(startingY,endingY);
+//                ending=Math.max(startingY,endingY);
+//                horizontal=true;
+//            }
+//            else{
+//                starting=Math.min(startingX,endingX);
+//                ending=Math.max(startingX,endingX);
+//
+//            }
+//            for (int i=starting+1; i<ending; i++){
+//                if (horizontal)
+//                    if (!gameboard[startingY][i].isEmpty()||gameboard[startingY][i].isLake()) {
+//                        System.out.println("collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit());
+//                        return false;
+//                    }
+//                else
+//                    if (!gameboard[i][startingX].isEmpty()||gameboard[i][startingX].isLake()) {
+//                        System.out.println("collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit());
+//                        return false;
+//                    }
+//            }
+//        }
+//
+//
+//
+//        return true;
+//    }
+    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
+        System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
         System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
-        if (gameboard[startingX][startingY].getUnit()=='B'||gameboard[startingX][startingY].getUnit()=='F'||
+        if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             System.out.println("invalid starting piece");
             return false;
         }
-        if (gameboard[startingX][startingY].getColor()!='B') {
+
+        /*if (gameboard[startingX][startingY].getColor()!=color) {
             System.out.println("invalid starting color");
             return false;
-        }//if moving a piece not owned by player...
+        }//if moving a piece not owned by player...*/
         if (gameboard[endingX][endingY].isLake()){
             System.out.println("cant move to lake");
             return false;
@@ -96,12 +174,12 @@ public class Board {
             return false;
         }/* if moving
         onto a space occupied by another piece owned by the player...*/
-        if ((Math.abs(startingX-endingX)>=1&&Math.abs(startingY-endingY)>=1)) {
+        if ((Math.abs(startingX-endingX)>=1&& Math.abs(startingY-endingY)>=1)) {
             System.out.println("cant move diagonally");
             return false;
         }
-        if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)
-                )){ //if it moves too far...
+        if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2|| Math.abs(startingY-endingY)>=2)
+        )){ //if it moves too far...
             System.out.println("too far, not a scout");
             return false;
         }
@@ -110,33 +188,40 @@ public class Board {
             int ending =0;
             boolean horizontal=false;
             if (endingX==startingX){
-                starting=Math.min(startingY,endingY);
-                ending=Math.max(startingY,endingY);
+                starting= Math.min(startingY,endingY);
+                ending= Math.max(startingY,endingY);
                 horizontal=true;
             }
             else{
-                starting=Math.min(startingX,endingX);
-                ending=Math.max(startingX,endingX);
+                starting= Math.min(startingX,endingX);
+                ending= Math.max(startingX,endingX);
 
             }
+            System.out.println("horizontal is " + horizontal);
+            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
-                if (horizontal)
-                    if (!gameboard[startingY][i].isEmpty()||gameboard[startingY][i].isLake()) {
-                        System.out.println("collision at "+startingY+" "+i+ "; " +gameboard[startingY][i].getUnit());
+
+                if (horizontal) {
+                    if (!gameboard[startingX][i].isEmpty() || gameboard[startingX][i].isLake()) {
+                        System.out.println("aacollision at " + startingX + " " + i + "; " + gameboard[startingX][i].getUnit());
                         return false;
                     }
-                else
-                    if (!gameboard[i][startingX].isEmpty()||gameboard[i][startingX].isLake()) {
-                        System.out.println("collision at "+i+" "+startingX+ "; " +gameboard[i][startingX].getUnit());
+                }
+                else {
+                    if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
+                        System.out.println("bbxcollision at " + i + " " + startingY + "; " + gameboard[i][startingY].getUnit());
+
                         return false;
                     }
+                }
             }
         }
 
 
-
         return true;
     }
+
+
     private boolean isDigit(char s){
         if (s>='0'&&s<='9')
             return true;
@@ -165,29 +250,80 @@ public class Board {
     }
 
     /*Attempt to move unit to a tile*/
-    private void move(int startingX, int startingY, int endingX, int endingY){
-        if (!isLegalMove(startingX,startingY,endingX,endingY)) {
+//    private void move(int startingX, int startingY, int endingX, int endingY){
+//        if (!isLegalMove(startingX,startingY,endingX,endingY)) {
+//            illegalMove();
+//            return;
+//        }
+//        int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
+//        if (result==0){
+//            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+//            gameboard[startingX][startingY].reset();
+//        }
+//        else if (result==1){
+//            gameboard[startingX][startingY].reset();
+//        }
+//        else if (result==2){
+//            gameboard[startingX][startingY].reset();
+//            gameboard[endingX][endingY].reset();
+//        }
+//        else if (result==3){
+//            gameWinner=1;
+//        }
+//
+//
+//    }
+    public String move(int startingX, int startingY, int endingX, int endingY, char color){
+
+        displayGameBoard();
+
+        if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
             illegalMove();
-            return;
+            return "illegal";
         }
+        SimulationMove sm = new SimulationMove(startingX,startingY,endingX,endingY,
+                gameboard[startingX][startingY].clone(),gameboard[endingX][endingY].clone(),color);
+
         int result=attack(gameboard[startingX][startingY].getUnit(),gameboard[endingX][endingY].getUnit());
         if (result==0){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
+
+            return "win "+ a; // mover wins
         }
         else if (result==1){
+            char a = gameboard[startingX][startingY].getUnit();
             gameboard[startingX][startingY].reset();
+            return "lose "+a; // mover's opponent wins
         }
         else if (result==2){
+            char a = gameboard[endingX][endingY].getUnit();
             gameboard[startingX][startingY].reset();
             gameboard[endingX][endingY].reset();
+            return "draw " +a;
         }
         else if (result==3){
-            gameWinner=1;
+            char a = gameboard[endingX][endingY].getUnit();
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
+
+            return "flag"; //mover wins the videogame
+        }
+        else if (result==4){
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
+            return "empty"; // mover moved to empty space
         }
 
+        return "This will never happen.";
 
     }
+
+    public BoardPiece getPiece(int i, int j){
+        return gameboard[i][j];
+    }
+
 
 
 }
