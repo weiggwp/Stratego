@@ -20,15 +20,16 @@ public class arrangement {
 
     //a hashmap that tracks remaining pieces from both sides
 
-    public ArrayList getBlue(){
-        return blue;
-    }
-    public ArrayList getRed(){
+
+    public ArrayList getPieceList(char color)
+    {
+        if(color=='R')
+            return blue;
         return red;
     }
     public void printLocationOfPieces(char color)
     {
-        int count = 1;
+        int count = 0;
         System.out.println();System.out.println();
         if(color=='R')
         {
@@ -41,7 +42,6 @@ public class arrangement {
                 count++;
                 if((count)%10==0)
                     System.out.println();
-
             }
         }
         else
@@ -144,12 +144,15 @@ public class arrangement {
 
 
     }
-    public BoardPiece getBlueFlag()
+    public HashMap getRemaining(char color)
     {
-        return this.blueFlag;
+        return remaining_pieces.get(color);
     }
-    public BoardPiece getRedFlag()
+
+    public BoardPiece getFlag(char color)
     {
+        if(color=='R')
+            return this.blueFlag;
         return this.redFlag;
     }
     public static Boolean compare(int row,int col)

@@ -4,6 +4,7 @@ import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.board.Round;
 import Stratego.board.arrangement;
+import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -202,6 +203,7 @@ public class Game {
 
             gameWinner=1;
             move_stat.gameEnded();
+            move_stat.setGame_result("win");
            // return "flag"; //mover wins the videogame
         }
         else if (result==4){
@@ -212,7 +214,97 @@ public class Game {
         //return "This will never happen.";
         System.out.println("move result"+move_stat.getFight_result());
         board.boardAction(result,color,you,opponent);//do it after the pieces have updated
+        char opponent_color = (color=='R')?'B':'R';
+        if(!hasMovable(color)&&!hasMovable(opponent_color))
+            //both are not movable
+        {
+            move_stat.gameEnded();
+            move_stat.setGame_result("draw");
+        } else if (!hasMovable(color)) {
+            //your color doesnt have movable
+            if(!board.canWin(opponent_color))
+            {//opponent cannot capture you
+                move_stat.gameEnded();
+                move_stat.setGame_result("draw");
+            }
+            else
+            {
+                move_stat.gameEnded();
+                move_stat.setGame_result("lost");
+
+            }
+        }
+        else if(!hasMovable(opponent_color))
+        {
+            if(!board.canWin(color))
+            {//opponent cannot capture you
+                move_stat.gameEnded();
+                move_stat.setGame_result("draw");
+            }
+            else
+                {
+                move_stat.gameEnded();
+                move_stat.setGame_result("win");
+            }
+        }
+        else if(!board.canWin(color) && !board.canWin(opponent_color))//if you cant win
+        {
+            //if both cant win
+            move_stat.gameEnded();
+            move_stat.setGame_result("draw");
+        }
+        //if either party cannot win, he/she can still strive to get a draw
+
         return move_stat;
+    }
+
+    //you win if you capture all the opponent's movable pieces
+    public boolean hasMovable(char color)
+    {
+
+            ArrayList remain = board.getSetup().getPieceList(color); //computer
+            for( Object piece : remain)
+            {
+                BoardPiece p = ((BoardPiece)piece);
+                if(isMovable(p.getX(),p.getY()))
+                    return true;
+                //if has movable, even one, return true, else keep iterating
+            }
+            return false;
+    }
+    /*
+            if surrounded by friendly pieces includes surrounded by
+     */
+    public boolean isMovable(int x,int y)
+    {
+        BoardPiece piece = board.getPieceAtLocation(x,y);
+        //bombs and flag are unmovable, no need to check
+        if(piece.getUnit()=='B' || piece.getUnit()=='F')
+            return false;
+        if(x>0)//check top
+        {
+
+            if(isLegalMove(x,y,x-1,y,piece.getColor()))
+                return true;    //can move
+
+        }
+        if(x<9)//check bot
+        {
+            if(isLegalMove(x,y,x+1,y,piece.getColor()))
+                return true;
+        }
+        if(y>0)//check left
+        {
+            if(isLegalMove(x,y,x,y-1,piece.getColor()))
+                return true;
+        }
+        if(y<9)
+        {
+            if(isLegalMove(x,y,x,y+1,piece.getColor()))
+                return true;
+
+        }
+        return false;//if none of the moves are valid,
     }
 
     /*Returns false on illegal move, true on legal move.*/

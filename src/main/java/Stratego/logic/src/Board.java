@@ -2,6 +2,9 @@ package Stratego.logic.src;
 
 import Stratego.board.arrangement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Board {
 
     private BoardPiece[][] gameboard;
@@ -15,6 +18,57 @@ public class Board {
         this.gameboard = new BoardPiece[10][10];
         initializeGameboard();
         displayGameBoard();
+
+    }
+
+    public boolean canWin(char color)//if you have miners left
+    {
+       char opponent_color = (color=='R')?'B':'R';
+       HashMap<Character,Integer> remain = setup.getRemaining(color);
+       //get all your remaining pieces count
+       if(remain.get('3') ==0 && isFlagSurrounded(opponent_color))
+       {
+           //you have no miners, and the opponent flag is surrounded by bombs
+           return false;
+       }
+       //if you have no miners, and flag is not surrounded, then you can still win
+        //also if you have miners and flag is not even surrounded, you can definitely win..
+       return true;
+
+
+
+    }
+    public boolean isFlagSurrounded(char color)
+    {
+        BoardPiece flag = this.setup.getFlag(color);
+        int x = flag.getX();
+        int y = flag.getY();
+        if(x>0)//check top
+        {
+            int top_x = x-1;
+            if(gameboard[top_x][y].getUnit()!='B')  //if top is not bomb, it's not surrounded
+                return false;
+        }
+        if(x<9)//check bot
+        {
+            int bot_x = x+1;
+            if(gameboard[bot_x][y].getUnit()!='B')
+                return false;
+        }
+        if(y>0)//check left
+        {
+            int left_y = y-1;
+            if(gameboard[x][left_y].getUnit()!='B')
+                return false;
+        }
+        if(y<9)//check right
+        {
+            int right_y = y+1;
+            if(gameboard[x][right_y].getUnit()!='B')
+                return false;
+
+        }
+        return true;
 
     }
     public arrangement getSetup()
@@ -145,6 +199,8 @@ public class Board {
             return true;
         return false;
     }
+
+
 
 
 }
