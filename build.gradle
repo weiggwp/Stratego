@@ -8,6 +8,18 @@ group = 'Royal_blue_hw1'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
+jar {
+    manifest {
+        attributes 'Main-Class': 'Stratego.StrategoApplication'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
+
 repositories {
     mavenCentral()
 }

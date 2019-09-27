@@ -319,7 +319,7 @@ public class Game {
             //gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 //gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             err_msg="invalid starting piece";
-            System.out.println("invalid starting piece");
+            //System.out.println("invalid starting piece");
             return false;
         }
 
@@ -340,7 +340,7 @@ public class Game {
         if(board.getPieceAtLocation(endingX,endingY).isLake())
         {
             err_msg="cant move to lake";
-            System.out.println("cant move to lake");
+            //System.out.println("cant move to lake");
             return false;
         }
         //if moving into lake...
@@ -348,13 +348,13 @@ public class Game {
         if(board.getPieceAtLocation(endingX,endingY).getColor()==board.getPieceAtLocation(startingX,startingY).getColor())
         {
             err_msg="cant capture friendly unit";
-            System.out.println("cant capture friendly unit");
+            //System.out.println("cant capture friendly unit");
             return false;
         }/* if moving
         onto a space occupied by another piece owned by the player...*/
         if ((Math.abs(startingX-endingX)>=1&&Math.abs(startingY-endingY)>=1)) {
             err_msg="cant move diagonally";
-            System.out.println("cant move diagonally");
+            //System.out.println("cant move diagonally");
             return false;
         }
         //if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)
@@ -362,7 +362,7 @@ public class Game {
         if(!board.getPieceAtLocation(startingX,startingY).isScout() && ( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)))
         {
             err_msg="too far, not a scout";
-            System.out.println("too far, not a scout");
+            //System.out.println("too far, not a scout");
             return false;
         }
         //if (gameboard[startingX][startingY].isScout() ){ //if a scout moves through a unit or lake...
@@ -381,8 +381,8 @@ public class Game {
                 ending=Math.max(startingX,endingX);
 
             }
-            System.out.println("horizontal is " + horizontal);
-            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
+            //System.out.println("horizontal is " + horizontal);
+            //System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
 
                 if (horizontal) {
@@ -390,7 +390,7 @@ public class Game {
                     if(!board.getPieceAtLocation(startingX,i).isEmpty() || board.getPieceAtLocation(startingX,i).isLake())
                     {
                         err_msg = "collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit();
-                        System.out.println("collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit());
+                        //System.out.println("collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit());
                         return false;
                     }
                 }
@@ -398,7 +398,7 @@ public class Game {
                     //if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
                     if(!board.getPieceAtLocation(i,startingY).isEmpty()|| board.getPieceAtLocation(i,startingY).isLake()){
                         err_msg = "collision at "+i+" "+startingY+ "; " +board.getPieceAtLocation(i,startingY).getUnit();
-                        System.out.println("collision at " + i + " " + startingY + "; " + board.getPieceAtLocation(i,startingY).getUnit());
+                        //System.out.println("collision at " + i + " " + startingY + "; " + board.getPieceAtLocation(i,startingY).getUnit());
 
                         return false;
                     }
