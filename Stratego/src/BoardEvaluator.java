@@ -100,14 +100,14 @@ public class BoardEvaluator {
 //            First feature is multiplying the value of the Marshal (both player and opponent) with 0.8 if the
 //            opponent has a Spy on the game board.
             char other_team = switch_player(team);
-            if( ( (int)((HashMap)team_info.get(other_team).get(COUNTS)).get('1')) >0 ){
+            if( ( (int)((HashMap)team_info.get(other_team).get(COUNTS)).getOrDefault('1',0)) >0 ){
                 double M_value = piece_default_values.get(MARSHAL);
                 value_table.put(MARSHAL,M_value /2);
             }
             HashMap<Character, Integer> count_table = (HashMap) team_info.get(team).get(COUNTS);
             //• Second feature multiplies the value of the Miners with 4 − #lef t if the number of Miners is less
             //            than three.
-            int miner_count = count_table.get(MINER);
+            int miner_count = count_table.getOrDefault(MINER,0);
             if (miner_count<4){
                 double miner_value = piece_default_values.get(MINER);
                 value_table.put(MINER, miner_value*(4-miner_count));
@@ -118,7 +118,7 @@ public class BoardEvaluator {
             char highest = '0';
             char[] ranks = {MARSHAL,GENERAL,COLONEL,MAJOR,LIEUTENANT,CAPTAIN,SERGEANT,MINER,SCOUT,SPY};
             for(char rank :ranks){
-                if(count_table.get(rank) !=0){
+                if(count_table.getOrDefault(rank,0) !=0){
                     highest=rank;
                     break;
                 }
@@ -220,13 +220,12 @@ public class BoardEvaluator {
 
         double blue_score = sums.get(BLUE);
         double red_score = sums.get(RED);
-        return (blue_score-red_score)/(blue_score+red_score);
+        return (blue_score-red_score)/(blue_score+red_score-2* piece_default_values.get(FLAG));
     }
 
     public double calculate_advancement_score(){
         HashMap<Character, Integer> sums = new HashMap<>();
 
-        for (char team : teams) {
             for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
                 for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
                     BoardPiece piece = board.getPiece(row, col);
@@ -244,7 +243,6 @@ public class BoardEvaluator {
                 }
             }
 
-        }
         double blue_score = sums.get(BLUE);
         double red_score = sums.get(RED);
         return (blue_score-red_score)/(blue_score+red_score);
@@ -316,7 +314,7 @@ public class BoardEvaluator {
             }
         double blue_score = sums.get(BLUE);
         double red_score = sums.get(RED);
-        return (blue_score-red_score)/(blue_score+red_score);
+        return (blue_score-red_score)/(abs(blue_score)+(abs(red_score)));
 
 
 

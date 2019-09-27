@@ -27,6 +27,19 @@ public class Board {
 
     public void test(){
         try {
+            initializeGameboard("redlose.txt","board1.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        displayGameBoard();
+
+        BoardEvaluator evaluator = new BoardEvaluator(new SimulationBoard(this));
+        double score = evaluator.evaluate('B');
+        System.out.println("Score:"+score);// score should be 0
+    }
+    public void test1(){
+        try {
             initializeGameboard();
         }
         catch (Exception e){
@@ -35,8 +48,10 @@ public class Board {
 
         BoardEvaluator evaluator = new BoardEvaluator(new SimulationBoard(this));
         double score = evaluator.evaluate('B');
-        System.out.println("Score:"+score);
+        System.out.println("Score:"+score);// score should be 0
     }
+
+
     private void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
@@ -62,12 +77,12 @@ public class Board {
 
     BoardPiece[][] gameboard= new BoardPiece[10][10];
     int gameWinner=0; //0 means no winner yet
-    private void initializeGameboard() throws FileNotFoundException {
+    public void initializeGameboard() throws FileNotFoundException {
         Scanner sc = new Scanner(new File("./Stratego/resources/board2.txt"));
         //System.out.println(sc.nextLine());
         for (int i=0; i<4; i++){
             for (int j=0; j<10; j++){
-               // System.out.println(i+"  "+j);
+                // System.out.println(i+"  "+j);
                 gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'R');
             }
         }
@@ -80,7 +95,32 @@ public class Board {
                     gameboard[i][j]=new BoardPiece('0','0');
             }
         }
-         sc = new Scanner(new File("./Stratego/resources/board1.txt"));
+        sc = new Scanner(new File("./Stratego/resources/board1.txt"));
+        for (int i=6; i<10; i++){
+            for (int j=0; j<10; j++){
+                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'B');
+            }
+        }
+    }
+    public void initializeGameboard(String redboard, String blueboard) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("./Stratego/resources/"+redboard));
+        //System.out.println(sc.nextLine());
+        for (int i=0; i<4; i++){
+            for (int j=0; j<10; j++){
+                // System.out.println(i+"  "+j);
+                gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'R');
+            }
+        }
+        for (int i=4; i<6; i++){
+            for (int j=0; j<10; j++){
+                if (j==2||j==3||j==6||j==7){
+                    gameboard[i][j]=new BoardPiece('W','0');
+                }
+                else
+                    gameboard[i][j]=new BoardPiece('0','0');
+            }
+        }
+        sc = new Scanner(new File("./Stratego/resources/"+blueboard));
         for (int i=6; i<10; i++){
             for (int j=0; j<10; j++){
                 gameboard[i][j]=new BoardPiece(sc.next().charAt(0),'B');
