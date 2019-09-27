@@ -24,14 +24,14 @@ public class SimulationBoard {
         return gameboard;
     }
 
-    private void displayGameBoard(){
+    public void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
-                if (gameboard[i][j].getColor()=='R') {
+                if (gameboard[i][j].getColor()=='B') {
                     System.out.print((char)27 + "[34m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
                 }
-                else if (gameboard[i][j].getColor()=='B') {
+                else if (gameboard[i][j].getColor()=='R') {
                     System.out.print((char)27 + "[31m" );
                     System.out.print(gameboard[i][j].getUnit() + " ");
 
@@ -44,16 +44,17 @@ public class SimulationBoard {
             }
             System.out.println();
         }
-        System.out.print((char)27 + "[37m" );
+        System.out.println((char)27 + "[37m" );
+
     }
 
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
-        System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
-        System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
+//        System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
+//        System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
-            System.out.println("invalid starting piece");
+//            System.out.println("invalid starting piece");
             return false;
         }
 
@@ -62,22 +63,22 @@ public class SimulationBoard {
             return false;
         }//if moving a piece not owned by player...*/
         if (gameboard[endingX][endingY].isLake()){
-            System.out.println("cant move to lake");
+//            System.out.println("cant move to lake");
             return false;
         }
         //if moving into lake...
         if (gameboard[endingX][endingY].getColor()==gameboard[startingX][startingY].getColor()) {
-            System.out.println("cant capture friendly unit");
+//            System.out.println("cant capture friendly unit");
             return false;
         }/* if moving
         onto a space occupied by another piece owned by the player...*/
         if ((Math.abs(startingX-endingX)>=1&& Math.abs(startingY-endingY)>=1)) {
-            System.out.println("cant move diagonally");
+//            System.out.println("cant move diagonally");
             return false;
         }
         if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2|| Math.abs(startingY-endingY)>=2)
         )){ //if it moves too far...
-            System.out.println("too far, not a scout");
+//            System.out.println("too far, not a scout");
             return false;
         }
         if (gameboard[startingX][startingY].isScout() ){ //if a scout moves through a unit or lake...
@@ -94,19 +95,19 @@ public class SimulationBoard {
                 ending= Math.max(startingX,endingX);
 
             }
-            System.out.println("horizontal is " + horizontal);
-            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
+//            System.out.println("horizontal is " + horizontal);
+//            System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
 
                 if (horizontal) {
                     if (!gameboard[startingX][i].isEmpty() || gameboard[startingX][i].isLake()) {
-                        System.out.println("aacollision at " + startingX + " " + i + "; " + gameboard[startingX][i].getUnit());
+//                        System.out.println("aacollision at " + startingX + " " + i + "; " + gameboard[startingX][i].getUnit());
                         return false;
                     }
                 }
                 else {
                     if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
-                        System.out.println("bbxcollision at " + i + " " + startingY + "; " + gameboard[i][startingY].getUnit());
+//                        System.out.println("bbxcollision at " + i + " " + startingY + "; " + gameboard[i][startingY].getUnit());
 
                         return false;
                     }
@@ -227,10 +228,10 @@ public class SimulationBoard {
     /*Attempt to move unit to a tile*/
     public String move(int startingX, int startingY, int endingX, int endingY, char color){
 
-        displayGameBoard();
+//        displayGameBoard();
 
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
-            illegalMove();
+//            illegalMove();
             return "illegal";
         }
         SimulationMove sm = new SimulationMove(startingX,startingY,endingX,endingY,

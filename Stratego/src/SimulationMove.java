@@ -89,7 +89,15 @@ public class SimulationMove {
         this.end_y = end_y;
     }
 
-
+    @Override
+    public String toString() {
+        return
+                "x=" + start_x +
+                ", y=" + start_y +
+                "to x=" + end_x +
+                ", y=" + end_y +
+                '}';
+    }
 }
 
 

@@ -161,10 +161,10 @@ public class BoardEvaluator {
         double advancement_score = calculate_advancement_score();
         double flag_score = calculate_flag_safety_score();
         double awareness_score = calculate_awareness_score();
-        System.out.println(material_score);
-        System.out.println(advancement_score);
-        System.out.println(flag_score);
-        System.out.println(awareness_score);
+//        System.out.println(material_score);
+//        System.out.println(advancement_score);
+//        System.out.println(flag_score);
+//        System.out.println(awareness_score);
 
         return WEIGHT_PIECES * material_score +
                 WEIGHT_ADVANCEMENT * advancement_score +

@@ -66,7 +66,7 @@ public class BoardPiece {
 
     @Override
     public String toString(){
-        return img_src;
+        return String.valueOf(unit);
     }
 
 

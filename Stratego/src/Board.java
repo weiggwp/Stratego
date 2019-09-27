@@ -51,8 +51,20 @@ public class Board {
         System.out.println("Score:"+score);// score should be 0
     }
 
+    public void initializeCustomGameboard(String board, String colors) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("./Stratego/resources/"+board));
+        Scanner sc2 = new Scanner(new File("./Stratego/resources/"+colors));
+        for (int i=0; i<10; i++) {
+            for (int j = 0; j < 10; j++) {
+//                 System.out.println(i+"  "+j);
+                 char v = sc.next().charAt(0);
+                 char c = sc2.next().charAt(0);
+                gameboard[i][j] = new BoardPiece(v,c );
+            }
+        }
+    }
 
-    private void displayGameBoard(){
+    public void displayGameBoard(){
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
                 if (gameboard[i][j].getColor()=='R') {
