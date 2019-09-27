@@ -2,6 +2,10 @@ package Stratego.logic.src;
 
 import Stratego.board.arrangement;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
 public class Board {
 
     private BoardPiece[][] gameboard;
@@ -75,6 +79,20 @@ public class Board {
         return initialized;
 
     }
+
+
+    private void initializeCustomGameboard() throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("./resources/board2.txt"));
+        Scanner sc2 = new Scanner(new File("./resources/board2Colors.txt"));
+        //System.out.println(sc.nextLine());
+        for (int i=0; i<10; i++) {
+            for (int j = 0; j < 10; j++) {
+                // System.out.println(i+"  "+j);
+                gameboard[i][j] = new BoardPiece(sc.next().charAt(0), sc2.next().charAt(0));
+            }
+        }
+    }
+
 
     protected void displayGameBoard(){
         for (int i=0; i<10; i++){

@@ -217,6 +217,38 @@ function getPiece(location){
     return '../images/pieces/piece12.png';
 }
 var test=false;
+function aiMoveTest() {
+    var ran = Math.floor(Math.random() * 100) + 11;
+    // console.log("from " + ran);
+    let to=0;
+    let from=0;
+    while (true) {
+        ran = Math.floor(Math.random() * 90) + 11;
+        // console.log("from "+ran);
+        if (!notLake(ran)||!notLake(ran+10)) continue;
+        // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
+        if (isBlue(document.getElementById((ran).toString()).src)
+            &&( document.getElementById((ran).toString()).style.opacity != .02)&&
+            (
+                document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
+            //if (test&&!document.getElementById((ran+10).toString()).src.endsWith("Moved.png"))continue;
+            from=ran;
+            to=ran+10;
+            break;
+        }
+
+
+
+    }
+    test=true;
+
+
+    // (moving-1)/10-1,(moving-1)%10,i-1,m-1,'B',numMoves)
+    sendMoveRequest(0,Math.floor((from-1)/10-1),(from-1)%10,Math.floor((to-1)/10-1),(to-1)%10,'R',++numMoves)
+    /*  yellow=from;
+      yellowBorder=to;*/
+
+}
 function aiMove() {
     var http = new XMLHttpRequest();
     let url = "/get_AI";
@@ -443,7 +475,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
                     }
 
 
-                    aiMove();
+                    aiMoveTest();
                 }
                 else{
 
