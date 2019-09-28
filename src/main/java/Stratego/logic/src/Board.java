@@ -75,27 +75,28 @@ public class Board {
     {
         return this.setup;
     }
-    public void boardAction(int i,char color,BoardPiece one,BoardPiece two)
+    public void boardAction(int i,char color,BoardPiece attacker,BoardPiece defender)
     {
         char opponent_color = (color=='R')?'B':'R';
         if(i==0)//win
         {
-            setup.capturePiece(color,two,one);  //one captures two
+
+            setup.capturePiece(color,defender,attacker);  //one captures two
         }
         if(i==1)//lose
         {
-            setup.capturePiece(opponent_color, one,two);
+            System.out.println(defender.getUnit()+" is capturing "+attacker.getUnit());
+            setup.capturePiece(opponent_color, attacker,defender);
         }
         if(i==2)//tie
         {
-            setup.tiedMove(color,one,two);
+            setup.tiedMove(color,defender,attacker);
         }
         if(i==4)//move
         {
-            setup.MovedPiece(color,one,two);
+            setup.MovedPiece(color,attacker,defender);
         }
-        setup.printRemainingPieces();
-        setup.printLocationOfPieces(color);
+
         //if you won, you're not getting anywhereeee
     }
 

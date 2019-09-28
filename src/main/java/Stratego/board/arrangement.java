@@ -3,7 +3,6 @@ package Stratego.board;
 
 import Stratego.logic.src.BoardPiece;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,11 +10,10 @@ import java.util.Random;
 
 //shuffles and gives positions of pieces
 public class arrangement {
-    private static ArrayList<BoardPiece> blue;
-    private static ArrayList<BoardPiece> red;
-    private static String selected;
-    private static BoardPiece blueFlag;
-    private static BoardPiece redFlag;
+    private static ArrayList<BoardPiece> comp;
+    private static ArrayList<BoardPiece> user;
+    private static BoardPiece compFlag;
+    private static BoardPiece userFlag;
     private static HashMap<Character, HashMap<Character,Integer>> remaining_pieces;
 
     //a hashmap that tracks remaining pieces from both sides
@@ -24,8 +22,8 @@ public class arrangement {
     public ArrayList getPieceList(char color)
     {
         if(color=='R')
-            return blue;
-        return red;
+            return comp;
+        return user;
     }
     public void printLocationOfPieces(char color)
     {
@@ -34,8 +32,8 @@ public class arrangement {
         if(color=='R')
         {
             //print computer pieces
-            System.out.println("Blue pieces");
-            for (BoardPiece piece :blue)
+            System.out.println("Computer pieces");
+            for (BoardPiece piece : comp)
             {
 
                 System.out.print(piece.getUnit()+": ("+piece.getX()+","+piece.getY()+")\t");
@@ -46,8 +44,8 @@ public class arrangement {
         }
         else
         {
-            System.out.println("Red pieces");
-            for(BoardPiece piece: red)
+            System.out.println("User pieces");
+            for(BoardPiece piece: user)
             {
                 if((count+1)%10==0)
                     System.out.println();
@@ -58,8 +56,11 @@ public class arrangement {
         System.out.println();System.out.println();
     }
     //the capturing will take over the captured space
+    //lost, win
     public void capturePiece(char color,BoardPiece captured,BoardPiece capturing)
+    //blue, 6, B
     {
+        System.out.println("color: "+color+" "+captured.getUnit()+capturing.getUnit());
         //update the hashmap of remaining pieces
         char opponent_color = (color=='R')?'B':'R';
         //int current_remaining = remaining_pieces.get(opponent_color).get(captured.getUnit());
@@ -69,20 +70,21 @@ public class arrangement {
         if(color=='R')  //if computer captured user piece
         {
 
-            red.remove(captured);   //remove pieces from user set of pieces
-            blue.remove(capturing); //the capturing piece clears out and copies info to captured
-            blue.add(captured);
+            user.remove(captured);   //remove pieces from user set of pieces
+            comp.remove(capturing); //the capturing piece clears out and copies info to captured
+            comp.add(captured);
 
         }
         else
         {
-            blue.remove(captured);  //remove captured piece from enemy pieces
-            red.remove(capturing);
-            red.add(captured);
+            comp.remove(captured);  //remove captured piece from enemy pieces
+            user.remove(capturing);
+            user.add(captured);
         }
     }
     public void DecrementRemaining(char color,BoardPiece piece)
     {
+        System.out.println("decrementing count for "+color+" "+piece.getUnit());
         int current = remaining_pieces.get(color).get(piece.getUnit());
         remaining_pieces.get(color).replace(piece.getUnit(),--current);
     }
@@ -96,13 +98,13 @@ public class arrangement {
         //decrement count for both yours and the opponent's piece
         if(color=='R')  //remove blue piece
         {
-            blue.remove(you);
-            red.remove(opponent);
+            comp.remove(you);
+            user.remove(opponent);
         }
         else
         {
-            red.remove(you);
-            blue.remove(opponent);
+            user.remove(you);
+            comp.remove(opponent);
 
         }
     }
@@ -111,20 +113,21 @@ public class arrangement {
         //do not affect hashmap remaining pieces count
         if(color=='R')//moved a computer piece
         {
-            blue.remove(oldLocation);
-            blue.add(newLocation);
+            comp.remove(oldLocation);
+            comp.add(newLocation);
         }
         else
         {
-            red.remove(oldLocation);
-            red.add(newLocation);
+            user.remove(oldLocation);
+            user.add(newLocation);
         }
     }
     public void printRemainingPieces()
     {
         remaining_pieces.entrySet().forEach(entry->{
 
-            System.out.println(entry.getKey()); //red or blue
+            String result = (entry.getKey()=='R')?"Computer":"User";
+            System.out.println(result); //red or blue
             entry.getValue().entrySet().forEach(num->
             {
                 System.out.print(num.getKey()+": "+num.getValue()+"\t");
@@ -137,8 +140,8 @@ public class arrangement {
         remaining_pieces = new HashMap<>();
         remaining_pieces.put('R',new HashMap<>());
         remaining_pieces.put('B',new HashMap<>());
-        blue = create_pieces(false,'R');
-        red = create_pieces(true,'B');
+        comp = create_pieces(false,'R');
+        user = create_pieces(true,'B');
 
         //rintRemainingPieces();
 
@@ -152,8 +155,8 @@ public class arrangement {
     public BoardPiece getFlag(char color)
     {
         if(color=='R')
-            return this.blueFlag;
-        return this.redFlag;
+            return this.compFlag;
+        return this.userFlag;
     }
     public static Boolean compare(int row,int col)
     {
@@ -203,13 +206,13 @@ public class arrangement {
         {
             int pos = (row)*(10) + col;
 
-            return blue.get(pos);
+            return comp.get(pos);
         }
         else
         {
             int ro = row-6;
             int pos = ro*10+col;
-            return red.get(pos);
+            return user.get(pos);
         }
     }
     public static String assign(int row,int col)
@@ -219,13 +222,13 @@ public class arrangement {
         {
             int pos = (row-1)*(10) + (col-1);
 
-            return (blue.get(pos)).toString();
+            return (comp.get(pos)).toString();
         }
         else
         {
             int ro = row-7;
             int pos = ro*10+col-1;
-            return (red.get(pos)).toString();
+            return (user.get(pos)).toString();
         }
 
     }
@@ -265,12 +268,12 @@ public class arrangement {
         if(!user)   //blue
         {
             start = "1"; //now beginning to add pieces that repeat more than once
-            blueFlag = flag;
+            compFlag = flag;
         }
         else//red
         {
             start = "7";
-            redFlag = flag;
+            userFlag = flag;
         }
 
 

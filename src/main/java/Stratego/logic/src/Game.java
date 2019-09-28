@@ -163,7 +163,8 @@ public class Game {
         BoardPiece you = board.getPieceAtLocation(startingX,startingY);
         BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
         move_stat.setPiece_name(you.getUnit());
-
+        board.boardAction(result,color,you,opponent);//do it after the pieces have updated
+        //you are the attacker, and the opponent the defender
         if (result==0){//winning case
 
             capture(move_stat,color,you.getUnit());   //return unit for now
@@ -213,7 +214,8 @@ public class Game {
         }
         //return "This will never happen.";
         System.out.println("move result"+move_stat.getFight_result());
-        board.boardAction(result,color,you,opponent);//do it after the pieces have updated
+        board.getSetup().printRemainingPieces();
+        board.getSetup().printLocationOfPieces(color);
         char opponent_color = (color=='R')?'B':'R';
         if(!hasMovable(color)&&!hasMovable(opponent_color))
             //both are not movable
@@ -309,7 +311,7 @@ public class Game {
 
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
-        System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
+        //System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
         //System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (board.getPieceAtLocation(startingX,startingY).getColor()!=color
                 || board.getPieceAtLocation(startingX,startingY).getUnit()=='F'
@@ -323,12 +325,12 @@ public class Game {
             return false;
         }
 
-        /*if(madeLoopMove(startingX,startingY,endingX,endingY,color))
+        if(madeLoopMove(startingX,startingY,endingX,endingY,color))
         {
             err_msg="illegal: making repeated moves";
-            System.out.println("illegal: making repeated moves");
+            //System.out.println("illegal: making repeated moves");
             return false;
-        }*/
+        }
 
         //TODO: madeLoopMove is currently commented out since no ai moves are made in backend , waiting for ai implementation
 
