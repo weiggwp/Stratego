@@ -26,6 +26,7 @@
         <th scope="col">Outcome</th>
         <th scope="col">PieceCapturedByPlayer</th>
         <th scope="col">PieceCapturedByAI</th>
+        <th scope="col" style="visibility: hidden"></th>
     </tr>
     </thead>
     <tbody>
@@ -39,6 +40,7 @@
             <td th:text="${match.outcome}"></td>
             <td th:text="${match.piecesLostPlayer}"></td>
             <td th:text="${match.piecesLostComputer}"></td>
+            <td style="visibility: hidden" th:text="${match.matchId}"></td>
         </tr>
 
 
@@ -78,14 +80,20 @@
                 function(row)
                 {
                     return function() {
-                        // simulate an HTTP redirect
-                        // "/history/user/matchid"
-                        // TODO: redirect to the replay page
+                        var http = new XMLHttpRequest();
+                        var cell = row.getElementsByTagName("td")[4];
+                        var gameId = cell.innerHTML;
+                        alert("id:" + gameId);
+                        var params = JSON.stringify({
+                            'gameId': gameId,
+                        });
+                        url = "/replay"
+                        http.open("POST", url, true);
+                        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+                        http.send(params);
 
-                        window.location.href = "/history/" + userName + "/" +
-                        var cell = row.getElementsByTagName("td")[1];
-                        var id = cell.innerHTML;
-                        alert("id:" + id);
+                        window.location.href="/replay"
+
                     };
                 };
 

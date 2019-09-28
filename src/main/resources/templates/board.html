@@ -28,15 +28,14 @@
                             <div class="blue_pieces"  th:if="${pos.blue(i)}"  th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
 
 
-                                <img class="blue_front" th:id ="${100*(i*10+m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+<!--                                <img class="blue_front" th:id ="${100*(i*10+m)}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>-->
 
-                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" />
+<!--                                <img class="blue_front"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" />-->
 
                                 <img class="blue_back" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
 
                             </div>
-                            <div class="red_pieces" th:if="${pos.red(i)}"
-                                 >
+                            <div class="red_pieces" th:if="${pos.red(i)}">
                                 <!--th:onclick="${pos.printTest(5)}"  -->
 
                                 <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'" />
@@ -70,6 +69,7 @@
 </div>
 <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
 <button type="button" id='restartBtn'class="btn btn-primary btn-restart"onclick="restart()">Restart</button>
+
 </body>
 
 </html>

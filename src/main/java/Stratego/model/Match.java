@@ -111,6 +111,10 @@ public class Match {
         this.piecesLostComputer = piecesLostComputer;
     }
 
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public String toString() {
         return "Match{" +
@@ -129,6 +133,16 @@ public class Match {
         sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/New_York"));
         String formattedDate = sdf.format(date);
         return formattedDate;
+
+    }
+
+    public void convertUnixTime_2() {
+
+        Date date = new Date(this.unixTime);
+        SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+        sdf.setTimeZone(java.util.TimeZone.getTimeZone("America/New_York"));
+        String formattedDate = sdf.format(date);
+        this.setDate(formattedDate);
 
     }
 

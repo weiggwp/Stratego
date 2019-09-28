@@ -2,6 +2,9 @@ package Stratego.logic.src;
 
 import Stratego.board.arrangement;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Board {
 
     private BoardPiece[][] gameboard;
@@ -17,9 +20,83 @@ public class Board {
         displayGameBoard();
 
     }
+
+    public boolean canWin(char color)//if you have miners left
+    {
+       char opponent_color = (color=='R')?'B':'R';
+       HashMap<Character,Integer> remain = setup.getRemaining(color);
+       //get all your remaining pieces count
+       if(remain.get('3') ==0 && isFlagSurrounded(opponent_color))
+       {
+           //you have no miners, and the opponent flag is surrounded by bombs
+           return false;
+       }
+       //if you have no miners, and flag is not surrounded, then you can still win
+        //also if you have miners and flag is not even surrounded, you can definitely win..
+       return true;
+
+
+
+    }
+    public boolean isFlagSurrounded(char color)
+    {
+        BoardPiece flag = this.setup.getFlag(color);
+        int x = flag.getX();
+        int y = flag.getY();
+        if(x>0)//check top
+        {
+            int top_x = x-1;
+            if(gameboard[top_x][y].getUnit()!='B')  //if top is not bomb, it's not surrounded
+                return false;
+        }
+        if(x<9)//check bot
+        {
+            int bot_x = x+1;
+            if(gameboard[bot_x][y].getUnit()!='B')
+                return false;
+        }
+        if(y>0)//check left
+        {
+            int left_y = y-1;
+            if(gameboard[x][left_y].getUnit()!='B')
+                return false;
+        }
+        if(y<9)//check right
+        {
+            int right_y = y+1;
+            if(gameboard[x][right_y].getUnit()!='B')
+                return false;
+
+        }
+        return true;
+
+    }
     public arrangement getSetup()
     {
         return this.setup;
+    }
+    public void boardAction(int i,char color,BoardPiece one,BoardPiece two)
+    {
+        char opponent_color = (color=='R')?'B':'R';
+        if(i==0)//win
+        {
+            setup.capturePiece(color,two,one);  //one captures two
+        }
+        if(i==1)//lose
+        {
+            setup.capturePiece(opponent_color, one,two);
+        }
+        if(i==2)//tie
+        {
+            setup.tiedMove(color,one,two);
+        }
+        if(i==4)//move
+        {
+            setup.MovedPiece(color,one,two);
+        }
+        setup.printRemainingPieces();
+        setup.printLocationOfPieces(color);
+        //if you won, you're not getting anywhereeee
     }
 
     public BoardPiece[][] getBoard()
@@ -42,24 +119,34 @@ public class Board {
 
         for (int i=0; i<4; i++){    //blue set up
             for (int j=0; j<10; j++){
-               // System.out.println(i+"  "+j);
-                gameboard[i][j]=setup.getPiece(i,j);
-                        //new BoardPiece(sc.next().charAt(0),'R');
+                BoardPiece piece = setup.getPiece(i,j);
+                piece.setPlace(i,j);    //set initial coordinate, will need to change when user swaps
+                gameboard[i][j]=piece;
             }
         }
         for (int i=4; i<6; i++){
             for (int j=0; j<10; j++){
                 if (j==2||j==3||j==6||j==7){
-                    gameboard[i][j]=new BoardPiece('W','0');
+                    BoardPiece piece = new BoardPiece('W','0'); //river piece
+                    piece.setPlace(i,j);
+                    gameboard[i][j]=piece;
+
                 }
                 else
-                    gameboard[i][j]=new BoardPiece('0','0');
+                {
+                    BoardPiece piece = new BoardPiece('0','0'); //empty space
+                    piece.setPlace(i,j);
+                    gameboard[i][j]=piece;
+                }
+
             }
         }
 
         for (int i=6; i<10; i++){
             for (int j=0; j<10; j++){
-                gameboard[i][j]=setup.getPiece(i,j);
+                BoardPiece piece = setup.getPiece(i,j);
+                piece.setPlace(i,j);    //set initial coordinate, will need to change when user swaps
+                gameboard[i][j]=piece;
             }
         }
         initialized = true;
@@ -67,7 +154,7 @@ public class Board {
 
 
     private boolean initialized=false;
-    public boolean isInitialzied(){
+    public boolean isInitialized(){
         return initialized;
 
     }
@@ -99,10 +186,12 @@ public class Board {
         System.out.println("swapping "+ startingX +" "+startingY+" with "+ endingX +" "+endingY);
         BoardPiece start = gameboard[startingX][startingY];
         BoardPiece end = gameboard[endingX][endingY];
+        start.swapPlaces(end);//swaps both x,y fields
         gameboard[startingX][startingY] = end;
         gameboard[endingX][endingY] = start;
         System.out.println("swapping "+ start.getUnit()+" with "+end.getUnit());
         displayGameBoard();
+        setup.printLocationOfPieces('B');
     }
 
     private boolean isDigit(char s){
@@ -110,6 +199,8 @@ public class Board {
             return true;
         return false;
     }
+
+
 
 
 }
