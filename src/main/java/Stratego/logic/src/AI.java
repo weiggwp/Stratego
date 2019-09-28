@@ -1,8 +1,9 @@
 package Stratego.logic.src;
 
+import Stratego.logic.src.*;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.max;
 
@@ -12,23 +13,36 @@ public class AI {
     }
 
     public SimulationMove AI_Move(Board board, char player_color){
+        int depth =3;
+        return AI_Move(board,player_color,depth);
+    }
+    public SimulationMove AI_Move(Board board, char player_color,int depth){
 
+        //Create simulation board by copying original
         SimulationBoard simulationBoard = new SimulationBoard(board);
 
+        // generate all possible moves
         List<SimulationMove> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
-        int depth = 3;
-        double max_score = Integer.MIN_VALUE;
-        SimulationMove best_move = null;
 
+        // make a move and calculate best move by find the move that minimize opponents score
+        double min_score = Integer.MAX_VALUE;
+        SimulationMove best_move = null;
         for (SimulationMove move : all_moves) {
             simulationBoard.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+//            System.out.println("AFter move: AI");
+//            simulationBoard.displayGameBoard();
             // get the score for current move
-            double score = negamax(simulationBoard, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, player_color);
-            if (score > max_score) {
-                max_score = score;
+            double score = negamax(simulationBoard, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, reverse_player_color(player_color));
+//            System.out.println("****************2");
+
+            if (score < min_score) {
+                min_score = score;
                 best_move = move;
             }
             simulationBoard.undo_move();
+//            System.out.println("AFter undo move: AI");
+
+//            simulationBoard.displayGameBoard();
         }
 
         //convert simulation move to move
@@ -43,7 +57,7 @@ public class AI {
             return 'R';
     }
 
-//    function negamax(node, depth, α, β, color) is
+    //    function negamax(node, depth, α, β, color) is
 //    if depth = 0 or node is a terminal node then
 //        return color × the heuristic value of node
 //
@@ -58,6 +72,11 @@ public class AI {
 //            return value
     public double negamax(SimulationBoard board, int depth, double alpha, double beta, char player_color){
         if(depth==0 || board.isGameEnded()){
+//            System.out.println("****************hit depth");
+            if (board.isGameEnded()){
+//            System.out.println("****************hit end game");
+//                board.displayGameBoard();
+            }
             return new BoardEvaluator(board).evaluate(player_color);
         }
         List<SimulationMove> all_moves = calculate_all_possible_moves(board,player_color);
@@ -65,13 +84,15 @@ public class AI {
 
         for (SimulationMove move : all_moves) {
             board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+//            System.out.println("AFter move: negamax"+depth);
+//            board.displayGameBoard();
             // get the score for current move
             value = max(value, -negamax(board, depth-1, -beta, -alpha, reverse_player_color(player_color)));
             alpha = max(alpha, value);
-            if (alpha >= beta) {
-                break;
-            }
             board.undo_move();
+            if (alpha >= beta) break;
+//            System.out.println("AFter move: negamax"+depth);
+//            board.displayGameBoard();
         }
         return value;
 
@@ -126,7 +147,7 @@ public class AI {
         int piece_X_new;
         int piece_Y_new;
 
-        //move left
+        //move up
         if (piece_X>0){
             piece_X_new = piece_X;
             piece_Y_new = piece_Y;
@@ -137,10 +158,11 @@ public class AI {
                 if (valid_move) {
                     moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
                 }
-            }while(unit==2 && piece_X_new>0);
+                else break;;
+            }while(unit=='2' && piece_X_new>0);
         }
 
-        //move right
+        //move down
         if (piece_X<9){
             piece_X_new = piece_X;
             piece_Y_new = piece_Y;
@@ -153,11 +175,12 @@ public class AI {
                     moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
 
                 }
-            }while(unit==2 && piece_X_new<9);
+                else break;;
+            }while(unit=='2' && piece_X_new<9);
 
         }
 
-        //move up
+        //move left
         if (piece_Y<9){
             piece_X_new = piece_X;
             piece_Y_new = piece_Y;
@@ -170,12 +193,14 @@ public class AI {
                     moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
 
                 }
-            }while(unit==2 && piece_Y_new<9);
+                else break;;
+            }while(unit=='2' && piece_Y_new<9);
+
 
 
         }
 
-        //move down
+        //move right
         if (piece_Y>0){
             piece_X_new = piece_X;
             piece_Y_new = piece_Y;
@@ -188,7 +213,8 @@ public class AI {
                     moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
 
                 }
-            }while(unit==2 && piece_Y_new>0);
+                else break;;
+            }while(unit=='2' && piece_Y_new>0);
 
         }
 

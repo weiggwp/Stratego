@@ -527,7 +527,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         }
 
         if (!replay)
-            aiMoveTest();
+            aiMove();
     }
     else{
 

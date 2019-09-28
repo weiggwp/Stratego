@@ -1,5 +1,7 @@
 package Stratego.logic.src;
 
+import Stratego.logic.src.BoardPiece;
+
 public class SimulationMove {
 
     private BoardPiece starting_piece;
@@ -91,7 +93,15 @@ public class SimulationMove {
         this.end_y = end_y;
     }
 
-
+    @Override
+    public String toString() {
+        return
+                "x=" + start_x +
+                        ", y=" + start_y +
+                        "to x=" + end_x +
+                        ", y=" + end_y +
+                        '}';
+    }
 }
 
 
