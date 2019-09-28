@@ -24,8 +24,12 @@ public class Match {
     @NotNull
     private long unixTime;
 
+    /* Transient fields are ignored when creating the table */
+    @Transient
     private String date;
+    @Transient
     private String piecesLostPlayer;
+    @Transient
     private String piecesLostComputer;
 
 

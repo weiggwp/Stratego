@@ -122,17 +122,16 @@ public class Extractor {
         int  x_1    = m.getEnd_x();
         int  y_1    = m.getEnd_y();
 
+
         Move_status status = m.getStatus();
-//        char piece = status.getPiece_name(); // NullPointerException
-//        char pieceCapturedByPlayer = status.getPieceCapturedByPlayer(); // NullPointerException
-//        char pieceCapturedByComputer = status.getPieceCapturedByComputer(); // NullPointerException
+        char piece = status.getPiece_name(); // NullPointerException
+        char pieceCapturedByPlayer = status.getPieceCapturedByPlayer(); // NullPointerException
+        char pieceCapturedByComputer = status.getPieceCapturedByComputer(); // NullPointerException
+        int fightResult = status.getFight_result();
 
         Reposition move = new Reposition(gameId, turn, x,
-                y, x_1, y_1, 'K', ' ', ' ');
+                y, x_1, y_1, 'K', ' ', ' ', fightResult);
         return move;
     }
-
-
-
 }
 

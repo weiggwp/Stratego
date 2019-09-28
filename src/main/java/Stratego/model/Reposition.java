@@ -4,9 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Comparator;
 
 @Entity
-public class Reposition {
+public class Reposition implements Comparator<Reposition> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long moveId;
@@ -19,6 +20,8 @@ public class Reposition {
     private char pieceName;
     private char pieceCapturedByPlayer;
     private char pieceCapturedByOpponent;
+    private int fightResult;
+
 
     public Reposition() {
     }
@@ -34,6 +37,20 @@ public class Reposition {
         this.pieceName = pieceName;
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
         this.pieceCapturedByOpponent = pieceCapturedByOpponent;
+    }
+
+    public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY, char pieceName,
+                      char pieceCapturedByPlayer, char pieceCapturedByOpponent, int fightResult) {
+        this.matchId = matchId;
+        this.turnId = turnId;
+        this.startX = startX;
+        this.startY = startY;
+        this.curX = curX;
+        this.curY = curY;
+        this.pieceName = pieceName;
+        this.pieceCapturedByPlayer = pieceCapturedByPlayer;
+        this.pieceCapturedByOpponent = pieceCapturedByOpponent;
+        this.fightResult = fightResult;
     }
 
     public long getMoveId() {
@@ -130,5 +147,12 @@ public class Reposition {
                 ", pieceCapturedByPlayer='" + pieceCapturedByPlayer + '\'' +
                 ", pieceCapturedByOpponent='" + pieceCapturedByOpponent + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compare(Reposition r1, Reposition r2) {
+        if (r1.getTurnId() > r2.getTurnId()) return 1;
+        else if(r2.getTurnId() < r2.getTurnId()) return -1;
+        return 0;
     }
 }

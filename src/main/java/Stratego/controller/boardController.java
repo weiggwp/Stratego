@@ -87,6 +87,9 @@ public class boardController {
             moveService.addMove(move);
 
 
+
+
+
             // -------------------------------------------------------
             // Add all the moves
 //                moveService.addMove();
