@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!--/* Workaround for bug https://youtrack.jetbrains.com/issue/IDEA-132738 -->
+<!--@thymesVar id="post" type="your.package.Post"-->
+<!--@thymesVar id="title" type="String"-->
+<!--@thymesVar id="content" type="String"-->
+<!--*/-->
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <title>Board</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
+    <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
+    <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
+
+</head>
+<script>
+    startReplay();
+</script>
+<body>
+<div class="page">
+    <div class="rectangle">
+
+
+
+
+        <button type="button" id='nextMoveBtn'class="btn btn-primary" onclick="nextMove()">Next Move
+            <button type="button" id='undoMoveBtn'class="btn btn-primary btn-invis" onclick="undoMove()">Undo Move</button>
+        <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>
+      <!--  <button type="button" id='fastForwardReplayBtn'class="btn btn-primary "onclick="fastForwardReplay()">Fast Forward</button>-->
+            <div class="center">
+                <p id = 'restartText' style = 'visibility: hidden'>Game ended. Press restart to restart.  </div>
+
+
+    </div>
+
+    <div class="divTable board" id="board">
+
+        <div class="divTableBody">
+            <!--/*@thymesVar id="count" type=""*/-->
+            <th:block th:each="i: ${#numbers.sequence(1, count)}">
+                <div class="divTableRow">
+                    <!--/*@thymesVar id="inner" type=""*/-->
+                    <th:block th:each="m: ${#numbers.sequence(1,inner)}">
+
+                        <!--/*@thymesVar id="pos" type=""*/-->
+                        <!--/*@thymesVar id="compare" type=""*/-->
+                        <!--/*@thymesVar id="pos.compare" type=""*/-->
+                        <div class="divTableCell1" th:if="${pos.compare(i,m)}"></div>
+
+                        <div class="divTableCell" th:unless="${pos.compare(i,m)}">
+
+                            <div class="all_pieces">
+
+
+                                <!--/*@thymesVar id="blue" type=""*/-->
+                                <div class="blue_pieces"  th:if="${pos.blue(i)}"  >
+
+
+                                    <img class="blue_front" th:id ="${i*10+m}" src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}"/>
+
+                                    <!--/*@thymesVar id="assign" type=""*/-->
+
+
+
+
+                                </div>
+                                <!--/*@thymesVar id="red" type=""*/-->
+                                <div class="red_pieces" th:if="${pos.red(i)}"
+                                >
+                                    <!--th:onclick="${pos.printTest(5)}"  -->
+
+                                    <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" />
+                                    <!--                                th:onclick="'javascript:highlight(' + ${i} + ','+${m}+')'" -->
+
+
+                                </div>
+
+                                <!--/*@thymesVar id="blank" type=""*/-->
+                                <div class="blank" draggable="false" th:if="${pos.blank(i)}"
+                                     th:onclick="'javascript:move(' + ${i} + ','+${m}+')'">
+                                    <img class="blue_back" draggable="false"  style="opacity:0.02" th:id ="${i*10+m}" src="../images/pieces/blue_back.png" th:src="@{images/pieces/blue_back.png}"/>
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </th:block>
+                </div>
+
+            </th:block>
+
+
+        </div>
+
+    </div>
+
+
+
+</div>
+</body>
+
+</html>

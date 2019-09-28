@@ -39,12 +39,12 @@ div.board {
 
 .blue_front
 {
-    visibility: hidden;
+
     position:absolute;
 }
 .red_back
 {
-    visibility: hidden;
+
     position: absolute;
 }
 .red_front
