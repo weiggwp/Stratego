@@ -38,6 +38,9 @@ public class Board {
 
 
     }
+    public BoardPiece getPiece(int i, int j){
+        return gameboard[i][j];
+    }
     public boolean isFlagSurrounded(char color)
     {
         BoardPiece flag = this.setup.getFlag(color);

@@ -7,6 +7,8 @@ public class BoardPiece {
     private char color; // R or B when occupied by a tile,0 otherwise
     private int x;
     private int y;
+    private boolean moved;
+    private boolean revealed;
 
     public BoardPiece(char unit, char color){
         this.unit=unit;
@@ -40,6 +42,7 @@ public class BoardPiece {
         this.unit=unit;
         this.img_src=img;
         this.color=color;
+
     }
 
     public void reset(){
@@ -76,6 +79,22 @@ public class BoardPiece {
         return img_src;
     }
 
+    public boolean isMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setRevealed(boolean revealed) {
+        this.revealed = revealed;
+    }
+
 
     public boolean isEmpty(){
         return unit=='0';
@@ -85,6 +104,17 @@ public class BoardPiece {
     }
     public boolean isScout(){
         return unit=='2';
+    }
+    public BoardPiece(char unit, String img_src, char color, boolean moved, boolean revealed) {
+        this.unit = unit;
+        this.img_src = img_src;
+        this.color = color;
+        this.moved = moved;
+        this.revealed = revealed;
+    }
+    public BoardPiece clone() {
+        return new BoardPiece(this.unit,this.img_src,this.color,this.moved,this.revealed);
+
     }
 
 }
