@@ -9,28 +9,36 @@ public class AI {
     }
 
     public SimulationMove AI_Move(Board board, char player_color){
+        int depth =3;
+        return AI_Move(board,player_color,depth);
+    }
+    public SimulationMove AI_Move(Board board, char player_color,int depth){
+
         //Create simulation board by copying original
         SimulationBoard simulationBoard = new SimulationBoard(board);
+
         // generate all possible moves
         List<SimulationMove> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
-//        System.out.println("****************1");
-        int depth = 1;
-        double max_score = Integer.MIN_VALUE;
-        SimulationMove best_move = null;
 
+        // make a move and calculate best move by find the move that minimize opponents score
+        double min_score = Integer.MAX_VALUE;
+        SimulationMove best_move = null;
         for (SimulationMove move : all_moves) {
             simulationBoard.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
-            simulationBoard.displayGameBoard();
+//            System.out.println("AFter move: AI");
+//            simulationBoard.displayGameBoard();
             // get the score for current move
             double score = negamax(simulationBoard, depth, Integer.MIN_VALUE, Integer.MAX_VALUE, reverse_player_color(player_color));
 //            System.out.println("****************2");
 
-            if (score > max_score) {
-                max_score = score;
+            if (score < min_score) {
+                min_score = score;
                 best_move = move;
             }
             simulationBoard.undo_move();
-            simulationBoard.displayGameBoard();
+//            System.out.println("AFter undo move: AI");
+
+//            simulationBoard.displayGameBoard();
         }
 
         //convert simulation move to move
@@ -61,7 +69,10 @@ public class AI {
     public double negamax(SimulationBoard board, int depth, double alpha, double beta, char player_color){
         if(depth==0 || board.isGameEnded()){
 //            System.out.println("****************hit depth");
-
+            if (board.isGameEnded()){
+//            System.out.println("****************hit end game");
+//                board.displayGameBoard();
+            }
             return new BoardEvaluator(board).evaluate(player_color);
         }
         List<SimulationMove> all_moves = calculate_all_possible_moves(board,player_color);
@@ -69,13 +80,15 @@ public class AI {
 
         for (SimulationMove move : all_moves) {
             board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
-            board.displayGameBoard();
+//            System.out.println("AFter move: negamax"+depth);
+//            board.displayGameBoard();
             // get the score for current move
             value = max(value, -negamax(board, depth-1, -beta, -alpha, reverse_player_color(player_color)));
             alpha = max(alpha, value);
-            if (alpha >= beta) break;
             board.undo_move();
-            board.displayGameBoard();
+            if (alpha >= beta) break;
+//            System.out.println("AFter move: negamax"+depth);
+//            board.displayGameBoard();
         }
         return value;
 

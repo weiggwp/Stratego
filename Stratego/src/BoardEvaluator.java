@@ -62,6 +62,7 @@ public class BoardEvaluator {
         regenerate_pieces_values();
 
         double score = calcuate_overall_score();
+//        System.out.println("score"+score);
 
         return (color==BLUE)?score:-score;
     }

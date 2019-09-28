@@ -210,7 +210,7 @@ public class EvaluatorTest {
         }
         BoardPiece p = board.getPiece(3,3);
         p.setColor('B');
-        p.setUnit('3');
+        p.setUnit('4');
         BoardPiece p1 = board.getPiece(3,2);
         p1.setColor('B');
         p1.setUnit('3');
@@ -222,11 +222,77 @@ public class EvaluatorTest {
         board.displayGameBoard();
 
         AI ai = new AI();
-        SimulationMove move = ai.AI_Move(board,'B');
+        SimulationMove move = ai.AI_Move(board,'R');
         System.out.println(move);
 
         // assert statements
         assertEquals(2,move.getEnd_x(),"not all moves considered");
+        assertTrue(move.getEnd_y()>=8,"not all moves considered");
     }
 
+    @Test
+    public void gameShouldEndedTest() {
+        Board board = new Board();
+        try {
+            board.initializeCustomGameboard("board3.txt", "board3color.txt");
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+//        BoardPiece p = board.getPiece(3,3);
+//        p.setColor('B');
+//        p.setUnit('4');
+        BoardPiece p1 = board.getPiece(3,2);
+        p1.setColor('B');
+        p1.setUnit('3');
+
+//        p1 = board.getPiece(2,2);
+//        p1.setColor('R');
+//        p1.setUnit('2');
+
+        BoardPiece p = board.getPiece(9,7);
+        p.setUnit('3');
+        p.setColor('R');
+        board.displayGameBoard();
+
+        p = board.getPiece(9,8);
+        p.setUnit('3');
+        p.setColor('B');
+        board.displayGameBoard();
+
+        AI ai = new AI();
+        SimulationMove move = ai.AI_Move(board,'R',2);
+        System.out.println(move);
+
+        // assert statements
+        assertEquals(9,move.getEnd_x(),"not all moves considered");
+    }
+
+    @Test
+    public void startingPositionAI_Move() {
+        Board board = new Board();
+        try {
+            board.initializeGameboard();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        board.displayGameBoard();
+//        BoardEvaluator evaluator = new BoardEvaluator(new SimulationBoard(board));
+//        double score = evaluator.evaluate('B');
+//         assert statements
+//        assertEquals(0, score, "board position should be even");
+        while(board.gameWinner!=1){
+
+        AI ai = new AI();
+        SimulationMove move = ai.AI_Move(board,'R');
+        board.move(move.getStart_x(),move.getStart_y(),move.getEnd_x(),move.getEnd_y(),move.getColor());
+        board.displayGameBoard();
+        move = ai.AI_Move(board,'B');
+        board.move(move.getStart_x(),move.getStart_y(),move.getEnd_x(),move.getEnd_y(),move.getColor());
+        board.displayGameBoard();
+        }
+
+//        System.out.println(move);
+    }
 }

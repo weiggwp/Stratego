@@ -259,6 +259,7 @@ public class SimulationBoard {
             return "draw " +a;
         }
         else if (result==3){
+//            System.out.println("result==3");
             char a = gameboard[endingX][endingY].getUnit();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();

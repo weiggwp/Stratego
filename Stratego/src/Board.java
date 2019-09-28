@@ -65,6 +65,8 @@ public class Board {
     }
 
     public void displayGameBoard(){
+//        System.out.println();
+
         for (int i=0; i<10; i++){
             for (int j=0; j<10; j++){
                 if (gameboard[i][j].getColor()=='R') {
@@ -85,6 +87,9 @@ public class Board {
             System.out.println();
         }
         System.out.print((char)27 + "[37m" );
+        System.out.println();            System.out.println();
+
+
     }
 
     BoardPiece[][] gameboard= new BoardPiece[10][10];
@@ -327,7 +332,7 @@ public class Board {
 //    }
     public String move(int startingX, int startingY, int endingX, int endingY, char color){
 
-        displayGameBoard();
+//        displayGameBoard();
 
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
             illegalMove();
@@ -359,7 +364,7 @@ public class Board {
             char a = gameboard[endingX][endingY].getUnit();
             gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
             gameboard[startingX][startingY].reset();
-
+            gameWinner = 1;
             return "flag"; //mover wins the videogame
         }
         else if (result==4){
