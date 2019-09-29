@@ -11,12 +11,15 @@
 <!--</html>-->
 
 <!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Stratego</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="../css/home.css" th:href="@{/css/home.css}" rel="stylesheet" />
+    <link href="../static/css/home_style.css" type="text/css" th:href="@{/static/css/home_style.css}" rel="stylesheet" />
 </head>
 <body>
 
@@ -40,7 +43,7 @@
 <h2> Sorry for no pics, I have just lost my meme ;(</h2>
 
 <div>
-    <button type="button"  class="btn btn-dark center home_buttons">Play</button>
+    <button type="button" onclick="location.href='/board'"  class="btn btn-dark center home_buttons">Play</button>
     <button onclick="btHistoryHandler()" type="button"  class="btn btn-dark center home_buttons">History</button>
 </div>
 

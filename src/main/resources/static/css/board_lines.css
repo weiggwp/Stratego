@@ -22,10 +22,11 @@ div.board {
 {
     min-width: 50px;
     min-height: 50px;
-    object-fit: fill;
+    object-fit: contain;
     display: block;
     margin-left: auto;
     margin-right: auto;
+
 
 }
 .divTableCell1
@@ -39,28 +40,39 @@ div.board {
 
 .blue_front
 {
-    visibility: hidden;
+
     position:absolute;
+
 }
 .red_back
 {
-    visibility: hidden;
+
     position: absolute;
 }
 .red_front
 {
     position:absolute;
+    max-width:58px;
+    max-height:58px;
 
 }
+
 .blue_back
 {
     position:absolute;
+    max-width:58px;
+    max-height:58px;
+    object-fit: scale-down;
+    overflow:hidden;
+    margin-left:auto;
+    margin-right:auto;
 
 
 }
 .red_pieces
 {
     position: absolute;
+
 
 }
 .blue_pieces
@@ -72,6 +84,7 @@ div.board {
 .blank{
     position: absolute;
 }
+
 
 .highlighted {
     background-color: #000000;
@@ -87,21 +100,64 @@ div.board {
 }
 .btn-primary{
 
+     width:80%;
+     display:block;
+     margin:auto;
+
+ }
+.whiteText{
+    color:white;
+    font-size:20px;
+    list-style: none;
+
+}
+.sidebarImage{
+    width:20%;
+    height: 20%;
+    padding-bottom: 2px;
+}
+.btn-info{
+
     width:8%;
     display:block;
-   margin-left: auto;
+    margin-left: auto;
     margin-right: auto;
 
 }
+.rectangle {
+    height: 700px;
+    width: 200px;
+    border-radius: 25px;
+    background-color: #000072;
+
+    float: left;
+    text-align: center;
+    margin-left:auto;
+    margin-right:auto;
+}
+.btn-invis{
+
+
+    visibility: hidden;
+
+}
 .center {
-    margin: auto;
-    width: 60%;
-    color: white;
-    padding: 10px;
+     margin: auto;
+     width: 60%;
+     color: white;
+     padding: 10px;
+ }
+.right{
+
 }
 .divTable{ display: table; user-select:none}
+.page{margin-left:auto;
+    margin-right:auto;
+    display:table;
+    padding: 30px;
+}
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}
 .divTableCell, .divTableCell1, .divTableHead {display:table-cell;width:50px ;height:50px; }
-.blue_pieces{user-select:none;}
+.blue_front{user-select:none;}
 .divTableBody { display: table-row-group;}

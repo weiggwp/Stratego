@@ -2,31 +2,54 @@ package Stratego.board;
 
 public class Move {
     private long GameID;
-    private String player; //either computer or user
+//    private String player; //either computer or user
     private int start_x;
     private int start_y;
     private int end_x;
     private int end_y;
+    private char color;
+    private int moveNum;
     private Move_status status; //response about the attempted move
 
+    public int getMoveNum(){
+        return moveNum;
+    }
+    public void setMoveNum(int moveNum){
+        this.moveNum=moveNum;
+    }
+    public void setColor(char color){
+        this.color=color;
+    }
+    public char getColor(){
+        return color;
+    }
 
-    public Move(long gameID, String player, int start_x, int start_y, int end_x, int end_y, Move_status status) {
+    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color ,Move_status status) {
         GameID = gameID;
-        this.player = player;
+        //this.player = player;
         this.start_x = start_x;
         this.start_y = start_y;
         this.end_x = end_x;
         this.end_y = end_y;
+        this.color = color;
         this.status = status;
     }
-
-    public String getPlayer() {
-        return player;
+    public String getStart()
+    {
+        return this.getStart_x()+","+this.getStart_y();
+    }
+    public String getEnd()
+    {
+        return this.getEnd_x()+","+this.getEnd_y();
+    }
+    public boolean movedBack(int startingX, int startingY, int endingX, int endingY)
+    {
+        String start = startingX+","+startingY;
+        String end = endingX+","+endingY;
+        //[1,1]->[2,2]   [2,2]->[1,1]
+        return this.getEnd().equals(start) && this.getStart().equals(end);
     }
 
-    public void setPlayer(String player) {
-        this.player = player;
-    }
 
     public int getStart_x() {
         return start_x;
@@ -71,4 +94,8 @@ public class Move {
     public long getGameID() {
         return GameID;
     }
+
 }
+
+
+

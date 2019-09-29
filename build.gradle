@@ -8,11 +8,29 @@ group = 'Royal_blue_hw1'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-repositories {
-    mavenCentral()
+jar {
+    manifest {
+        attributes 'Main-Class': 'Stratego.StrategoApplication'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
+
+repositories {
+    mavenCentral()
+
+}
+dependencyManagement {
+/*    imports {
+        mavenBom "com.microsoft.azure:azure-spring-boot-bom:${azureVersion}"
+    }*/
+}
 dependencies {
+   /* implementation 'com.microsoft.azure:azure-spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'*/
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -29,10 +47,43 @@ dependencies {
     testImplementation('org.junit.jupiter:junit-jupiter-api:5.4.2')
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
-    
+
 }
 
 
 test {
     useJUnitPlatform()
 }
+ext {
+    set('azureVersion', "2.1.7")
+}
+/*
+
+gradlePlugin {
+    plugins {
+        "${project.pluginShortName}Plugin" {
+            id                  = project.pluginId
+            implementationClass = project.pluginImplementationClass
+        }
+    }
+}*/
+
+/*pluginBundle {
+    website     = 'https://github.com/lenala/azure-gradle-plugins'
+    vcsUrl      = 'https://github.com/lenala/azure-gradle-plugins.git'
+    description = project.projectDescription
+    tags        = ['azure']
+
+    plugins {
+        "${project.pluginShortName}Plugin" {
+            id          = project.pluginId
+            displayName = project.displayName
+        }
+    }
+
+    mavenCoordinates {
+        groupId    = project.group
+        artifactId = project.name
+        version    = project.version
+    }
+}*/

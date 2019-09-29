@@ -58,12 +58,12 @@ public class MoveService {
 
         if (isPlayer == 1) {
             for (Reposition reposition : allRepositions) {
-                if (!reposition.getPieceCapturedByOpponent().equals("None"))
+                if (reposition.getPieceCapturedByOpponent()!=' ')
                     stringBuilder.append(reposition.getPieceCapturedByOpponent());
             }
         } else {
             for (Reposition reposition : allRepositions) {
-                if (!reposition.getPieceCapturedByPlayer().equals("None"))
+                if (reposition.getPieceCapturedByPlayer()!=' ')
                     stringBuilder.append(reposition.getPieceCapturedByPlayer());
             }
         }

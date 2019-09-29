@@ -1,42 +1,66 @@
 package Stratego.board;
 
 public class Move_status {
+
     private boolean is_valid_move;
     private String error_message;   //display err_msg on board if invalid move
 
     private boolean game_ended;    //indicates if game has ended
     private String game_result;    //if game ended, either be win:lose:draw:null (game did not end)
 
-    private boolean capture;
-    private String captured;       //who is captured, capturing, or tied
-    private String image_src;  /* if AI captures a user piece, it must be revealed*/
+    private int fight_result;   //4 for no fight, 0 user win, 1 user lose, 2 tie, 3 game_over
+    private char pieceCapturedByPlayer=' ';
+    private char pieceCapturedByComputer=' ';
 
-    private String piece_name;
+    private String image_src;  //what is left on the board /* if AI captures a user piece, it must be revealed*/
 
-    private String pieceCapturedByPlayer;
-    private String pieceCapturedByComputer;
+    private char piece_name; // name/rank of the piece
 
-    public String getPieceCapturedByPlayer() {
+
+    public char getPieceCapturedByPlayer() {
         return pieceCapturedByPlayer;
     }
 
-    public void setPieceCapturedByPlayer(String pieceCapturedByPlayer) {
+    public void setPieceCapturedByPlayer(char pieceCapturedByPlayer) {
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
     }
 
-    public String getPieceCapturedByComputer() {
+    public Move_status(boolean is_valid_move, String error_message, boolean game_ended, String game_result, int fight_result, char pieceCapturedByPlayer, char pieceCapturedByComputer, String image_src, char piece_name) {
+        this.is_valid_move = is_valid_move;
+        this.error_message = error_message;
+        this.game_ended = game_ended;
+        this.game_result = game_result;
+        this.fight_result = fight_result;
+        this.pieceCapturedByPlayer = pieceCapturedByPlayer;
+        this.pieceCapturedByComputer = pieceCapturedByComputer;
+        this.image_src = image_src;
+        this.piece_name = piece_name;
+    }
+
+    public Move_status()
+    {
+        this.notValid(false,"");    //initialize to not valid
+        this.game_ended = false;
+        this.image_src = "";
+    }
+    public void notValid(boolean is_valid,String error)  //if invalid, don't need to set anything else
+    {
+        this.is_valid_move = is_valid;
+        this.error_message = error;
+    }
+    public char getPieceCapturedByComputer() {
         return pieceCapturedByComputer;
     }
 
-    public void setPieceCapturedByComputer(String pieceCapturedByComputer) {
+    public void setPieceCapturedByComputer(char pieceCapturedByComputer) {
         this.pieceCapturedByComputer = pieceCapturedByComputer;
     }
 
-    public String getPiece_name() {
+    public char getPiece_name() {
         return piece_name;
     }
 
-    public void setPiece_name(String piece_name) {
+    public void setPiece_name(char piece_name) {
         this.piece_name = piece_name;
     }
 
@@ -49,7 +73,7 @@ public class Move_status {
         if(!is_valid_move)
         {
             this.game_ended=false;
-            this.capture=false;
+            this.fight_result=-1;
 
         }
     }
@@ -66,9 +90,12 @@ public class Move_status {
         return game_ended;
     }
 
-    public void setGame_ended(boolean game_ended) {
-        this.game_ended = game_ended;
+    public void gameEnded()
+    {
+        this.game_ended = true;
+        this.game_result = "win";
     }
+
 
     public String getGame_result() {
         return game_result;
@@ -78,27 +105,21 @@ public class Move_status {
         this.game_result = game_result;
     }
 
-    public boolean isCapture() {
-        return capture;
-    }
-
-    public void setCapture(boolean capture) {
-        this.capture = capture;
-    }
-
-    public String getCaptured() {
-        return captured;
-    }
-
-    public void setCaptured(String captured) {
-        this.captured = captured;
-    }
 
     public String getImage_src() {
-        return image_src;
+        return new String(this.image_src);
+    }
+
+    public int getFight_result() {
+        return fight_result;
+    }
+
+    public void setFight_result(int fight_result) {
+        this.fight_result = fight_result;
     }
 
     public void setImage_src(String image_src) {
         this.image_src = image_src;
     }
+
 }
