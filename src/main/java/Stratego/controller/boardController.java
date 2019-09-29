@@ -230,8 +230,34 @@ public class boardController {
     public ResponseEntity getAIPlayer()
     {
         Move ai_move = game.getAIMove('B');
-        ai_move.setGameID(GameID);
-        ai_move.setMoveNum(move_num++);
+//        ai_move.setGameID(GameID);
+//        ai_move.setMoveNum(move_num++);
+//        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
+        Move m = game.getAIMove('R');
+        Move_status moveStatus = m.getStatus();
+        if (m.getStatus().isGame_ended()) {
+            long GameID = m.getGameID();
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            String username = "";
+            if (principal instanceof UserDetails) {
+                username = ((UserDetails) principal).getUsername();
+            } else {
+                username = principal.toString();
+            }
+            String gameResult = moveStatus.getGame_result();
+            Date date = new Date();
+            User user = userService.findByUsername(username);
+            long userId = user.getId();
+            long unixTime = date.getTime();
+            Match match = new Match(GameID, userId, gameResult, unixTime);
+            matchService.addMatch(match);
+
+        } else {
+            m.setMoveNum(move_num++);
+            Reposition move = Extractor.extractMove(m);
+            moveService.addMove(move);
+        }
+
         return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
 
