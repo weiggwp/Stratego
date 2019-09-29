@@ -116,6 +116,19 @@ div.board {
     height: 20%;
     padding-bottom: 2px;
 }
+/*.status*/
+/*{*/
+/*    min-height: 200px;*/
+/*    min-width: 400px;*/
+/*    border-radius: 18px;*/
+/*    background-color: #517256;*/
+/*    display: inline-block;*/
+
+/*    float: right;*/
+/*    text-align: center;*/
+/*    margin-left:auto;*/
+/*    margin-right:auto;*/
+/*}*/
 .btn-info{
 
     width:8%;
@@ -125,11 +138,12 @@ div.board {
 
 }
 .rectangle {
-    height: 700px;
-    width: 200px;
+    max-height: 600px;
+    max-width: 150px;
     border-radius: 25px;
-    background-color: #000072;
-
+    background-color: #3e5c72;
+    /*padding:10px;*/
+    /*display:inline-block;*/
     float: left;
     text-align: center;
     margin-left:auto;
@@ -151,10 +165,11 @@ div.board {
 
 }
 .divTable{ display: table; user-select:none}
-.page{margin-left:auto;
+
+.page{
+    margin-left:auto;
     margin-right:auto;
-    display:table;
-    padding: 30px;
+    display:table
 }
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}

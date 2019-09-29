@@ -23,7 +23,10 @@ public class Move {
     public char getColor(){
         return color;
     }
-
+    public void setGameID(long id)
+    {
+        this.GameID = id;
+    }
     public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color ,Move_status status) {
         GameID = gameID;
         //this.player = player;

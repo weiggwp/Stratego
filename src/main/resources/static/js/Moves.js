@@ -215,7 +215,8 @@ function fastForward(){
     permission=false;
     hidePieceNums();
     aiMove('B');
-    console.log("AAA");
+    aiMove('R');
+    // console.log("AAA");
 
     permission=true;
 
@@ -508,7 +509,6 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
     console.log("start is " + start+", end is " + end);
     if (color==='B') {
 
-
         //if (resp.startsWith("win")) { //it
 
         if(fight_result===0||fight_result==4) //mover wins
@@ -570,7 +570,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         }
 
         if (!replay)
-            aiMove();
+            aiMove('R');
     }
     else{
 
@@ -701,11 +701,11 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             //console.log("RESPONSE IS "+http.response.toString());
 
             let response = JSON.parse(http.response.toString());
-            let legal = response.user.status.is_valid_move;
-            let fight_result = response.user.status.fight_result;
-            let game_result = response.user.status.game_ended;
-            let img_src = response.user.status.image_src;
-            console.log("imgsrc is " + response.user.status.image_src);
+            let legal = response.status.is_valid_move;
+            let fight_result = response.status.fight_result;
+            let game_result = response.status.game_ended;
+            let img_src = response.status.image_src;
+            console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
             if (legal==false) return;

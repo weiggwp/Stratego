@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 public class boardController {
     private long GameID=0;
+    private int move_num = 0;
 
     @Autowired
     PlacementService placementService;
@@ -33,7 +34,7 @@ public class boardController {
         int inner = 10;
         //boardController control = new boardController();
         game = new Game(++GameID);
-
+        move_num = 0;
         long gameId = GameID;
         Board board = game.getBoard();
 
@@ -79,6 +80,8 @@ public class boardController {
         System.out.println("moving");
        // String status=
         Move_status stat = game.move(m);
+        m.setGameID(GameID);
+        m.setMoveNum(move_num++);
                 //(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
         //game.setCurrent_move(m);//  filling in move_status from game
         if(stat.isIs_valid_move())    //not a valid move
@@ -123,17 +126,19 @@ public class boardController {
     @ResponseBody
     public ResponseEntity getAI()
     {
-
-        return new ResponseEntity<Move>(game.getAIMove('R'),HttpStatus.OK);
-
+        Move ai_move = game.getAIMove('R');
+        ai_move.setGameID(GameID);
+        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
     }
     @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
     @ResponseBody
     public ResponseEntity getAIPlayer()
     {
-
-        return new ResponseEntity<Move>(game.getAIMove('B'),HttpStatus.OK);
+        Move ai_move = game.getAIMove('B');
+        ai_move.setGameID(GameID);
+        ai_move.setMoveNum(move_num++);
+        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
 
     }

@@ -114,8 +114,8 @@ public class Game {
     Calls ai's ai move method to evaluate and return best move
     validate move and set status and add move to the list
      */
-    public Move getAIMove(){
-        SimulationMove sm =ai.AI_Move(board,'R',moves);
+    public Move getAIMove(char color){
+        SimulationMove sm =ai.AI_Move(board,color,moves);
         //Move_status stat = new Move_status();
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
@@ -151,25 +151,30 @@ public class Game {
         int result=attack(board.getPieceAtLocation(startingX,startingY).getUnit(),board.getPieceAtLocation(endingX,endingY).getUnit());
         move_stat.setFight_result(result);
         move_stat.setIs_valid_move(true);
+
         BoardPiece you = board.getPieceAtLocation(startingX,startingY);
         BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+
         move_stat.setPiece_name(you.getUnit());
         board.boardAction(result,color,you,opponent);//do it after the pieces have updated
         //you are the attacker, and the opponent the defender
         if (result==0){//winning case
 
             capture(move_stat,color,you.getUnit());   //return unit for now
-            String a = you.getImg_src();
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();//opponent's piece
+            //String a = you.getImg_src();
 
             move_stat.setImage_src(a);
+
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             //return "win "+a; // mover wins
         }
-        else if (result==1){
+        else if (result==1){    //lose
 
 //            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
-            String a = opponent.getImg_src();//opponent's piece
+            //String a = opponent.getImg_src();//opponent's piece
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
 
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
@@ -181,10 +186,10 @@ public class Game {
         else if (result==2){
             //tie and clear both
 //            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
-            String a = opponent.getImg_src();
+           // String a = opponent.getImg_src();
 
                     //board.getPieceAtLocation(endingX,endingY).getImg_src();
-
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture(move_stat,color,opponent.getUnit());//you captured the opponent's unit
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//opponent captured your piece as well
             move_stat.setImage_src(a);
