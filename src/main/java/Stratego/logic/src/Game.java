@@ -72,7 +72,7 @@ public class Game {
         //[1,1]->[1,2]      initial
         // [1,2]->[1,1]     second
         // [1,1]-> [1,2] (current attempted move)
-        if(moves.size()<(2*2))
+        if(moves.size()<(2*3))//6 moves
             return false;   //need at least 2 rounds of moves
         //System.out.println("currently in round"+moves.size()+" color:"+color);
         String current_start = startingX+","+startingY;
@@ -80,15 +80,19 @@ public class Game {
 
         Move lastMove = moves.get(moves.size()-2); //get the last valid move this person made
 //        System.out.println("last move made: "+lastMove.getStart()+" to "+lastMove.getEnd());
-        Move firstMove = moves.get(moves.size()-4);
+        Move secondMove = moves.get(moves.size()-4);
+        Move firstMove = moves.get(moves.size()-6);
 //        System.out.println("first move made: "+firstMove.getStart()+" to "+firstMove.getEnd());
-        if(lastMove.movedBack(startingX,startingY,endingX,endingY))
+        if(lastMove.movedBack(startingX,startingY,endingX,endingY)
+        && secondMove.movedBack(lastMove.getStart_x(),lastMove.getStart_y(),lastMove.getEnd_x(),lastMove.getEnd_y())
+        && firstMove.movedBack(secondMove.getStart_x(),secondMove.getStart_y(),secondMove.getEnd_x(),secondMove.getEnd_y()))
         {
-            if(current_start.equals(firstMove.getStart()) && current_end.equals(firstMove.getEnd()))
-            {
-                return true;
-            }
-            return false;
+//            if(current_start.equals(firstMove.getStart()) && current_end.equals(firstMove.getEnd()))
+//            {
+//                return true;
+//            }
+//            return false;
+            return true;
         }
         return false;
 
