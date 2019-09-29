@@ -20,7 +20,7 @@ build/
 *.iml
 *.ipr
 out/
-src/main/resources/templates/application.properties
+
 
 ### NetBeans ###
 /nbproject/private/
