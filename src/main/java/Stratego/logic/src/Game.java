@@ -126,8 +126,8 @@ public class Game {
         }
 
     }
-    public Move getAIMove(){
-        SimulationMove sm =ai.AI_Move(board,'R');
+    public Move getAIMove(char color){
+        SimulationMove sm =ai.AI_Move(board,color);
         Move_status stat = new Move_status();
         stat.setIs_valid_move(true);
         stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
