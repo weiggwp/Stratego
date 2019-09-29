@@ -164,6 +164,7 @@ function highlight(i,m) {
     console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
+let lastsrc='';
 function updateSidebar(src){
     let num=src.substring(src.lastIndexOf("piece")+5,src.lastIndexOf(".png"));
     console.log("num is "+num);
@@ -174,6 +175,9 @@ function updateSidebar(src){
     let newNum=(prevNum+1).toString();
     let finalRet = document.getElementById(numString).innerHTML.substring(0,document.getElementById(numString).innerHTML.length-1).concat(newNum);
     document.getElementById(numString).innerHTML=finalRet;
+
+    document.getElementById(numString).style.color='red';
+    lastsrc=numString;
 
 
 }
@@ -491,7 +495,8 @@ function requestBoard(){
 function performMove(start,end,color,fight_result,img_src,replay, undo){
     console.log("start is " + start+", end is " + end);
     if (color==='B') {
-
+        if (lastsrc!='')
+        document.getElementById(lastsrc).style.color='white';
 
         //if (resp.startsWith("win")) { //it
 
