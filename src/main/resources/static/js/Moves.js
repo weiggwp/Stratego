@@ -99,7 +99,7 @@ function fastForwardReplayAuto(time){
     if (!forward){
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         document.getElementById('nextMoveBtn').style.opacity='1';
-        document.getElementById('undoMoveBtn').style.opacity='.65';
+        document.getElementById('undoMoveBtn').style.opacity='1';
         return;
     }
     document.getElementById('nextMoveBtn').style.opacity='.65';
