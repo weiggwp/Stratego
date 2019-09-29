@@ -1,5 +1,6 @@
 package Stratego.logic.src;
 
+import Stratego.board.Move;
 import Stratego.logic.src.BoardPiece;
 
 public class SimulationMove {
@@ -15,6 +16,30 @@ public class SimulationMove {
     private char color;
 
     private SimulationMove prev;
+
+    public SimulationMove(int start_x, int start_y, int end_x, int end_y, BoardPiece starting_piece, BoardPiece destination_piece, char color) {
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.starting_piece = starting_piece;
+        this.destination_piece = destination_piece;
+    }
+
+    public SimulationMove(Move move) {
+        this.start_x = move.getStart_x();
+        this.start_y = move.getStart_y();
+        this.end_x = move.getEnd_x();
+        this.end_y = move.getEnd_y();
+        this.color = move.getColor();
+    }
+    public SimulationMove(int start_x, int start_y, int end_x, int end_y, char player_color) {
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.color = player_color;
+    }
 //    private SimulationMove next;
 
     public BoardPiece getStarting_piece() {
@@ -51,14 +76,7 @@ public class SimulationMove {
         return color;
     }
 
-    public SimulationMove(int start_x, int start_y, int end_x, int end_y, BoardPiece starting_piece, BoardPiece destination_piece, char color) {
-        this.start_x = start_x;
-        this.start_y = start_y;
-        this.end_x = end_x;
-        this.end_y = end_y;
-        this.starting_piece = starting_piece;
-        this.destination_piece = destination_piece;
-    }
+
 
 
     public int getStart_x() {
@@ -102,6 +120,21 @@ public class SimulationMove {
                 ", y=" + end_y +
                 '}';
 
+    }
+    public String getStart()
+    {
+        return this.getStart_x()+","+this.getStart_y();
+    }
+    public String getEnd()
+    {
+        return this.getEnd_x()+","+this.getEnd_y();
+    }
+    public boolean movedBack(SimulationMove prev_move)
+    {
+        String start = prev_move.getStart();
+        String end = prev_move.getEnd();
+        //[1,1]->[2,2]   [2,2]->[1,1]
+        return this.getEnd().equals(start) && this.getStart().equals(end);
     }
 }
 
