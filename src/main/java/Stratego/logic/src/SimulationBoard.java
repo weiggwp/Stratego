@@ -1,5 +1,9 @@
 package Stratego.logic.src;
 
+import Stratego.board.Move;
+
+import java.util.ArrayList;
+
 public class SimulationBoard{
 
     public static final int[] BOARD_SIZE = new int[]{10,10};
@@ -7,7 +11,7 @@ public class SimulationBoard{
     private BoardPiece[][] gameboard= new BoardPiece[ BOARD_SIZE[0] ][ BOARD_SIZE[1] ];
     private boolean gameEnded = false;
     private char winner = '0';
-    private SimulationMove prev_move = null;
+    private SimulationMove move_ptr = null;
 
     public SimulationBoard(Board board) {
         for(int i=0;i<BOARD_SIZE[0];i++){
@@ -19,7 +23,25 @@ public class SimulationBoard{
         gameEnded = false;
         winner = '0';
     }
+    public SimulationBoard(Board board, ArrayList<Move> moves) {
+        for(int i=0;i<BOARD_SIZE[0];i++){
+            for(int j=0;j<BOARD_SIZE[1];j++){
+                this.gameboard[i][j] = board.getPiece(i,j).clone();
 
+            }
+        }
+
+        int last_index = moves.size()-1;
+        for(int i=0;i<=last_index;i++){
+            Move move = moves.get(last_index-i);
+            SimulationMove simulationMove = new SimulationMove(move);
+            simulationMove.setPrev(move_ptr);
+            move_ptr = simulationMove;
+            if(i==4)break;
+        }
+        gameEnded = false;
+        winner = '0';
+    }
     public BoardPiece[][] getGameboard() {
         return gameboard;
     }
@@ -55,16 +77,49 @@ public class SimulationBoard{
     }
 */
     /*Returns false on illegal move, true on legal move.*/
-//    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color) {
-//        Board board = new Board(gameboard);
-//        return Game.isLegalMove(board, startingX, startingY, endingX, endingY, color);
-//    }
 
-    public boolean isLegalMove(int startingX, int startingY, int endingX, int endingY, char color){
+    public boolean makingLoops(SimulationMove move)
+    {
+        //[1,1]->[1,2]      initial
+        // [1,2]->[1,1]     second
+        // [1,1]-> [1,2] (current attempted move)
+        boolean my_move = false;
+        int count = 0;
+        SimulationMove temp = move_ptr;
+        while(temp!=null) //if has previous move
+        {
+            if(!my_move){
+                my_move=true;
+                temp = move_ptr.getPrev();
+                continue;
+            }
+
+            //is my move
+            boolean moved_back = move.movedBack(temp);
+            if (!moved_back) return false;
+
+            // moved back
+            move = temp;
+            count++;
+            if( count>=2) return true;
+            temp = temp.getPrev();
+        }
+        return false;
+    }
+
+    public boolean isLegalMove(SimulationMove simulationMove){
+        int     startingX = simulationMove.getStart_x(),
+                startingY = simulationMove.getStart_y(),
+                endingX   = simulationMove.getEnd_x(),
+                endingY   = simulationMove.getEnd_y();
+        char color = simulationMove.getColor();
+
         if (gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             return false;
         }
+        if(makingLoops(simulationMove))
+            return false;
 
         if (gameboard[endingX][endingY].isLake()){
             return false;
@@ -133,27 +188,30 @@ public class SimulationBoard{
 
         public void undo_move() {
             //todo: please implement
-            SimulationMove move_to_undo = prev_move;
-            gameboard[prev_move.getStart_x()][prev_move.getStart_y()] = prev_move.getStarting_piece();
-            gameboard[prev_move.getEnd_x()][prev_move.getEnd_y()] = prev_move.getDestination_piece();
+            SimulationMove move_to_undo = move_ptr;
+            gameboard[move_ptr.getStart_x()][move_ptr.getStart_y()] = move_ptr.getStarting_piece();
+            gameboard[move_ptr.getEnd_x()][move_ptr.getEnd_y()] = move_ptr.getDestination_piece();
             gameEnded = false;
             winner = '0';
-            prev_move = prev_move.getPrev();
+            move_ptr = move_ptr.getPrev();
         }
 
         /*Attempt to move unit to a tile*/
-        public String move(int startingX, int startingY, int endingX, int endingY, char color) {
+        public String move(SimulationMove simulationMove) {
+            int     startingX = simulationMove.getStart_x(),
+                    startingY = simulationMove.getStart_y(),
+                    endingX   = simulationMove.getEnd_x(),
+                    endingY   = simulationMove.getEnd_y();
+            char color = simulationMove.getColor();
 
-//        displayGameBoard();
-
-            if (!isLegalMove(startingX, startingY, endingX, endingY, color)) {
+            if (!isLegalMove(simulationMove)) {
 //            illegalMove();
                 return "illegal";
             }
             SimulationMove sm = new SimulationMove(startingX, startingY, endingX, endingY,
                     gameboard[startingX][startingY].clone(), gameboard[endingX][endingY].clone(), color);
-            sm.setPrev(prev_move);
-            prev_move = sm;
+            sm.setPrev(move_ptr);
+            move_ptr = sm;
 
             int result = attack(gameboard[startingX][startingY].getUnit(), gameboard[endingX][endingY].getUnit());
             if (result == 0) {

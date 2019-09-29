@@ -32,7 +32,8 @@ import java.util.Date;
 
 @RestController
 public class boardController {
-    private long GameID = 0;
+
+    private long GameID=0;
     private int move_num = 0;
 
     @Autowired
@@ -52,9 +53,8 @@ public class boardController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        GameID ++;
-        game = new Game(GameID);
-
+        game = new Game(++GameID);
+        move_num = 0;
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
         Board board = game.getBoard();
@@ -104,7 +104,6 @@ public class boardController {
         m.setGameID(GameID);
         m.setMoveNum(move_num++);
 
-        //(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
         //game.setCurrent_move(m);//  filling in move_status from game
         if (stat.isIs_valid_move())    //not a valid move
         {
@@ -172,9 +171,9 @@ public class boardController {
 
     @RequestMapping(value = "/get_AI", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity getAI() {
+    public ResponseEntity getAI(char color) {
 
-        Move m = game.getAIMove();
+        Move m = game.getAIMove(color);
         Move_status moveStatus = m.getStatus();
         if (m.getStatus().isGame_ended()) {
             long GameID = m.getGameID();
@@ -224,8 +223,17 @@ public class boardController {
             }
         }
 
-        matchService.addMatch(new Match(1, 25,"win", 3333333333333L));
+        matchService.addMatch(new Match(1, 25, "win", 3333333333333L));
         // should I say anything back to client?
+    }
+    @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity getAIPlayer(char color)
+    {
+        Move ai_move = game.getAIMove(color);
+        ai_move.setGameID(GameID);
+        ai_move.setMoveNum(move_num++);
+        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
 
     }

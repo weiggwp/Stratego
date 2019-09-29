@@ -4,21 +4,18 @@ import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.board.Round;
 import Stratego.board.arrangement;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 //a game has a board and moves associated with it
 public class Game {
-
     private Board board;    //a unique board per game
     private ArrayList<Move> moves;  //variable length of moves
     private long GameID; //
     private int gameWinner;
     private String err_msg;
-
+    private Move current_move;
     private Move_status move_stat;
     private AI ai;
     //HashMap<String, ArrayList> piecesLost;    - will be updating per move
@@ -71,8 +68,7 @@ public class Game {
     {
         this.moves.add(m);
     }
-
-    public boolean madeLoopMove(int startingX, int startingY, int endingX, int endingY, char color)
+    public boolean madeLoopMove(int startingX, int startingY, int endingX, int endingY,char color)
     {
         //[1,1]->[1,2]      initial
         // [1,2]->[1,1]     second
@@ -119,8 +115,8 @@ public class Game {
     Calls ai's ai move method to evaluate and return best move
     validate move and set status and add move to the list
      */
-    public Move getAIMove(){
-        SimulationMove sm =ai.AI_Move(board,'R');
+    public Move getAIMove(char color){
+        SimulationMove sm =ai.AI_Move(board,color,moves);
         //Move_status stat = new Move_status();
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
@@ -144,6 +140,8 @@ public class Game {
         //move.setStatus(move_stat);
 
         System.out.println();System.out.println();
+
+        this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
             move_stat.setError_message(err_msg);   //by default invalid move
@@ -154,25 +152,30 @@ public class Game {
         int result=attack(board.getPieceAtLocation(startingX,startingY).getUnit(),board.getPieceAtLocation(endingX,endingY).getUnit());
         move_stat.setFight_result(result);
         move_stat.setIs_valid_move(true);
+
         BoardPiece you = board.getPieceAtLocation(startingX,startingY);
         BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+
         move_stat.setPiece_name(you.getUnit());
         board.boardAction(result,color,you,opponent);//do it after the pieces have updated
         //you are the attacker, and the opponent the defender
         if (result==0){//winning case
 
             capture(move_stat,color,you.getUnit());   //return unit for now
-            String a = you.getImg_src();
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();//opponent's piece
+            //String a = you.getImg_src();
 
             move_stat.setImage_src(a);
+
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             //return "win "+a; // mover wins
         }
-        else if (result==1){
+        else if (result==1){    //lose
 
 //            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
-            String a = opponent.getImg_src();//opponent's piece
+            //String a = opponent.getImg_src();//opponent's piece
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
 
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
@@ -184,10 +187,10 @@ public class Game {
         else if (result==2){
             //tie and clear both
 //            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
-            String a = opponent.getImg_src();
+           // String a = opponent.getImg_src();
 
                     //board.getPieceAtLocation(endingX,endingY).getImg_src();
-
+            String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture(move_stat,color,opponent.getUnit());//you captured the opponent's unit
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//opponent captured your piece as well
             move_stat.setImage_src(a);

@@ -1,23 +1,25 @@
 package Stratego.logic.src;
 
+import Stratego.board.Move;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.Math.max;
 
 public class AI {
-
     public AI() {
     }
 
-    public SimulationMove AI_Move(Board board, char player_color){
+    public SimulationMove AI_Move(Board board, char player_color, ArrayList<Move> moves){
         int depth =3;
-        return AI_Move(board,player_color,depth);
+        return AI_Move(board,player_color,depth,moves);
     }
-    public SimulationMove AI_Move(Board board, char player_color,int depth){
+    public SimulationMove AI_Move(Board board, char player_color,int depth,ArrayList<Move> moves){
 
         //Create simulation board by copying original
-        SimulationBoard simulationBoard = new SimulationBoard(board);
+        SimulationBoard simulationBoard = new SimulationBoard(board,moves);
 
         // generate all possible moves
         List<SimulationMove> all_moves = calculate_all_possible_moves(simulationBoard,player_color);
@@ -26,7 +28,7 @@ public class AI {
         double min_score = Integer.MAX_VALUE;
         SimulationMove best_move = null;
         for (SimulationMove move : all_moves) {
-            simulationBoard.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+            simulationBoard.move(move);
 //            System.out.println("AFter move: AI");
 //            simulationBoard.displayGameBoard();
             // get the score for current move
@@ -55,19 +57,19 @@ public class AI {
             return 'R';
     }
 
-//    function negamax(node, depth, α, β, color) is
-//    if depth = 0 or node is a terminal node then
-//        return color × the heuristic value of node
-//
-//    childNodes := generateMoves(node)
-//    childNodes := orderMoves(childNodes)
-//    value := −∞
-//    foreach child in childNodes do
-//    value := max(value, −negamax(child, depth − 1, −β, −α, −color))
-//    α := max(α, value)
-//        if α ≥ β then
-//            break (* cut-off *)
-//            return value
+/*    function negamax(node, depth, α, β, color) is
+    if depth = 0 or node is a terminal node then
+        return color × the heuristic value of node
+
+    childNodes := generateMoves(node)
+    childNodes := orderMoves(childNodes)
+    value := −∞
+    foreach child in childNodes do
+    value := max(value, −negamax(child, depth − 1, −β, −α, −color))
+    α := max(α, value)
+        if α ≥ β then
+            break (* cut-off *)
+            return value*/
     public double negamax(SimulationBoard board, int depth, double alpha, double beta, char player_color){
         if(depth==0 || board.isGameEnded()){
 //            System.out.println("****************hit depth");
@@ -81,7 +83,7 @@ public class AI {
         double value = Integer.MIN_VALUE;
 
         for (SimulationMove move : all_moves) {
-            board.move(move.getStart_x(), move.getStart_y(), move.getEnd_x(), move.getEnd_y(), player_color);
+            board.move(move);
 //            System.out.println("AFter move: negamax"+depth);
 //            board.displayGameBoard();
             // get the score for current move
@@ -152,9 +154,10 @@ public class AI {
             // perfrom once if not scout, or as many as possible
             do {
                 piece_X_new--;
-                boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
+                SimulationMove move = new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color);
+                boolean valid_move = board.isLegalMove(move);
                 if (valid_move) {
-                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+                    moves.add(move);
                 }
                 else break;;
             }while(unit=='2' && piece_X_new>0);
@@ -168,9 +171,10 @@ public class AI {
             // perfrom once if not scout, or as many as possible
             do {
                 piece_X_new++;
-                boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
+                SimulationMove move = new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color);
+                boolean valid_move = board.isLegalMove(move);
                 if (valid_move) {
-                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+                    moves.add(move);
 
                 }
                 else break;;
@@ -186,9 +190,10 @@ public class AI {
             // perfrom once if not scout, or as many as possible
             do {
                 piece_Y_new++;
-                boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
+                SimulationMove move = new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color);
+                boolean valid_move = board.isLegalMove(move);
                 if (valid_move) {
-                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+                    moves.add(move);
 
                 }
                 else break;;
@@ -206,9 +211,10 @@ public class AI {
             // perfrom once if not scout, or as many as possible
             do {
                 piece_Y_new--;
-                boolean valid_move = board.isLegalMove(piece_X, piece_Y, piece_X_new, piece_Y_new, player_color);
+                SimulationMove move = new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color);
+                boolean valid_move = board.isLegalMove(move);
                 if (valid_move) {
-                    moves.add(new SimulationMove( piece_X, piece_Y, piece_X_new, piece_Y_new, piece, board.getPiece(piece_X_new,piece_Y_new),player_color));
+                    moves.add(move);
 
                 }
                 else break;;
