@@ -48,6 +48,7 @@ function startReplay() {
     }
 }
 function undoMove(){
+    if (forward) return;
     document.getElementById("nextMoveBtn").style.visibility='visible';
     if (numMoves==0) return;
     numMoves--;
@@ -80,11 +81,41 @@ function undoMove(){
     //numMoves++;
     if (numMoves==0)   document.getElementById("undoMoveBtn").style.visibility='hidden';
 }
-function fastForwardReplay(){
+let forward=false;
+function fastForwardReplay(time){
+    forward=!forward;
+    if (!forward){
+        console.log("Forward off.");
+        return;
+    }
+    if (numMoves==moveList.length) return;
+    console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
+    setTimeout(function(){nextMove(); fastForwardReplayAuto(1000);}, time);
+
+
 
 }
-function nextMove(){
+function fastForwardReplayAuto(time){
+    if (!forward){
+        document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
 
+        return;
+    }
+    document.getElementById('fastForwardReplayBtn').innerHTML='Pause';
+    console.log("forward is " +forward);
+    if (numMoves==moveList.length) return;
+    console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
+    setTimeout(function(){nextMove(true); fastForwardReplayAuto(1000);}, time);
+}
+function fastForwardReplayTime(){
+    fastForwardReplay(0)
+}
+function nextMoveClick(){
+    if (!forward) nextMove(false);
+}
+function nextMove(fastForward){
+    if (fastForward&&!forward) return;
+    if (numMoves==moveList.length) return;
     document.getElementById("undoMoveBtn").style.visibility='visible';
     console.log(moveList[numMoves]);
     performMove(moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
@@ -539,7 +570,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         if(fight_result===4)
         {
             document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
-            //document.getElementById((start).toString()).style.opacity='.02'
+            if (replay)document.getElementById((start).toString()).style.opacity='.02'
         }
         //if (resp.startsWith("win")) {
         if(fight_result===0)
@@ -555,7 +586,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
             document.getElementById(end.toString()).src =
                 img_src
             revealedTwo=(end);
-            //document.getElementById((start).toString()).style.opacity='.02'
+            if (replay)document.getElementById((start).toString()).style.opacity='.02'
             if (revealedOne==revealedTwo)revealedTwo=-1;
             //(resp.substring(resp.lastIndexOf(" ")+1));
             //document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
@@ -568,7 +599,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
                 if (!undo)
                 deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
-            //document.getElementById(start).style.opacity='.02';
+            if (replay)document.getElementById(start).style.opacity='.02';
         }
         //else if (resp.startsWith("draw")){
         else if(fight_result===2)
