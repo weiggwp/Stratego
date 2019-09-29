@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-import java.util.List;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 @RestController
 public class replayController {
@@ -41,20 +42,51 @@ public class replayController {
         int count = 10;
         int inner = 10;
 
-        long gameId = gameIdentifier.getGameID();
-        List<Reposition> moves = moveService.readMoves(gameId);
-        Collections.sort(moves);
-        List<Placement> placementList = placementService.getPlacements(gameId);
+        //boardController control = new boardController();
+     /*   game = new Game(++GameID);
 
+        long gameId = GameID;
+        Board board = game.getBoard();
+
+        if (board.isInitialized()) {
+            BoardPiece[][] boardPiece = board.getBoard();
+            for (int i = 0; i < 10; i++) {
+                for (int j = 0; j < 10; j++) {
+                    BoardPiece piece = boardPiece[i][j];
+
+                    // attributes to saved
+                    int x = i;
+                    int y = j;
+                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
+                    char pieceName = piece.getUnit();
+
+                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
+                    placementService.addPlacement(placement);
+                }
+            }
+        }*/
+
+        ArrayList<Placement> list=new ArrayList<>();
+        for (int i=0; i<40; i++)
+            list.add(new Placement(0,i/10,i,'1',0));
+        for (int i=60; i<100; i++)
+            list.add(new Placement(0,i/10,i,'2',1));
+        arrangement arr = new arrangement(0,0);
+        arr.create_pieces_placement(list);
 
         //render board.html
-        modelMap.put("startConfig", placementList);
-        modelMap.put("movesList", moves);
+//        modelMap.put("startConfig", placementList);
+//        modelMap.put("movesList", moves);
 
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);
 
+        // change to arr
+        model.addAttribute("pos", arr);
+
         ModelAndView modelAndView = new ModelAndView();
+
+
         modelAndView.setViewName("replay");
         return modelAndView;
 

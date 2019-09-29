@@ -16,6 +16,11 @@ public class BoardPiece {
         this.color=color;
         this.img_src="";
     }
+
+    public BoardPiece() {
+
+    }
+
     //allows us to find out where the pieces are after the game has started
     //arrangement keeps an array of pieces
     public void setPlace(int x,int y)
@@ -43,7 +48,6 @@ public class BoardPiece {
         this.unit=unit;
         this.img_src=img;
         this.color=color;
-
     }
 
     public void reset(){
@@ -62,7 +66,10 @@ public class BoardPiece {
     public char getUnit() {
         return unit;
     }
-
+    public void setImg_src(String s)
+    {
+        this.img_src = s;
+    }
     public void setUnit(char unit) {
         this.unit = unit;
     }
@@ -73,12 +80,6 @@ public class BoardPiece {
 
     public void setColor(char color) {
         this.color = color;
-    }
-
-
-    @Override
-    public String toString(){
-        return img_src;
     }
 
     public boolean isMoved() {
@@ -95,6 +96,11 @@ public class BoardPiece {
 
     public void setRevealed(boolean revealed) {
         this.revealed = revealed;
+    }
+
+    @Override
+    public String toString(){
+        return img_src;
     }
 
 
@@ -116,8 +122,6 @@ public class BoardPiece {
     public boolean isScout(){
         return unit=='2';
     }
-
-
     public BoardPiece clone() {
         return new BoardPiece(this.unit,this.img_src,this.color,this.moved,this.revealed);
 
