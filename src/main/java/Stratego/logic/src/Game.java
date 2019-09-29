@@ -120,7 +120,7 @@ public class Game {
         //Move_status stat = new Move_status();
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
-        Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),'R',null);
+        Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),color,null);
         Move_status stat = move(m);
         m.setStatus(stat);
         this.moves.add(m);  //made a move

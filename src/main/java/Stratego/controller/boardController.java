@@ -2,7 +2,6 @@ package Stratego.controller;
 
 import Stratego.board.Move;
 import Stratego.board.Move_status;
-import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
 import Stratego.logic.src.BoardPiece;
@@ -171,9 +170,9 @@ public class boardController {
 
     @RequestMapping(value = "/get_AI", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity getAI(char color) {
+    public ResponseEntity getAI() {
 
-        Move m = game.getAIMove(color);
+        Move m = game.getAIMove('R');
         Move_status moveStatus = m.getStatus();
         if (m.getStatus().isGame_ended()) {
             long GameID = m.getGameID();
@@ -228,9 +227,9 @@ public class boardController {
     }
     @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity getAIPlayer(char color)
+    public ResponseEntity getAIPlayer()
     {
-        Move ai_move = game.getAIMove(color);
+        Move ai_move = game.getAIMove('B');
         ai_move.setGameID(GameID);
         ai_move.setMoveNum(move_num++);
         return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
