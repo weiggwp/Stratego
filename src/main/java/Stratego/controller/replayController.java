@@ -10,6 +10,7 @@ import Stratego.logic.src.Game;
 import Stratego.model.Placement;
 import Stratego.service.PlacementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -19,7 +20,7 @@ import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-public class boardController {
+public class replayController {
     private long GameID=0;
 
     @Autowired
@@ -27,7 +28,8 @@ public class boardController {
 
 
     Game game;
-    @GetMapping("/board")
+    @GetMapping("/replay")
+
     public ModelAndView greeting(Model model) {
         int count = 10;
         int inner = 10;
@@ -61,71 +63,50 @@ public class boardController {
         model.addAttribute("inner", inner);
 
         model.addAttribute("pos", game.getGameSetup());
+
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("board");
+        System.out.println("rauuu");
+        modelAndView.setViewName("replay");
         return modelAndView;
 
         //return "board";
 
 
     }
-
-    @RequestMapping(value = "/make_move", method = RequestMethod.POST )
+    @RequestMapping(value = "/get_Movelist", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity<Move> move(@RequestBody Move m)
-    // RequestBody String some)
+    public ResponseEntity getMovelist()
     {
-        System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-        System.out.println("moving");
-       // String status=
-        Move_status stat = game.move(m);
-                //(m.getStart_x(),m.getStart_y(),m.getEnd_x(),m.getEnd_y(),m.getColor());
-        //game.setCurrent_move(m);//  filling in move_status from game
-        if(stat.isIs_valid_move())    //not a valid move
-        {
-            //computer move comes in another http request
+        //start,end,color,fight_result,img_src
+        Move[] moves = new Move[5];
+        Move_status stat1= new Move_status();
+        stat1.setIs_valid_move(true);
+        stat1.setFight_result(4);
+        moves[0] = new Move(0,6,0,5,0,' ', stat1);
 
-            m.setStatus(stat);
-            game.madeMove(m);
+        Move_status stat2= new Move_status();
+        stat2.setIs_valid_move(true);
+        stat2.setFight_result(4);
+        moves[1] = new Move(0,3,0,4,0, ' ',stat2);
 
-            return new ResponseEntity<Move>(m,HttpStatus.OK);
-        }
-        else
-        {
-            return new ResponseEntity<Move>(game.makeIllegalMove(m),HttpStatus.OK);
-        }
+        Move_status stat3= new Move_status();
+        stat3.setIs_valid_move(true);
+        stat3.setFight_result(4);
+        moves[2] = new Move(0,6,1,5,1,' ', stat3);
+
+        Move_status stat4= new Move_status();
+        stat4.setIs_valid_move(true);
+        stat4.setFight_result(0);
+        moves[3] = new Move(0,4,0,5,0,' ', stat4);
+
+        Move_status stat5= new Move_status();
+        stat5.setIs_valid_move(true);
+        stat5.setFight_result(1);
+        moves[4] = new Move(0,5,1,5,0,' ', stat5);
+
+        return new ResponseEntity<Move[]>(moves,HttpStatus.OK);
 
 
     }
 
-    @RequestMapping(value = "/swap_piece", method = RequestMethod.POST )
-    @ResponseBody
-    public ResponseEntity swap(@RequestBody Move m)
-    {
-        game.swap(m.getStart_x()-1,m.getStart_y()-1,m.getEnd_x()-1,m.getEnd_y()-1);
-        //need to save the move in game
-        return new ResponseEntity(HttpStatus.OK);
-
-
-    }
-
-    @RequestMapping(value = "/get_board", method = RequestMethod.POST )
-    @ResponseBody
-    public ResponseEntity getBoard()
-    {
-
-        return new ResponseEntity<BoardPiece[][]>(game.getBoard().getBoard(),HttpStatus.OK);
-
-
-    }
-
-    @RequestMapping(value = "/get_AI", method = RequestMethod.POST )
-    @ResponseBody
-    public ResponseEntity getAI()
-    {
-
-        return new ResponseEntity<Move>(game.getAIMove(),HttpStatus.OK);
-
-
-    }
 }

@@ -1,13 +1,15 @@
 package Stratego.logic.src;
 
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Math.abs;
 
+
 /**
- * @author: Wei & ChungWai
  * + score for blue team advantage
  */
 
@@ -21,7 +23,8 @@ public class BoardEvaluator {
     private static final char RED = 'R', BLUE = 'B', DRAW='D';
     private static final char[] teams = new char[]{RED,BLUE};
     private static final char MARSHAL = 'M', GENERAL = '9', COLONEL ='8', MAJOR ='7', LIEUTENANT ='6', CAPTAIN ='5',
-                             SERGEANT ='4', MINER ='3', SCOUT ='2', SPY ='1', BOMB ='B', FLAG ='F',EMPTY = '0';
+
+    SERGEANT ='4', MINER ='3', SCOUT ='2', SPY ='1', BOMB ='B', FLAG ='F',EMPTY = '0';
 
     private static final String PIECES = "pieces", COUNTS = "piece counts";
     //can be used to get total pieces counts, what pieces are remaining.
@@ -153,7 +156,7 @@ public class BoardEvaluator {
     public double calcuate_overall_score(){
         if( board.isGameEnded()){
             if (board.getWinner() ==BLUE)
-            return 1;
+                return 1;
             else if (board.getWinner() ==RED)
                 return -1;
             else
@@ -229,22 +232,22 @@ public class BoardEvaluator {
     public double calculate_advancement_score(){
         HashMap<Character, Integer> sums = new HashMap<>();
 
-            for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
-                for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
-                    BoardPiece piece = board.getPiece(row, col);
+        for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
+            for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
+                BoardPiece piece = board.getPiece(row, col);
 
-                    char color = piece.getColor();
-                    char unit = piece.getUnit();
+                char color = piece.getColor();
+                char unit = piece.getUnit();
 
-                    int sum = sums.getOrDefault(color, 0);
-                    int offset = 0;
-                    if (color == BLUE) {
-                        offset = SimulationBoard.BOARD_SIZE[0] - 1;
-                    }
-                    sum += abs(offset - row);
-                    sums.put(color,sum);
+                int sum = sums.getOrDefault(color, 0);
+                int offset = 0;
+                if (color == BLUE) {
+                    offset = SimulationBoard.BOARD_SIZE[0] - 1;
                 }
+                sum += abs(offset - row);
+                sums.put(color,sum);
             }
+        }
 
         double blue_score = sums.get(BLUE);
         double red_score = sums.get(RED);
@@ -256,65 +259,65 @@ public class BoardEvaluator {
     public double calculate_flag_safety_score(){
         HashMap<Character, Double> sums = new HashMap<>();
         // find flag
-        // for each flag calculate
-            for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
-                for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
-                    BoardPiece piece = board.getPiece(row, col);
 
-                    char color = piece.getColor();
-                    char unit = piece.getUnit();
-                    if(unit=='F'){
-                        double sum=0;
-                        double bomb_score = piece_default_values.get(BOMB);
+        for (int row = 0; row < SimulationBoard.BOARD_SIZE[0]; row ++) {
+            for (int col = 0; col < SimulationBoard.BOARD_SIZE[1]; col++) {
+                BoardPiece piece = board.getPiece(row, col);
 
-                        //look left
-                        if(col==0){
-                            sum += bomb_score*4;
-                        }
-                        else{
-                            BoardPiece p = board.getPiece(row,col-1);
-                            double score = safety_score(p,color);
-                            sum+=score;
-                        }
-                        //look right
-                        if( col==SimulationBoard.BOARD_SIZE[1]-1){
-                            sum += bomb_score*4;
-                        }
-                        else {
-                            BoardPiece p = board.getPiece(row,col+1);
-                            double score = safety_score(p,color);
-                            sum+=score;
-                        }
-                        //look up
-                        if(row==0 ){
-                            sum += bomb_score*4;
-                        }
-                        else {
-                            BoardPiece p = board.getPiece(row,row-1);
-                            double score = safety_score(p,color);
-                            sum+=score;
-                        }
+                char color = piece.getColor();
+                char unit = piece.getUnit();
+                if(unit=='F'){
+                    double sum=0;
+                    double bomb_score = piece_default_values.get(BOMB);
 
-                        //look down
-                        if(row==SimulationBoard.BOARD_SIZE[0]-1){
-                            sum += bomb_score*4;
-                        }
-                        else {
-                            BoardPiece p = board.getPiece(row,row+1);
-                            double score = safety_score(p,color);
-                            sum+=score;
-                        }
-                        //TODO: Consider distance of 2
+                    //look left
+                    if(col==0){
+                        sum += bomb_score*4;
+                    }
+                    else{
+                        BoardPiece p = board.getPiece(row,col-1);
+                        double score = safety_score(p,color);
+                        sum+=score;
+                    }
+                    //look right
+                    if( col==SimulationBoard.BOARD_SIZE[1]-1){
+                        sum += bomb_score*4;
+                    }
+                    else {
+                        BoardPiece p = board.getPiece(row,col+1);
+                        double score = safety_score(p,color);
+                        sum+=score;
+                    }
+                    //look up
+                    if(row==0 ){
+                        sum += bomb_score*4;
+                    }
+                    else {
+                        BoardPiece p = board.getPiece(row,row-1);
+                        double score = safety_score(p,color);
+                        sum+=score;
+                    }
+
+                    //look down
+                    if(row==SimulationBoard.BOARD_SIZE[0]-1){
+                        sum += bomb_score*4;
+                    }
+                    else {
+                        BoardPiece p = board.getPiece(row,row+1);
+                        double score = safety_score(p,color);
+                        sum+=score;
+                    }
+                    //TODO: Consider distance of 2
 //                        //look distance of 2, if enermy
 //                        int distance = 2;
 //                        int[] location = new int[]{row,col};
-                        sums.put(color,sum);
-                    }
-
-
+                    sums.put(color,sum);
                 }
 
+
             }
+
+        }
         double blue_score = sums.get(BLUE);
         double red_score = sums.get(RED);
         return (blue_score-red_score)/(abs(blue_score)+(abs(red_score)));

@@ -2,6 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
+      <module name="Royal_blue_hw1.Stratego.main" target="1.8" />
+      <module name="Royal_blue_hw1.Stratego.test" target="1.8" />
       <module name="stratego.main" target="1.8" />
       <module name="Stratego.main" target="1.8" />
       <module name="stratego.test" target="1.8" />

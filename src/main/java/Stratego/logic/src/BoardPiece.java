@@ -7,6 +7,7 @@ public class BoardPiece {
     private char color; // R or B when occupied by a tile,0 otherwise
     private int x;
     private int y;
+
     private boolean moved;
     private boolean revealed;
 
@@ -74,6 +75,7 @@ public class BoardPiece {
         this.color = color;
     }
 
+
     @Override
     public String toString(){
         return img_src;
@@ -99,12 +101,7 @@ public class BoardPiece {
     public boolean isEmpty(){
         return unit=='0';
     }
-    public boolean isLake(){
-        return unit=='W';
-    }
-    public boolean isScout(){
-        return unit=='2';
-    }
+
     public BoardPiece(char unit, String img_src, char color, boolean moved, boolean revealed) {
         this.unit = unit;
         this.img_src = img_src;
@@ -112,9 +109,19 @@ public class BoardPiece {
         this.moved = moved;
         this.revealed = revealed;
     }
+
+    public boolean isLake(){
+        return unit=='W';
+    }
+    public boolean isScout(){
+        return unit=='2';
+    }
+
+
     public BoardPiece clone() {
         return new BoardPiece(this.unit,this.img_src,this.color,this.moved,this.revealed);
 
     }
+
 
 }

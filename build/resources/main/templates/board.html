@@ -6,14 +6,45 @@
     <title>Board</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
     <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
 
 </head>
+
 <body>
+<div class="page">
+<div class="rectangle">
+    <div class = "whiteText">
+
+    <li id = 'captured2' ><img class="sidebarImage" src="../images/pieces/piece2.png/">x 0</li>
+    <li id= 'captured12' ><img class="sidebarImage"  src="../images/pieces/piece12.png/">x 0</li>
+    <li id = 'captured15' ><img class="sidebarImage"  src="../images/pieces/piece15.png/">x 0</li>
+    <li id = 'captured16' ><img  class="sidebarImage" src="../images/pieces/piece16.png/">x 0</li>
+    <li id = 'captured17' >    <img class="sidebarImage"  src="../images/pieces/piece17.png/">x 0</li>
+    <li id = 'captured18' >    <img class="sidebarImage"  src="../images/pieces/piece18.png/">x 0</li>
+    <li id = 'captured14' >    <img class="sidebarImage"  src="../images/pieces/piece14.png/">x 0</li>
+    <li id = 'captured13' >    <img class="sidebarImage"  src="../images/pieces/piece13.png/">x 0</li>
+    <li id = 'captured4' >    <img  class="sidebarImage" src="../images/pieces/piece4.png/">x 0</li>
+    <li id = 'captured3'>    <img class="sidebarImage"  src="../images/pieces/piece3.png/">x 0</li>
+    <li id = 'captured11' >    <img  class="sidebarImage" src="../images/pieces/piece11.png/">x 0</li>
+
+</div>
+
+
+
+    <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
+    <button type="button" id='fastForwardBtn'class="btn btn-primary btn-invis"onclick="fastForward()">Auto-Move</button>
+    <button type="button" id='concedeBtn'class="btn btn-primary btn-invis"onclick="concede()">Concede Game</button>
+    <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>
+
+</div>
 
 <div class="divTable board" id="board">
+
     <div class="divTableBody">
+
         <th:block th:each="i: ${#numbers.sequence(1, count)}">
             <div class="divTableRow">
                 <th:block th:each="m: ${#numbers.sequence(1,inner)}">
@@ -40,8 +71,6 @@
 
                                 <img class="red_front" th:id ="${i*10+m}"  src=${pos.assign(i,m)} th:src="${pos.assign(i,m)}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'" />
 <!--                                th:onclick="'javascript:highlight(' + ${i} + ','+${m}+')'" -->
-                                <img class="red_back"  src="../images/pieces/red_back.png" th:src="@{images/pieces/red_back.png}" th:onclick="'javascript:move(' + ${i} + ','+${m}+')'"/>
-
 
                             </div>
 
@@ -64,12 +93,12 @@
     </div>
 
 </div>
-<div class="center">
-    <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
-</div>
-<button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
-<button type="button" id='restartBtn'class="btn btn-primary btn-restart"onclick="restart()">Restart</button>
+    <div class="center">
+        <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
+    </div>
 
+
+</div>
 </body>
 
 </html>

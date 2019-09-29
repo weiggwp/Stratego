@@ -101,6 +101,7 @@ public class SimulationMove {
                 "to x=" + end_x +
                 ", y=" + end_y +
                 '}';
+
     }
 }
 

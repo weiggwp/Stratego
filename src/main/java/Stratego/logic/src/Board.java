@@ -2,23 +2,31 @@ package Stratego.logic.src;
 
 import Stratego.board.arrangement;
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 public class Board {
 
     private BoardPiece[][] gameboard;
-    //int gameWinner=0; //0 means no winner yet
     private arrangement setup;
-    private String err_msg;
+
+    public BoardPiece getPiece(int i, int j){
+        return gameboard[i][j];
+    }
     public Board()
     {
         this.setup = new arrangement();
-        this.err_msg = "";
         this.gameboard = new BoardPiece[10][10];
         initializeGameboard();
         displayGameBoard();
 
+    }
+    public Board(BoardPiece[][] gameboard){
+        this.gameboard = gameboard;
     }
 
     public boolean canWin(char color)//if you have miners left
@@ -35,12 +43,8 @@ public class Board {
         //also if you have miners and flag is not even surrounded, you can definitely win..
        return true;
 
-
-
     }
-    public BoardPiece getPiece(int i, int j){
-        return gameboard[i][j];
-    }
+
     public boolean isFlagSurrounded(char color)
     {
         BoardPiece flag = this.setup.getFlag(color);
@@ -162,6 +166,20 @@ public class Board {
         return initialized;
 
     }
+
+
+    private void initializeCustomGameboard() throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("./resources/board2.txt"));
+        Scanner sc2 = new Scanner(new File("./resources/board2Colors.txt"));
+        //System.out.println(sc.nextLine());
+        for (int i=0; i<10; i++) {
+            for (int j = 0; j < 10; j++) {
+                // System.out.println(i+"  "+j);
+                gameboard[i][j] = new BoardPiece(sc.next().charAt(0), sc2.next().charAt(0));
+            }
+        }
+    }
+
 
     protected void displayGameBoard(){
         for (int i=0; i<10; i++){
