@@ -3,6 +3,7 @@ package Stratego.board;
 
 import Stratego.logic.src.BoardPiece;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -147,17 +148,7 @@ public class arrangement {
 
 
     }
-    public HashMap getRemaining(char color)
-    {
-        return remaining_pieces.get(color);
-    }
 
-    public BoardPiece getFlag(char color)
-    {
-        if(color=='R')
-            return this.compFlag;
-        return this.userFlag;
-    }
     public static Boolean compare(int row,int col)
     {
 
@@ -254,27 +245,16 @@ public class arrangement {
             start="2";
         //flag goes last
         BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
-
         collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
         collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
         collect.add(new BoardPiece('9',src+start+'4'+ext,color));       //9
 
-        AddPieceToRemaining(color,'F');
-        AddPieceToRemaining(color,'1');
-        AddPieceToRemaining(color,'M');
-        AddPieceToRemaining(color,'9');
         char[] values={'B','2','8','7','3','4','5','6'};
         int[] counts ={6,8,2,3,5,4,4,4};
-        if(!user)   //blue
-        {
+        if(!user)
             start = "1"; //now beginning to add pieces that repeat more than once
-            compFlag = flag;
-        }
-        else//red
-        {
+        else
             start = "7";
-            userFlag = flag;
-        }
 
 
         for(int i = 1;i<=8;i++)
@@ -284,7 +264,7 @@ public class arrangement {
             char value = values[i-1];
 
             String img_src= src + start + i + ext;//finish path
-            remaining_pieces.get(color).put(value,count);
+
             for(int k=0;k<count;k++) {
                 collect.add(new BoardPiece(value,img_src,color));  //create new unique objects with same values
 
@@ -293,20 +273,11 @@ public class arrangement {
         }
         Collections.shuffle(collect);
         //blue flag goes first row, red flag goes last row
-        int rand;
-        if(!user)
-        {
-            rand = (new Random()).nextInt(10);
-            collect.add(rand,flag);
-            flag.setPlace(0,rand);
 
-        }
+        if(!user)
+            collect.add((new Random()).nextInt(10),flag);
         else
-        {
-            rand = (new Random()).nextInt(10)+30;
-            collect.add(rand,flag);
-            flag.setPlace(9,rand-30);
-        }
+            collect.add((new Random()).nextInt(10)+30,flag);
 
 
         return collect;

@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 @RestController
 public class replayController {
     private long GameID=0;
@@ -34,7 +37,7 @@ public class replayController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        game = new Game(++GameID);
+     /*   game = new Game(++GameID);
 
         long gameId = GameID;
         Board board = game.getBoard();
@@ -55,17 +58,23 @@ public class replayController {
                     placementService.addPlacement(placement);
                 }
             }
-        }
+        }*/
 
-
+        ArrayList<Placement> list=new ArrayList<>();
+        for (int i=0; i<40; i++)
+            list.add(new Placement(0,i/10,i,'1',0));
+        for (int i=60; i<100; i++)
+            list.add(new Placement(0,i/10,i,'2',1));
+        arrangement arr = new arrangement(0,0);
+        arr.create_pieces_placement(list);
         //render board.html
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);
-
-        model.addAttribute("pos", game.getGameSetup());
+        // change to arr
+        model.addAttribute("pos", arr);
 
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("rauuu");
+
         modelAndView.setViewName("replay");
         return modelAndView;
 

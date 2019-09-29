@@ -43,7 +43,6 @@ public class BoardPiece {
         this.unit=unit;
         this.img_src=img;
         this.color=color;
-
     }
 
     public void reset(){
@@ -75,12 +74,6 @@ public class BoardPiece {
         this.color = color;
     }
 
-
-    @Override
-    public String toString(){
-        return img_src;
-    }
-
     public boolean isMoved() {
         return moved;
     }
@@ -95,6 +88,11 @@ public class BoardPiece {
 
     public void setRevealed(boolean revealed) {
         this.revealed = revealed;
+    }
+
+    @Override
+    public String toString(){
+        return img_src;
     }
 
 
@@ -116,8 +114,6 @@ public class BoardPiece {
     public boolean isScout(){
         return unit=='2';
     }
-
-
     public BoardPiece clone() {
         return new BoardPiece(this.unit,this.img_src,this.color,this.moved,this.revealed);
 
