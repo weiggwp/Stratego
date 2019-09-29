@@ -222,12 +222,16 @@ public class Game {
         board.getSetup().printRemainingPieces();
         board.getSetup().printLocationOfPieces(color);
         char opponent_color = (color=='R')?'B':'R';
-        if(!hasMovable(color)&&!hasMovable(opponent_color))
+        boolean you_can_move = hasMovable(color);
+        boolean oppo_can_move = hasMovable(opponent_color);
+        System.out.println("you can move : "+color+" "+you_can_move);
+        System.out.println("opponent can move"+opponent_color+" "+oppo_can_move);
+        if(!you_can_move&&!oppo_can_move)
             //both are not movable
         {
             move_stat.gameEnded();
             move_stat.setGame_result("draw");
-        } else if (!hasMovable(color)) {
+        } else if (!you_can_move) {
             //your color doesnt have movable
             if(!board.canWin(opponent_color))
             {//opponent cannot capture you
@@ -238,10 +242,11 @@ public class Game {
             {
                 move_stat.gameEnded();
                 move_stat.setGame_result("lost");
+                System.out.println("you have no movable pieces, and you've lost");
 
             }
         }
-        else if(!hasMovable(opponent_color))
+        else if(!oppo_can_move)
         {
             if(!board.canWin(color))
             {//opponent cannot capture you

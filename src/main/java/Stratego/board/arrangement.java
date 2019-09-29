@@ -2,6 +2,7 @@ package Stratego.board;
 
 
 import Stratego.logic.src.BoardPiece;
+import Stratego.model.Placement;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class arrangement {
         if(color=='R')
             return comp;
         return user;
+    }
+    public arrangement(int a, int b){
+
+        user = new ArrayList<>();
+        comp = new ArrayList<>();
     }
     public void printLocationOfPieces(char color)
     {
@@ -148,7 +154,93 @@ public class arrangement {
 
 
     }
+    /*
+ There are twice unique pieces in total for each user
+ this method creates them in order with respect to their image src
+ do the same as create_pieces except now we populate the arraylist with objects containing value+image_src
+ */
+    public void create_pieces_placement(ArrayList<Placement> lis){
 
+
+
+        String src="../images/pieces/piece"; // directory
+        String start="";
+        String ext=".png";
+
+        // System.out.println("MAKING B");
+
+
+        System.out.println("size is " + lis.size());
+        for (int i=0; i<lis.size(); i++){
+            BoardPiece bp = new BoardPiece();
+            bp.setColor(lis.get(i).getIsPlayer()==1?'B':'R');
+
+            bp.setUnit(lis.get(i).getPieceName());
+            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),lis.get(i).getIsPlayer()==1?'B':'R') + ext);
+            //System.out.println("item at " +i +" has src of " +bp.getImg_src());
+            if (bp.getColor()=='B'){
+                user.add(bp);
+            }
+            else comp.add(bp);
+        }
+        // System.out.println("blue size is " +blue.size() + " and red size is " + red.size());
+
+    }
+    private String pieceToSrc(char piece, char color){
+        if (color=='B'){
+            if (piece=='1')
+                return"2";
+            if (piece=='2')
+                return "12";
+            if (piece=='3')
+                return "15";
+            if (piece=='4')
+                return "16";
+            if (piece=='5')
+                return "17";
+            if (piece=='6')
+                return "18";
+            if (piece=='7')
+                return "14";
+            if (piece=='8')
+                return "13";
+            if (piece=='9')
+                return "4";
+            if (piece=='M')
+                return "3";
+            if (piece=='F')
+                return "1";
+            if (piece=='B')
+                return "11";
+        }
+        else{
+            if (piece=='1')
+                return"22";
+            if (piece=='2')
+                return "72";
+            if (piece=='3')
+                return "75";
+            if (piece=='4')
+                return "76";
+            if (piece=='5')
+                return "77";
+            if (piece=='6')
+                return "78";
+            if (piece=='7')
+                return "74";
+            if (piece=='8')
+                return "73";
+            if (piece=='9')
+                return "24";
+            if (piece=='M')
+                return "23";
+            if (piece=='F')
+                return "21";
+            if (piece=='B')
+                return "71";
+        }
+        return "";
+    }
     public static Boolean compare(int row,int col)
     {
 
@@ -245,16 +337,27 @@ public class arrangement {
             start="2";
         //flag goes last
         BoardPiece flag = new BoardPiece('F',src+start+"1"+ext,color);
+
         collect.add(new BoardPiece('1',src+start+'2'+ext,color));     //spy
         collect.add(new BoardPiece('M',src+start+'3'+ext,color));       //10
         collect.add(new BoardPiece('9',src+start+'4'+ext,color));       //9
 
+        AddPieceToRemaining(color,'F');
+        AddPieceToRemaining(color,'1');
+        AddPieceToRemaining(color,'M');
+        AddPieceToRemaining(color,'9');
         char[] values={'B','2','8','7','3','4','5','6'};
         int[] counts ={6,8,2,3,5,4,4,4};
-        if(!user)
+        if(!user)   //blue
+        {
             start = "1"; //now beginning to add pieces that repeat more than once
-        else
+            compFlag = flag;
+        }
+        else//red
+        {
             start = "7";
+            userFlag = flag;
+        }
 
 
         for(int i = 1;i<=8;i++)
@@ -264,7 +367,7 @@ public class arrangement {
             char value = values[i-1];
 
             String img_src= src + start + i + ext;//finish path
-
+            remaining_pieces.get(color).put(value,count);
             for(int k=0;k<count;k++) {
                 collect.add(new BoardPiece(value,img_src,color));  //create new unique objects with same values
 
@@ -273,11 +376,20 @@ public class arrangement {
         }
         Collections.shuffle(collect);
         //blue flag goes first row, red flag goes last row
-
+        int rand;
         if(!user)
-            collect.add((new Random()).nextInt(10),flag);
+        {
+            rand = (new Random()).nextInt(10);
+            collect.add(rand,flag);
+            flag.setPlace(0,rand);
+
+        }
         else
-            collect.add((new Random()).nextInt(10)+30,flag);
+        {
+            rand = (new Random()).nextInt(10)+30;
+            collect.add(rand,flag);
+            flag.setPlace(9,rand-30);
+        }
 
 
         return collect;
@@ -338,5 +450,15 @@ public class arrangement {
     private static String clone(String s)
     {
         return new String(s);
+    }
+
+    public BoardPiece getFlag(char color) {
+        if(color=='R')
+            return this.compFlag;
+        return this.userFlag;
+    }
+    public HashMap getRemaining(char color)
+    {
+        return remaining_pieces.get(color);
     }
 }

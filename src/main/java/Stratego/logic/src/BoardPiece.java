@@ -16,6 +16,11 @@ public class BoardPiece {
         this.color=color;
         this.img_src="";
     }
+
+    public BoardPiece() {
+
+    }
+
     //allows us to find out where the pieces are after the game has started
     //arrangement keeps an array of pieces
     public void setPlace(int x,int y)
@@ -61,7 +66,10 @@ public class BoardPiece {
     public char getUnit() {
         return unit;
     }
-
+    public void setImg_src(String s)
+    {
+        this.img_src = s;
+    }
     public void setUnit(char unit) {
         this.unit = unit;
     }
