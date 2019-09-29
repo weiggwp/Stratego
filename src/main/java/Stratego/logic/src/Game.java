@@ -4,21 +4,18 @@ import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.board.Round;
 import Stratego.board.arrangement;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 //a game has a board and moves associated with it
 public class Game {
-
     private Board board;    //a unique board per game
     private ArrayList<Move> moves;  //variable length of moves
     private long GameID; //
     private int gameWinner;
     private String err_msg;
-
+    private Move current_move;
     private Move_status move_stat;
     private AI ai;
     //HashMap<String, ArrayList> piecesLost;    - will be updating per move
@@ -70,8 +67,7 @@ public class Game {
     {
         this.moves.add(m);
     }
-
-    public boolean madeLoopMove(int startingX, int startingY, int endingX, int endingY, char color)
+    public boolean madeLoopMove(int startingX, int startingY, int endingX, int endingY,char color)
     {
         //[1,1]->[1,2]      initial
         // [1,2]->[1,1]     second
@@ -143,6 +139,8 @@ public class Game {
         //move.setStatus(move_stat);
 
         System.out.println();System.out.println();
+
+        this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
             move_stat.setError_message(err_msg);   //by default invalid move

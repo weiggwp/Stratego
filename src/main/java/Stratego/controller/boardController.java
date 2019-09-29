@@ -124,7 +124,16 @@ public class boardController {
     public ResponseEntity getAI()
     {
 
-        return new ResponseEntity<Move>(game.getAIMove(),HttpStatus.OK);
+        return new ResponseEntity<Move>(game.getAIMove('R'),HttpStatus.OK);
+
+
+    }
+    @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity getAIPlayer()
+    {
+
+        return new ResponseEntity<Move>(game.getAIMove('B'),HttpStatus.OK);
 
 
     }
