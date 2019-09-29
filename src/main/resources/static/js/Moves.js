@@ -90,7 +90,7 @@ function fastForwardReplay(time){
     }
     if (numMoves==moveList.length) return;
     console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
-    setTimeout(function(){nextMove(); fastForwardReplayAuto(1000);}, time);
+    setTimeout(function(){nextMove(); fastForwardReplayAuto(750);}, time);
 
 
 
@@ -98,14 +98,17 @@ function fastForwardReplay(time){
 function fastForwardReplayAuto(time){
     if (!forward){
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
-
+        document.getElementById('nextMoveBtn').style.opacity='1';
+        document.getElementById('undoMoveBtn').style.opacity='.65';
         return;
     }
+    document.getElementById('nextMoveBtn').style.opacity='.65';
+    document.getElementById('undoMoveBtn').style.opacity='.65';
     document.getElementById('fastForwardReplayBtn').innerHTML='Pause';
     console.log("forward is " +forward);
     if (numMoves==moveList.length) return;
     console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
-    setTimeout(function(){nextMove(true); fastForwardReplayAuto(1000);}, time);
+    setTimeout(function(){nextMove(true); fastForwardReplayAuto(750);}, time);
 }
 function fastForwardReplayTime(){
     fastForwardReplay(0)
