@@ -175,7 +175,8 @@ function updateSidebar(src){
     let newNum=(prevNum+1).toString();
     let finalRet = document.getElementById(numString).innerHTML.substring(0,document.getElementById(numString).innerHTML.length-1).concat(newNum);
     document.getElementById(numString).innerHTML=finalRet;
-
+    if (lastsrc!='')
+        document.getElementById(lastsrc).style.color='white';
     document.getElementById(numString).style.color='red';
     lastsrc=numString;
 
