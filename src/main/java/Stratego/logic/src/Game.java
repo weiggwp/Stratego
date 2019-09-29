@@ -40,6 +40,7 @@ public class Game {
 
     }
 
+    public long getGameID(){return this.GameID;}
     public String getErr_msg()
     {
         return this.getErr_msg();

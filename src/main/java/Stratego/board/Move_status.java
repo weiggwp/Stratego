@@ -122,4 +122,18 @@ public class Move_status {
         this.image_src = image_src;
     }
 
+    @Override
+    public String toString() {
+        return "Move_status{" +
+                "is_valid_move=" + is_valid_move +
+                ", error_message='" + error_message + '\'' +
+                ", game_ended=" + game_ended +
+                ", game_result='" + game_result + '\'' +
+                ", fight_result=" + fight_result +
+                ", pieceCapturedByPlayer=" + pieceCapturedByPlayer +
+                ", pieceCapturedByComputer=" + pieceCapturedByComputer +
+                ", image_src='" + image_src + '\'' +
+                ", piece_name=" + piece_name +
+                '}';
+    }
 }

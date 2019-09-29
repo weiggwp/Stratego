@@ -4,9 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Comparator;
 
 @Entity
-public class Reposition {
+public class Reposition implements Comparable<Reposition> {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long moveId;
@@ -19,12 +20,11 @@ public class Reposition {
     private char pieceName;
     private char pieceCapturedByPlayer;
     private char pieceCapturedByOpponent;
+    private int fightResult;
 
-    public Reposition() {
-    }
-
-    public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY,
-                      char pieceName, char pieceCapturedByPlayer, char pieceCapturedByOpponent) {
+    public Reposition(long matchId, int turnId, int startX, int startY,
+                      int curX, int curY, char pieceName,
+                      char pieceCapturedByPlayer, char pieceCapturedByOpponent, int fightResult) {
         this.matchId = matchId;
         this.turnId = turnId;
         this.startX = startX;
@@ -34,6 +34,31 @@ public class Reposition {
         this.pieceName = pieceName;
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
         this.pieceCapturedByOpponent = pieceCapturedByOpponent;
+        this.fightResult = fightResult;
+    }
+
+    public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY, char pieceName) {
+        this.matchId = matchId;
+        this.turnId = turnId;
+        this.startX = startX;
+        this.startY = startY;
+        this.curX = curX;
+        this.curY = curY;
+        this.pieceName = pieceName;
+    }
+
+    public Reposition(long matchId, int turnId, int startX, int startY, int curX, int curY, char pieceName, int fightResult) {
+        this.matchId = matchId;
+        this.turnId = turnId;
+        this.startX = startX;
+        this.startY = startY;
+        this.curX = curX;
+        this.curY = curY;
+        this.pieceName = pieceName;
+        this.fightResult = fightResult;
+    }
+
+    public Reposition() {
     }
 
     public long getMoveId() {
@@ -130,5 +155,12 @@ public class Reposition {
                 ", pieceCapturedByPlayer='" + pieceCapturedByPlayer + '\'' +
                 ", pieceCapturedByOpponent='" + pieceCapturedByOpponent + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Reposition other) {
+        if (this.getTurnId() > other.getTurnId()) return 1;
+        if (this.getTurnId() < other.getTurnId()) return -1;
+        return 0;
     }
 }

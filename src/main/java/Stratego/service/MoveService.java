@@ -53,7 +53,7 @@ public class MoveService {
     }
 
     private String findLostPieces(long matchId, int isPlayer) {
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder(" ");
         List<Reposition> allRepositions = readMoves(matchId);
 
         if (isPlayer == 1) {

@@ -5,9 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego_main.iml" group="Stratego" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego_test.iml" group="Stratego" />
     </modules>
   </component>
 </project>

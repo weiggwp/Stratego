@@ -8,16 +8,23 @@ import Stratego.logic.src.Board;
 import Stratego.logic.src.BoardPiece;
 import Stratego.logic.src.Game;
 import Stratego.model.Placement;
+import Stratego.model.Reposition;
+import Stratego.service.MoveService;
 import Stratego.service.PlacementService;
+import Stratego.util.GameIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 public class replayController {
@@ -25,88 +32,129 @@ public class replayController {
 
     @Autowired
     PlacementService placementService;
+    @Autowired
+    MoveService moveService;
 
-
-    Game game;
-    @GetMapping("/replay")
-
-    public ModelAndView greeting(Model model) {
+    @RequestMapping(value="/replay")
+    public ModelAndView replayPage(@RequestBody GameIdentifier gameIdentifier,
+                                   ModelMap modelMap, Model model){
         int count = 10;
         int inner = 10;
-        //boardController control = new boardController();
-        game = new Game(++GameID);
 
-        long gameId = GameID;
-        Board board = game.getBoard();
-
-        if (board.isInitialized()) {
-            BoardPiece[][] boardPiece = board.getBoard();
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    BoardPiece piece = boardPiece[i][j];
-
-                    // attributes to saved
-                    int x = i;
-                    int y = j;
-                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
-                    char pieceName = piece.getUnit();
-
-                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-                    placementService.addPlacement(placement);
-                }
-            }
-        }
+        long gameId = gameIdentifier.getGameID();
+        List<Reposition> moves = moveService.readMoves(gameId);
+        Collections.sort(moves);
+        List<Placement> placementList = placementService.getPlacements(gameId);
 
 
         //render board.html
+        modelMap.put("startConfig", placementList);
+        modelMap.put("movesList", moves);
+
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);
 
-        model.addAttribute("pos", game.getGameSetup());
-
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println("rauuu");
         modelAndView.setViewName("replay");
         return modelAndView;
 
-        //return "board";
-
-
     }
-    @RequestMapping(value = "/get_Movelist", method = RequestMethod.POST )
-    @ResponseBody
-    public ResponseEntity getMovelist()
-    {
-        //start,end,color,fight_result,img_src
-        Move[] moves = new Move[5];
-        Move_status stat1= new Move_status();
-        stat1.setIs_valid_move(true);
-        stat1.setFight_result(4);
-        moves[0] = new Move(0,6,0,5,0,' ', stat1);
 
-        Move_status stat2= new Move_status();
-        stat2.setIs_valid_move(true);
-        stat2.setFight_result(4);
-        moves[1] = new Move(0,3,0,4,0, ' ',stat2);
-
-        Move_status stat3= new Move_status();
-        stat3.setIs_valid_move(true);
-        stat3.setFight_result(4);
-        moves[2] = new Move(0,6,1,5,1,' ', stat3);
-
-        Move_status stat4= new Move_status();
-        stat4.setIs_valid_move(true);
-        stat4.setFight_result(0);
-        moves[3] = new Move(0,4,0,5,0,' ', stat4);
-
-        Move_status stat5= new Move_status();
-        stat5.setIs_valid_move(true);
-        stat5.setFight_result(1);
-        moves[4] = new Move(0,5,1,5,0,' ', stat5);
-
-        return new ResponseEntity<Move[]>(moves,HttpStatus.OK);
+//    @RequestMapping(value="/get_lists", method=RequestMethod.POST)
+//    @ResponseBody
+//    public ResponseEntity replayPage(@RequestBody GameIdentifier gameIdentifier){
+//
+////        long gameId = gameIdentifier.getGameId();
+////        // TODO: Sort moves by their turns
+////        List<Reposition> moves = moveService.readMoves(gameId);
+////        List<Placement> placementList = placementService.getPlacements(gameId);
+////        return new ResponseEntity<ReplayObject>(replayObject, HttpStatus.OK);
+//
+//    }
 
 
-    }
+
+
+
+//    @GetMapping("/replay")
+//
+//    public ModelAndView greeting(Model model) {
+//        int count = 10;
+//        int inner = 10;
+//        //boardController control = new boardController();
+//        game = new Game(++GameID);
+//
+//        long gameId = GameID;
+//        Board board = game.getBoard();
+//
+//        if (board.isInitialized()) {
+//            BoardPiece[][] boardPiece = board.getBoard();
+//            for (int i = 0; i < 10; i++) {
+//                for (int j = 0; j < 10; j++) {
+//                    BoardPiece piece = boardPiece[i][j];
+//
+//                    // attributes to saved
+//                    int x = i;
+//                    int y = j;
+//                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
+//                    char pieceName = piece.getUnit();
+//
+//                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
+//                    placementService.addPlacement(placement);
+//                }
+//            }
+//        }
+//
+//
+//        //render board.html
+//        model.addAttribute("count", count);
+//        model.addAttribute("inner", inner);
+//
+//        model.addAttribute("pos", game.getGameSetup());
+//
+//        ModelAndView modelAndView = new ModelAndView();
+//        System.out.println("rauuu");
+//        modelAndView.setViewName("replay");
+//        return modelAndView;
+//
+//        //return "board";
+//
+//
+//    }
+//    @RequestMapping(value = "/get_Movelist", method = RequestMethod.POST )
+//    @ResponseBody
+//    public ResponseEntity getMovelist()
+//    {
+//        //start,end,color,fight_result,img_src
+//        Move[] moves = new Move[5];
+//        Move_status stat1= new Move_status();
+//        stat1.setIs_valid_move(true);
+//        stat1.setFight_result(4);
+//        moves[0] = new Move(0,6,0,5,0,' ', stat1);
+//
+//        Move_status stat2= new Move_status();
+//        stat2.setIs_valid_move(true);
+//        stat2.setFight_result(4);
+//        moves[1] = new Move(0,3,0,4,0, ' ',stat2);
+//
+//        Move_status stat3= new Move_status();
+//        stat3.setIs_valid_move(true);
+//        stat3.setFight_result(4);
+//        moves[2] = new Move(0,6,1,5,1,' ', stat3);
+//
+//        Move_status stat4= new Move_status();
+//        stat4.setIs_valid_move(true);
+//        stat4.setFight_result(0);
+//        moves[3] = new Move(0,4,0,5,0,' ', stat4);
+//
+//        Move_status stat5= new Move_status();
+//        stat5.setIs_valid_move(true);
+//        stat5.setFight_result(1);
+//        moves[4] = new Move(0,5,1,5,0,' ', stat5);
+//
+//        return new ResponseEntity<Move[]>(moves,HttpStatus.OK);
+//
+//
+//    }
 
 }

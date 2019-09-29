@@ -8,6 +8,8 @@ import Stratego.service.MatchService;
 import Stratego.service.MoveService;
 import Stratego.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -34,9 +36,16 @@ public class HistoryController {
     @GetMapping(path="/{userName}")
     public String history(Model model, ModelMap modelMap, @PathVariable String userName) {
         // 0)
-        User user = userService.findByUsername(userName);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        User user = userService.findByUsername(username);
         long userId = user.getId();
-        System.out.print(userId);
+        System.out.print("user name is: " + username + " id: " + userId);
         // 1) get the matches from database;
         List<Match> matches = matchService.getMatchesByUserId(userId);
         // 2) sort by date
@@ -59,12 +68,12 @@ public class HistoryController {
 //        matchService.addMatch(new Match(6,25,"Lost", 1562711657181L));
 //        matchService.addMatch(new Match(7,25,"Lost", 1568711657181L));
 
-        for (Match match: matches) {
-            String str_1 = moveService.getOverallPieceLostPlayer(match.getMatchId());
-            String str_2 = moveService.getOverallPieceLostOpponent(match.getMatchId());
-            match.setPiecesLostPlayer(str_1);
-            match.setPiecesLostComputer(str_2);
-        }
+//        for (Match match: matches) {
+//            String str_1 = moveService.getOverallPieceLostPlayer(match.getMatchId());
+//            String str_2 = moveService.getOverallPieceLostOpponent(match.getMatchId());
+//            match.setPiecesLostPlayer(str_1);
+//            match.setPiecesLostComputer(str_2);
+//        }
 
         modelMap.put("matches", matches);
         model.addAttribute("userName", userName);

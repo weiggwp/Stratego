@@ -211,6 +211,11 @@ function start() {
     document.getElementById('startText').style.visibility="hidden";
     document.getElementById('fastForwardBtn').style.visibility='visible';
     document.getElementById('concedeBtn').style.visibility='visible';
+    let http = new XMLHttpRequest();
+    let url = "/start_game";
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.send("game started")
 }
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);

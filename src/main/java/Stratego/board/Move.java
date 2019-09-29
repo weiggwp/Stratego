@@ -33,6 +33,7 @@ public class Move {
         this.end_y = end_y;
         this.color = color;
         this.status = status;
+        this.moveNum = 0;
     }
     public String getStart()
     {
@@ -95,6 +96,9 @@ public class Move {
         return GameID;
     }
 
+    public void setGameID(long gameID) {
+        this.GameID = gameID;
+    }
 }
 
 
