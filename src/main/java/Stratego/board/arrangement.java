@@ -1,7 +1,9 @@
 package Stratego.board;
 
 
+import Stratego.logic.src.Board;
 import Stratego.logic.src.BoardPiece;
+import Stratego.model.Placement;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -26,7 +28,11 @@ public class arrangement {
 
 
     }
+    public arrangement(int a, int b){
 
+        blue = new ArrayList<>();
+        red = new ArrayList<>();
+    }
     public static Boolean compare(int row,int col)
     {
 
@@ -106,8 +112,96 @@ public class arrangement {
      this method creates them in order with respect to their image src
      do the same as create_pieces except now we populate the arraylist with objects containing value+image_src
      */
+    public void create_pieces_placement(ArrayList<Placement> lis){
+
+
+
+        String src="../images/pieces/piece"; // directory
+        String start="";
+        String ext=".png";
+
+       // System.out.println("MAKING B");
+
+
+
+
+
+
+
+        System.out.println("size is " + lis.size());
+        for (int i=0; i<lis.size(); i++){
+            BoardPiece bp = new BoardPiece();
+            bp.setColor(lis.get(i).getIsPlayer()==1?'B':'R');
+
+            bp.setUnit(lis.get(i).getPieceName());
+            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),lis.get(i).getIsPlayer()==1?'B':'R') + ext);
+            //System.out.println("item at " +i +" has src of " +bp.getImg_src());
+            if (bp.getColor()=='B'){
+                blue.add(bp);
+            }
+            else red.add(bp);
+        }
+       // System.out.println("blue size is " +blue.size() + " and red size is " + red.size());
+
+    }
+    private String pieceToSrc(char piece, char color){
+        if (color=='B'){
+            if (piece=='1')
+                return"2";
+            if (piece=='2')
+                return "12";
+            if (piece=='3')
+                return "15";
+            if (piece=='4')
+                return "16";
+            if (piece=='5')
+                return "17";
+            if (piece=='6')
+                return "18";
+            if (piece=='7')
+                return "14";
+            if (piece=='8')
+                return "13";
+            if (piece=='9')
+                return "4";
+            if (piece=='M')
+                return "3";
+            if (piece=='F')
+                return "1";
+            if (piece=='B')
+                return "11";
+        }
+        else{
+            if (piece=='1')
+                return"22";
+            if (piece=='2')
+                return "72";
+            if (piece=='3')
+                return "75";
+            if (piece=='4')
+                return "76";
+            if (piece=='5')
+                return "77";
+            if (piece=='6')
+                return "78";
+            if (piece=='7')
+                return "74";
+            if (piece=='8')
+                return "73";
+            if (piece=='9')
+                return "24";
+            if (piece=='M')
+                return "23";
+            if (piece=='F')
+                return "21";
+            if (piece=='B')
+                return "71";
+        }
+        return "";
+    }
     private ArrayList<BoardPiece> create_pieces(boolean user, char color)
     {
+     //  System.out.println("MAKING A");
         ArrayList<BoardPiece> collect = new ArrayList<BoardPiece>();
 
         String src="../images/pieces/piece"; // directory

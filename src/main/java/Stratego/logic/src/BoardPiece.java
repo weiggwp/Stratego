@@ -7,7 +7,10 @@ public class BoardPiece {
     private char color; // R or B when occupied by a tile,0 otherwise
     private boolean moved;
     private boolean revealed;
-
+    public BoardPiece(){
+        unit=0;
+        color=0;
+    }
     public BoardPiece(char unit, char color){
         this.unit=unit;
         this.color=color;
@@ -64,7 +67,9 @@ public class BoardPiece {
     public void setRevealed(boolean revealed) {
         this.revealed = revealed;
     }
-
+    public void setImg_src(String img_src){
+        this.img_src=img_src;
+    }
     @Override
     public String toString(){
         return img_src;
