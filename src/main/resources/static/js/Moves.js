@@ -21,7 +21,7 @@ function startReplay() {
     replaying=true;
     console.log("CALLED");
     var http = new XMLHttpRequest();
-    let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
+    let url = "replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({});
     //start_x and start_y need to be filled in to validate move
@@ -58,8 +58,8 @@ function undoMove(){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        moveList[numMoves].status.game_ended,
-        movelist[numMoves].status.game_result,
+        false,
+        " ",
         true,true);
     if (moveList[numMoves].status.fight_result==0){//win
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];
@@ -145,8 +145,8 @@ function nextMove(fastForward){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        moveList[numMoves].status.game_ended,
-        moveList[numMoves].status.game_result,
+        false,
+        " ",
         true,false);
 
     numMoves++;
@@ -252,12 +252,10 @@ function fastForward(){
     document.getElementById('fastForwardBtn').style.opacity='.65';
     permission=false;
     hidePieceNums();
-   // aiMove('R');
     aiMove('B');
-    // aiMove('R');
-    // console.log("AAA");
+    console.log("AAA");
 
-    permission=true;
+    //permission=true;
 
 }
 
@@ -817,9 +815,12 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
-            if (legal==false) return;
-            performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
-           // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
+            console.log("legal is "+legal);
+            if (legal==false){
+                permission=true;
+                return;
+            }
+            performMove(start, end, color, fight_result, img_src,false);
             //http.response.toString();
 
 
