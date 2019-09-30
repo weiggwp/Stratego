@@ -175,6 +175,8 @@ public class arrangement {
 
 
         for (int i=0; i<lis.size(); i++){
+            if (i>=40&&i<60)continue;
+            if (lis.get(i).getPieceName()=='0'||lis.get(i).getPieceName()=='W')continue;
             BoardPiece bp = new BoardPiece();
             bp.setColor(lis.get(i).getIsPlayer()==1?'R':'B');
 

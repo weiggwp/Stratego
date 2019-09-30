@@ -56,34 +56,34 @@ public class boardController {
         move_num = 0;
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
-        Board board = game.getBoard();
+//        Board board = game.getBoard();
 
 
-        ArrayList<Placement> placements = new ArrayList<>();
+//        ArrayList<Placement> placements = new ArrayList<>();
 
 
-        if (board.isInitialized()) {
-            BoardPiece[][] boardPiece = board.getBoard();
-            for (int i = 0; i < 10; i++) {
-
-                for (int j = 0; j < 10; j++) {
-                    BoardPiece piece = boardPiece[i][j];
-
-                    // attributes to saved
-                    int x = i;
-                    int y = j;
-                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
-                    char pieceName = piece.getUnit();
-                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-                    placements.add(placement);
-
-                }
-
-            }
-        }
-        // have a new thread to add placements to database as it was slowing down board loading by 20s
-        Thread t = new Thread(new PlacementsToDBRunnable(placementService,placements));
-        t.start();
+//        if (board.isInitialized()) {
+//            BoardPiece[][] boardPiece = board.getBoard();
+//            for (int i = 0; i < 10; i++) {
+//
+//                for (int j = 0; j < 10; j++) {
+//                    BoardPiece piece = boardPiece[i][j];
+//
+//                    // attributes to saved
+//                    int x = i;
+//                    int y = j;
+//                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
+//                    char pieceName = piece.getUnit();
+//                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
+//                    placements.add(placement);
+//
+//                }
+//
+//            }
+//        }
+//        // have a new thread to add placements to database as it was slowing down board loading by 20s
+//        Thread t = new Thread(new PlacementsToDBRunnable(placementService,placements));
+//        t.start();
 
         //render board.html
         model.addAttribute("count", count);
@@ -218,6 +218,7 @@ public class boardController {
         Board board = game.getBoard();
         long gameId = game.getGameID();
         BoardPiece[][] boardPiece = board.getBoard();
+        ArrayList<Placement> placements = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 BoardPiece piece = boardPiece[i][j];
@@ -231,9 +232,12 @@ public class boardController {
                         pieceName='M';
 
                 Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-                placementService.addPlacement(placement);
+                placements.add(placement);
             }
         }
+
+        Thread t = new Thread(new PlacementsToDBRunnable(placementService, placements));
+        t.start();
 
         // should I say anything back to client?
     }
