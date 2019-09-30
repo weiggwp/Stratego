@@ -4,11 +4,7 @@ package Stratego.board;
 import Stratego.logic.src.BoardPiece;
 import Stratego.model.Placement;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 //shuffles and gives positions of pieces
 public class arrangement {
@@ -164,7 +160,7 @@ public class arrangement {
  this method creates them in order with respect to their image src
  do the same as create_pieces except now we populate the arraylist with objects containing value+image_src
  */
-    public void create_pieces_placement(ArrayList<Placement> lis){
+    public void create_pieces_placement(List<Placement> lis){
 
 
 
@@ -176,12 +172,16 @@ public class arrangement {
 
 
         System.out.println("size is " + lis.size());
+
+
         for (int i=0; i<lis.size(); i++){
             BoardPiece bp = new BoardPiece();
             bp.setColor(lis.get(i).getIsPlayer()==1?'R':'B');
 
             bp.setUnit(lis.get(i).getPieceName());
-            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),lis.get(i).getIsPlayer()==1?'R':'B') + ext);
+            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),bp.getColor()) + ext);
+            System.out.println("src is " +bp.getImg_src());
+            System.out.println("unit is " +bp.getUnit());
             //System.out.println("item at " +i +" has src of " +bp.getImg_src());
             if (bp.getColor()=='B'){
                 user.add(bp);
@@ -192,7 +192,7 @@ public class arrangement {
 
     }
     private String pieceToSrc(char piece, char color){
-        if (color=='B'){
+        if (color=='R'){
             if (piece=='1')
                 return"2";
             if (piece=='2')
@@ -402,7 +402,7 @@ public class arrangement {
     //TODO: Instead of storing strings encapsulate it in piece class
     //
     //randomly populates the 40 spots, works for both red and blue team
-    private ArrayList populate(int row)
+    private static ArrayList populate(int row)
     {
         ArrayList<String> collect = new ArrayList<String>();
         int[] counts ={6,8,2,3,5,4,4,4};
@@ -452,10 +452,7 @@ public class arrangement {
         return collect;
 
     }
-    private String clone(String s)
-    {
-        return new String(s);
-    }
+
 
     public BoardPiece getFlag(char color) {
         if(color=='R')

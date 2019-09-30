@@ -4,6 +4,14 @@
     <bytecodeTargetLevel>
       <module name="Stratego.main" target="1.8" />
       <module name="Stratego.test" target="1.8" />
+      <module name="Royal_blue_hw1.Stratego.main" target="1.8" />
+      <module name="Royal_blue_hw1.Stratego.test" target="1.8" />
+      <module name="stratego.main" target="1.8" />
+      <module name="stratego.test" target="1.8" />
+      <module name="Stratego_main" target="1.8" />
+      <module name="Stratego_test" target="1.8" />
+      <module name="tratego.main" target="1.8" />
+      <module name="tratego.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

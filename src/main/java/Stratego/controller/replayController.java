@@ -8,80 +8,85 @@ import Stratego.logic.src.Board;
 import Stratego.logic.src.BoardPiece;
 import Stratego.logic.src.Game;
 import Stratego.model.Placement;
+import Stratego.model.Reposition;
+import Stratego.service.MoveService;
 import Stratego.service.PlacementService;
+import Stratego.util.GameIdentifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
+@RequestMapping("/replay")
 //@RequestMapping("/replay")
 public class replayController {
-    private long GameID=0;
 
     @Autowired
     PlacementService placementService;
+    @Autowired
+    MoveService moveService;
 
-
-    Game game;
-    @GetMapping("/replay")
-
-    public ModelAndView greeting(Model model) {
+    private long GameID;
+    @GetMapping(path="/{GameID}")
+    public ModelAndView replayPage(@PathVariable long GameID, Model model, ModelMap modelMap) {
         int count = 10;
         int inner = 10;
-        //boardController control = new boardController();
-     /*   game = new Game(++GameID);
+        this.GameID = GameID;
+        System.out.println("GameID is: " + GameID);
 
-        long gameId = GameID;
-        Board board = game.getBoard();
+        List<Placement> placementList = placementService.getPlacements(GameID);
+        for(int i=0; i<placementList.size(); i++){
+            System.out.println(placementList.get(i).getX()+","+placementList.get(i).getY()+":"+placementList.get(i).getPieceName());
+        }
+        Collections.sort(placementList);
+        for(int i=0; i<placementList.size(); i++){
+            System.out.println(placementList.get(i).getX()+","+placementList.get(i).getY()+":"+placementList.get(i).getPieceName());
+        }
 
-        if (board.isInitialized()) {
-            BoardPiece[][] boardPiece = board.getBoard();
-            for (int i = 0; i < 10; i++) {
-                for (int j = 0; j < 10; j++) {
-                    BoardPiece piece = boardPiece[i][j];
 
-                    // attributes to saved
-                    int x = i;
-                    int y = j;
-                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
-                    char pieceName = piece.getUnit();
-
-                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-                    placementService.addPlacement(placement);
-                }
-            }
-        }*/
-
-        ArrayList<Placement> list=new ArrayList<>();
-        for (int i=0; i<40; i++)
-            list.add(new Placement(0,i/10,i,i%2==0?'1':'2',0));
-        for (int i=60; i<100; i++)
-            list.add(new Placement(0,i/10,i,'M',1));
-        arrangement arr = new arrangement(0,0);
-        arr.create_pieces_placement(list);
         //render board.html
+       // modelMap.put("startConfig", placementList);
+        //modelMap.put("movesList", moves);
+
+
+//        ArrayList<Placement> list=new ArrayList<>();
+//        for (int i=0; i<40; i++)
+//            list.add(new Placement(0,i/10,i,'1',0));
+//        for (int i=60; i<100; i++)
+//            list.add(new Placement(0,i/10,i,'2',1));
+
+        arrangement arr = new arrangement(0,0);
+        arr.create_pieces_placement(placementList);
+
+
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);
+
+
         // change to arr
         model.addAttribute("pos", arr);
-
         ModelAndView modelAndView = new ModelAndView();
+
 
         modelAndView.setViewName("replay");
         return modelAndView;
 
-        //return "board";
-
+    }
 
     }
 
@@ -89,36 +94,29 @@ public class replayController {
     @ResponseBody
     public ResponseEntity getMovelist()
     {
-        //start,end,color,fight_result,img_src
-        Move[] moves = new Move[5];
-        Move_status stat1= new Move_status();
-        stat1.setIs_valid_move(true);
-        stat1.setFight_result(4);
-        moves[0] = new Move(0,6,0,5,0,' ', stat1);
 
-        Move_status stat2= new Move_status();
-        stat2.setIs_valid_move(true);
-        stat2.setFight_result(4);
-        moves[1] = new Move(0,3,0,4,0, ' ',stat2);
+        List<Reposition> moves = moveService.getMoves(this.GameID);
+        Move[] moveArr = new Move[moves.size()];
+        for (int i = 0; i < moves.size();i ++) {
 
-        Move_status stat3= new Move_status();
-        stat3.setIs_valid_move(true);
-        stat3.setFight_result(4);
-        moves[2] = new Move(0,6,1,5,1,' ', stat3);
+            Reposition reposition = moves.get(i);
+            System.out.println("Printing");
+            System.out.println(reposition);
 
-        Move_status stat4= new Move_status();
-        stat4.setIs_valid_move(true);
-        stat4.setFight_result(0);
-        moves[3] = new Move(0,4,0,5,0,' ', stat4);
+            Move_status moveStatus = new Move_status();
+            moveStatus.setIs_valid_move(true);
+            moveStatus.setFight_result(reposition.getFightResult());
+            Move move = new Move(0, "", reposition.getStartX(), reposition.getStartY(),
+                    reposition.getCurX(), reposition.getCurY(), moveStatus);
+            moveArr[i] = move;
 
-        Move_status stat5= new Move_status();
-        stat5.setIs_valid_move(true);
-        stat5.setFight_result(1);
-        moves[4] = new Move(0,5,1,5,0,' ', stat5);
-
-        return new ResponseEntity<Move[]>(moves,HttpStatus.OK);
-
-
+        }
+        return new ResponseEntity<Move[]>(moveArr,HttpStatus.OK);
     }
 
 }
+
+
+
+
+

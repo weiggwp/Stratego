@@ -11,4 +11,5 @@ import java.util.List;
 public interface PlacementRepository extends CrudRepository<Placement, Long> {
 
     List<Placement> findByMatchId(long matchId);
+
 }

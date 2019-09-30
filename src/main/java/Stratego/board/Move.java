@@ -2,7 +2,7 @@ package Stratego.board;
 
 public class Move {
     private long GameID;
-//    private String player; //either computer or user
+    //    private String player; //either computer or user
     private int start_x;
     private int start_y;
     private int end_x;
@@ -20,6 +20,15 @@ public class Move {
                 ", end_y=" + end_y +
                 ", color=" + color +
                 '}';
+    }
+
+    public Move(int gameID, String s, int startX, int startY, int curX, int curY, Move_status moveStatus) {
+        GameID = gameID;
+        this.start_x = startX;
+        this.start_y = startY;
+        this.end_x = curX;
+        this.end_y = curY;
+        this.status = moveStatus;
     }
 
     public int getMoveNum(){
@@ -126,6 +135,3 @@ public class Move {
     }
 
 }
-
-
-

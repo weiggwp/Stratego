@@ -37,6 +37,7 @@ public class Game {
 
     }
 
+    public long getGameID(){return this.GameID;}
     public String getErr_msg()
     {
         return this.getErr_msg();
@@ -45,7 +46,9 @@ public class Game {
     {
         return this.gameWinner;
     }
-
+    public void setGameEnded(int i){
+        gameWinner=i;
+    }
     public Board getBoard(){
         return this.board;
     }

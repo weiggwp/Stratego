@@ -13,14 +13,15 @@ let revealedOne=-1;
 let revealedTwo=-1;
 
 let moveList=null;
-let moveCounter=0;
-let testThread=false;
-
+// let moveCounter=0;
+// let testThread=false;
+let replaying=false;
 let deletedImages=null;
 function startReplay() {
+    replaying=true;
     console.log("CALLED");
     var http = new XMLHttpRequest();
-    let url = "/get_Movelist";    //-> will be changed to another uri maybe action?=move
+    let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({});
     //start_x and start_y need to be filled in to validate move
@@ -31,7 +32,7 @@ function startReplay() {
     // http.setRequestHeader("Content-length", params.length);
     // http.setRequestHeader("Connection", "close");
 
-    http.send(params);
+    http.send();
 
     //will prob need to separate and make a more sophisticated function
 
@@ -151,7 +152,7 @@ function nextMove(fastForward){
     numMoves++;
     if (numMoves==moveList.length){
         document.getElementById("nextMoveBtn").style.visibility='hidden';
-       // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
+        // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
         document.getElementById("restartBtn").style.visibility='visible';
         document.getElementById("restartText").style.visibility='visible';
     }
@@ -186,6 +187,7 @@ function highlight(i,m) {
 }
 let lastsrc='';
 function updateSidebar(src){
+    if(replaying)return;
     let num=src.substring(src.lastIndexOf("piece")+5,src.lastIndexOf(".png"));
     console.log("num is "+num);
     let numString = "captured".concat(num);
@@ -250,33 +252,42 @@ function fastForward(){
     document.getElementById('fastForwardBtn').style.opacity='.65';
     permission=false;
     hidePieceNums();
+   // aiMove('R');
     aiMove('B');
     // aiMove('R');
     // console.log("AAA");
 
-    //permission=true;
+    permission=true;
 
 }
 
 function start() {
-    if (clicked) {
-     console.log("clicking " +moving);
-     if (document.getElementById(moving.toString())!=undefined)
-        document.getElementById(moving.toString()).click();
- }
-    numMoves=0;
-    started=true;
-    document.getElementsByClassName('blank').draggable = false;
-    let i=0;
-    for (i=11; i<111; i++){
-        if (notLake(i))
-        document.getElementById(i.toString()).draggable=false;
+
+    let http = new XMLHttpRequest();
+    let url = "/start_game";
+    http.open("POST", url, true);
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    http.send("game started")
+    http.onload = function() {
+        if (clicked) {
+            console.log("clicking " +moving);
+            if (document.getElementById(moving.toString())!=undefined)
+                document.getElementById(moving.toString()).click();
+        }
+        numMoves=0;
+        started=true;
+        document.getElementsByClassName('blank').draggable = false;
+        let i=0;
+        for (i=11; i<111; i++){
+            if (notLake(i))
+                document.getElementById(i.toString()).draggable=false;
+        }
+        document.getElementsByClassName('blank').draggable = false;
+        document.getElementById('startBtn').style.visibility="hidden";
+        document.getElementById('startText').style.visibility="hidden";
+        document.getElementById('fastForwardBtn').style.visibility='visible';
+        document.getElementById('concedeBtn').style.visibility='visible';
     }
-    document.getElementsByClassName('blank').draggable = false;
-    document.getElementById('startBtn').style.visibility="hidden";
-    document.getElementById('startText').style.visibility="hidden";
-    document.getElementById('fastForwardBtn').style.visibility='visible';
-    document.getElementById('concedeBtn').style.visibility='visible';
 }
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);
@@ -438,13 +449,11 @@ function aiMove(color) {
 
             let color = response.color;
             let fight_result = response.status.fight_result;
-
             let img_src = response.status.image_src;
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let game_ended = response.status.game_ended;
             let game_result = response.status.game_result;
             let end = (ending_x + 1) * 10 + ending_y + 1;
-            // alert(color+"making a move");
             if (legal==false) return;
 
             performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
@@ -556,8 +565,8 @@ function requestBoard(){
         if (http.status != 200) { // analyze HTTP status of the response
             alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
         } else {
-                let board =JSON.parse(http.response.toString());
-                revealPieces(board);
+            let board =JSON.parse(http.response.toString());
+            revealPieces(board);
         }
     }
 }
@@ -577,7 +586,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 updateSidebar(img_src);
             if (fight_result==0&&replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(end.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(end.toString()).src;
 
             }
             document.getElementById((end).toString()).src
@@ -594,7 +603,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         {
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(start.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
             document.getElementById(start.toString()).style.opacity = ".02";
             document.getElementById(start.toString()).style.borderStyle = 'none';
@@ -608,7 +617,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         else if (fight_result===2){//draw
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
+                    deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
             }
             updateSidebar(img_src);
             document.getElementById(start.toString()).style.opacity = ".02";
@@ -678,13 +687,13 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             if (replay){
                 console.log("logging "+document.getElementById(start.toString()).src);
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(end.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(end.toString()).src;
                 document.getElementById(end.toString()).src =
                     document.getElementById(start.toString()).src
             }
             else
-            document.getElementById(end.toString()).src =
-                img_src
+                document.getElementById(end.toString()).src =
+                    img_src
             revealedTwo=(end);
             if (replay)document.getElementById((start).toString()).style.opacity='.02'
             if (revealedOne==revealedTwo)revealedTwo=-1;
@@ -694,10 +703,10 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         //else if (resp.startsWith(("lose"))){
         else if(fight_result===1)
         {   if (!replay)
-                updateSidebar(img_src);
+            updateSidebar(img_src);
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(start.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
             if (replay)document.getElementById(start).style.opacity='.02';
         }
@@ -783,8 +792,8 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
     http.open("POST", url, true);
 
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-   // http.setRequestHeader("Content-length", params.length);
-   // http.setRequestHeader("Connection", "close");
+    // http.setRequestHeader("Content-length", params.length);
+    // http.setRequestHeader("Connection", "close");
 
     http.send(params);
 
