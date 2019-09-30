@@ -242,29 +242,32 @@ function fastForward(){
 }
 
 function start() {
-    if (clicked) {
-        console.log("clicking " +moving);
-        if (document.getElementById(moving.toString())!=undefined)
-            document.getElementById(moving.toString()).click();
-    }
-    numMoves=0;
-    started=true;
-    document.getElementsByClassName('blank').draggable = false;
-    let i=0;
-    for (i=11; i<111; i++){
-        if (notLake(i))
-            document.getElementById(i.toString()).draggable=false;
-    }
-    document.getElementsByClassName('blank').draggable = false;
-    document.getElementById('startBtn').style.visibility="hidden";
-    document.getElementById('startText').style.visibility="hidden";
-    document.getElementById('fastForwardBtn').style.visibility='visible';
-    document.getElementById('concedeBtn').style.visibility='visible';
+
     let http = new XMLHttpRequest();
     let url = "/start_game";
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
     http.send("game started")
+    http.onload = function() {
+        if (clicked) {
+            console.log("clicking " +moving);
+            if (document.getElementById(moving.toString())!=undefined)
+                document.getElementById(moving.toString()).click();
+        }
+        numMoves=0;
+        started=true;
+        document.getElementsByClassName('blank').draggable = false;
+        let i=0;
+        for (i=11; i<111; i++){
+            if (notLake(i))
+                document.getElementById(i.toString()).draggable=false;
+        }
+        document.getElementsByClassName('blank').draggable = false;
+        document.getElementById('startBtn').style.visibility="hidden";
+        document.getElementById('startText').style.visibility="hidden";
+        document.getElementById('fastForwardBtn').style.visibility='visible';
+        document.getElementById('concedeBtn').style.visibility='visible';
+    }
 }
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);

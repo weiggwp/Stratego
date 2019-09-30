@@ -206,7 +206,6 @@ public class boardController {
 
     @RequestMapping(value = "/start_game", method = RequestMethod.POST)
     public void startGame() {
-
         Board board = game.getBoard();
         long gameId = game.getGameID();
         BoardPiece[][] boardPiece = board.getBoard();
