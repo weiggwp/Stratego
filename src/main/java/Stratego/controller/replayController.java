@@ -88,7 +88,7 @@ public class replayController {
 
     }
 
-    }
+
 
     @RequestMapping(value = "/get_Movelist", method = RequestMethod.POST )
     @ResponseBody

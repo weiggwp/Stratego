@@ -58,23 +58,6 @@ public class boardController {
         move_num = 0;   //reset move_num per new game
         Board board = game.getBoard();
 
-//        if (board.isInitialized()) {
-//            BoardPiece[][] boardPiece = board.getBoard();
-//            for (int i = 0; i < 10; i++) {
-//                for (int j = 0; j < 10; j++) {
-//                    BoardPiece piece = boardPiece[i][j];
-//
-//                    // attributes to saved
-//                    int x = i;
-//                    int y = j;
-//                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
-//                    char pieceName = piece.getUnit();
-//
-//                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-//                    placementService.addPlacement(placement);
-//                }
-//            }
-//        }
 
         ArrayList<Placement> placements = new ArrayList<>();
 
@@ -201,6 +184,7 @@ public class boardController {
     public ResponseEntity getAI() {
 
         Move m = game.getAIMove('R');
+
         Move_status moveStatus = m.getStatus();
         if (m.getStatus().isGame_ended()) {
             long GameID = m.getGameID();
@@ -228,16 +212,6 @@ public class boardController {
 
     }
 
-    public ResponseEntity getAI()
-    {
-        Move ai_move = game.getAIMove('R');
-        ai_move.setGameID(GameID);
-        ai_move.setMoveNum(move_num++);
-        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
-
-        return new ResponseEntity<Move>(m, HttpStatus.OK);
-
-    }
 
     @RequestMapping(value = "/start_game", method = RequestMethod.POST)
     public void startGame() {
@@ -298,15 +272,7 @@ public class boardController {
 
 
     }
-    @RequestMapping(value = "/concede", method = RequestMethod.POST )
-    @ResponseBody
-    public ResponseEntity concede()
-    {
-        //TODO: implement whatever code needs to be here in order to tell the database that the user lost
-        return new ResponseEntity(HttpStatus.OK);
 
-
-    }
     @RequestMapping(value = "/concede", method = RequestMethod.POST )
     @ResponseBody
     public ResponseEntity concede()
