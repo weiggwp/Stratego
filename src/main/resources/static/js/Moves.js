@@ -254,7 +254,7 @@ function fastForward(){
 }
 
 function start() {
-    if (clicked) {
+        if (clicked) {
      console.log("clicking " +moving);
      if (document.getElementById(moving.toString())!=undefined)
         document.getElementById(moving.toString()).click();
@@ -738,7 +738,11 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             console.log("imgsrc is " + response.user.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
-            if (legal==false) return;
+            console.log("legal is "+legal);
+            if (legal==false){
+                permission=true;
+                return;
+            }
             performMove(start, end, color, fight_result, img_src,false);
             //http.response.toString();
 
