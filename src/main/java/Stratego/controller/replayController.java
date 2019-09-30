@@ -23,6 +23,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 @RestController
+//@RequestMapping("/replay")
 public class replayController {
     private long GameID=0;
 

@@ -199,7 +199,23 @@ function updateSidebar(src){
 
 }
 function concede(){
-    if (confirm("Are you sure you wish to concede the game? This cannot be undone."))lose();
+    if (confirm("Are you sure you wish to concede the game? This cannot be undone.")){
+        var http = new XMLHttpRequest();
+        let url = "/concede";    //-> will be changed to another uri maybe action?=move
+        //sent json file is 0-based index
+        var params = JSON.stringify({});
+        //start_x and start_y need to be filled in to validate move
+
+        http.open("POST", url, true);
+
+        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+        // http.setRequestHeader("Content-length", params.length);
+        // http.setRequestHeader("Connection", "close");
+
+        http.send(params);
+
+        lose();
+    }
 
 }
 function hidePieceNums(){
@@ -233,7 +249,7 @@ function fastForward(){
     aiMove('B');
     console.log("AAA");
 
-    permission=true;
+    //permission=true;
 
 }
 
@@ -314,6 +330,8 @@ function isBlue(s){
 }
 function move(i,m) {
     if (gameOver) return;
+    if (!permission)return;
+
     clicked=!clicked;
     if (!started){
 
@@ -340,6 +358,7 @@ function move(i,m) {
             return;
         }
         numMoves++;
+        permission=false;
         hidePieceNums();
         let response=sendMoveRequest(0,x-1,y-1,i-1,m-1,'B',numMoves);
         //clear_coordinates();
@@ -361,7 +380,8 @@ function aiMoveTest() {
     let to=0;
     let from=0;
     while (true) {
-        ran = Math.floor(Math.random() * 90) + 11;
+        ran = Math.floor(
+            Math.random() * 90) + 11;
         // console.log("from "+ran);
         if (!notLake(ran)||!notLake(ran+10)) continue;
         // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
@@ -665,8 +685,8 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
             document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
             document.getElementById(yellowBorder.toString()).style.borderStyle='solid';
             document.getElementById(yellowBorder.toString()).style.borderColor='Yellow';
-
-    }
+            permission=true;
+        }
     }
 
 

@@ -137,4 +137,13 @@ public class boardController {
 
 
     }
+    @RequestMapping(value = "/concede", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity concede()
+    {
+        //TODO: implement whatever code needs to be here in order to tell the database that the user lost
+        return new ResponseEntity(HttpStatus.OK);
+
+
+    }
 }
