@@ -133,6 +133,10 @@ public class Reposition implements Comparable<Reposition> {
         this.pieceCapturedByPlayer = pieceCapturedByPlayer;
     }
 
+    public int getFightResult() {
+        return fightResult;
+    }
+
     public char getPieceCapturedByOpponent() {
         return pieceCapturedByOpponent;
     }

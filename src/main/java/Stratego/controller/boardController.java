@@ -114,6 +114,8 @@ public class boardController {
             Move_status moveStatus = m.getStatus();
             boolean isGameOver = moveStatus.isGame_ended();
             if (isGameOver) {
+                Reposition reposition = Extractor.extractMove(m);
+                moveService.addMove(reposition);
                 /* game match over, save match */
                 System.out.println("GAME OVER");
                 long GameID = m.getGameID();
@@ -216,13 +218,15 @@ public class boardController {
                 int y = j;
                 int isPlayer = piece.getColor() == 'R' ? 1 : 0;
                 char pieceName = piece.getUnit();
+                if (i<4||i>5)
+                    if (pieceName=='0')
+                        pieceName='M';
 
                 Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
                 placementService.addPlacement(placement);
             }
         }
 
-        matchService.addMatch(new Match(1, 25, "win", 3333333333333L));
         // should I say anything back to client?
     }
     @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
@@ -261,5 +265,29 @@ public class boardController {
         return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
 
+    }
+    @RequestMapping(value = "/concede", method = RequestMethod.POST )
+    @ResponseBody
+    public ResponseEntity concede()
+    {
+//        game.setGameEnded(0);
+        System.out.println("CONCEDING GAME AAA\n\n\n\nAAAAA");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        String gameResult = "lose";
+        Date date = new Date();
+        User user = userService.findByUsername(username);
+        long userId = user.getId();
+        long unixTime = date.getTime();
+        long GameID =game.getGameID();
+        Match match = new Match(GameID, userId, gameResult, unixTime);
+        matchService.addMatch(match);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

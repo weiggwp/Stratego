@@ -35,6 +35,9 @@ public class HistoryController {
 
     @GetMapping(path="/{userName}")
     public String history(Model model, ModelMap modelMap, @PathVariable String userName) {
+
+//        if (userName == null) return "404";
+
         // 0)
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = "";
@@ -43,6 +46,8 @@ public class HistoryController {
         } else {
             username = principal.toString();
         }
+//        if (username == null) return "404";
+
         User user = userService.findByUsername(username);
         long userId = user.getId();
         System.out.print("user name is: " + username + " id: " + userId);
@@ -68,12 +73,12 @@ public class HistoryController {
 //        matchService.addMatch(new Match(6,25,"Lost", 1562711657181L));
 //        matchService.addMatch(new Match(7,25,"Lost", 1568711657181L));
 
-//        for (Match match: matches) {
-//            String str_1 = moveService.getOverallPieceLostPlayer(match.getMatchId());
-//            String str_2 = moveService.getOverallPieceLostOpponent(match.getMatchId());
-//            match.setPiecesLostPlayer(str_1);
-//            match.setPiecesLostComputer(str_2);
-//        }
+        for (Match match: matches) {
+            String str_1 = moveService.getOverallPieceLostPlayer(match.getMatchId());
+            String str_2 = moveService.getOverallPieceLostOpponent(match.getMatchId());
+            match.setPiecesLostPlayer(str_1);
+            match.setPiecesLostComputer(str_2);
+        }
 
         modelMap.put("matches", matches);
         model.addAttribute("userName", userName);

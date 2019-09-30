@@ -1,5 +1,6 @@
 package Stratego.service;
 
+import Stratego.logic.src.Game;
 import Stratego.model.Reposition;
 import Stratego.repository.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class MoveService {
         return repositions;
     }
 
+    public List<Reposition> getMoves(long GameID) {
+        return moveRepository.findRepositionByMatchIdOrderByTurnId(GameID);
+    }
+
     public void updateMove() {
         // not needed? can't regret moves during game
 
@@ -58,12 +63,12 @@ public class MoveService {
 
         if (isPlayer == 1) {
             for (Reposition reposition : allRepositions) {
-                if (reposition.getPieceCapturedByOpponent()!=' ')
+                if (reposition.getPieceCapturedByOpponent()!='$')
                     stringBuilder.append(reposition.getPieceCapturedByOpponent());
             }
         } else {
             for (Reposition reposition : allRepositions) {
-                if (reposition.getPieceCapturedByPlayer()!=' ')
+                if (reposition.getPieceCapturedByPlayer()!='$')
                     stringBuilder.append(reposition.getPieceCapturedByPlayer());
             }
         }

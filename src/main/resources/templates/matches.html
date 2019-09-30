@@ -57,7 +57,7 @@
             var currentRow = table.rows[i];
             var cell = currentRow.getElementsByTagName("td")[1];
             var outcome = cell.innerHTML;
-            if (outcome === "Win") {
+            if (outcome === "win") {
                 currentRow.className = "table-primary";
             } else {
                 currentRow.className = "table-danger"
@@ -79,19 +79,16 @@
             var createClickHandler =
                 function(row)
                 {
+
                     return function() {
                         var http = new XMLHttpRequest();
                         var cell = row.getElementsByTagName("td")[4];
                         var gameId = cell.innerHTML;
-                        alert("id:" + gameId);
-                        let params = JSON.stringify({
-                            'gameId': gameId,
-                        });
-                        let url = "/replay"
-                        http.open("POST", url, true);
-                        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-                        http.send(params);
+                        // alert("id:" + gameId);
+                        let url = "/replay/" + gameId;
                         window.location.href=url
+
+
                     };
                 };
 

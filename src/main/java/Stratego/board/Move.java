@@ -11,6 +11,15 @@ public class Move {
     private int moveNum;
     private Move_status status; //response about the attempted move
 
+    public Move(int gameID, String s, int startX, int startY, int curX, int curY, Move_status moveStatus) {
+        GameID = gameID;
+        this.start_x = startX;
+        this.start_y = startY;
+        this.end_x = curX;
+        this.end_y = curY;
+        this.status = moveStatus;
+    }
+
     public int getMoveNum(){
         return moveNum;
     }
@@ -27,10 +36,7 @@ public class Move {
     {
         this.GameID = id;
     }
-    public Move()
-    {
 
-    }
     public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color, int moveNum, Move_status status) {
         GameID = gameID;
         this.start_x = start_x;
@@ -40,6 +46,11 @@ public class Move {
         this.color = color;
         this.moveNum = moveNum;
         this.status = status;
+    }
+
+    public Move()
+    {
+
     }
 
     public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color , Move_status status) {

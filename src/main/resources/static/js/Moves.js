@@ -8,19 +8,20 @@ let yellow=-1;
 let yellowBorder=-1;
 let started=false;
 let legal=0;
-
+let gameOver=false;
 let revealedOne=-1;
 let revealedTwo=-1;
 
 let moveList=null;
 let moveCounter=0;
 let testThread=false;
-
+let replaying=false;
 let deletedImages=null;
 function startReplay() {
+     replaying=true;
     console.log("CALLED");
     var http = new XMLHttpRequest();
-    let url = "/get_Movelist";    //-> will be changed to another uri maybe action?=move
+    let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({});
     //start_x and start_y need to be filled in to validate move
@@ -31,7 +32,7 @@ function startReplay() {
     // http.setRequestHeader("Content-length", params.length);
     // http.setRequestHeader("Connection", "close");
 
-    http.send(params);
+    http.send();
 
     //will prob need to separate and make a more sophisticated function
 
@@ -166,6 +167,7 @@ function highlight(i,m) {
 }
 let lastsrc='';
 function updateSidebar(src){
+    if(replaying)return;
     let num=src.substring(src.lastIndexOf("piece")+5,src.lastIndexOf(".png"));
     console.log("num is "+num);
     let numString = "captured".concat(num);
@@ -183,7 +185,24 @@ function updateSidebar(src){
 
 }
 function concede(){
-    if (confirm("Are you sure you wish to concede the game? This cannot be undone."))lose();
+    if (confirm("Are you sure you wish to concede the game? This cannot be undone.")) {
+
+        var http = new XMLHttpRequest();
+        let url = "/concede";    //-> will be changed to another uri maybe action?=move
+        //sent json file is 0-based index
+        var params = JSON.stringify({});
+        //start_x and start_y need to be filled in to validate move
+
+        http.open("POST", url, true);
+
+        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+        // http.setRequestHeader("Content-length", params.length);
+        // http.setRequestHeader("Connection", "close");
+
+        http.send(params);
+        lose();
+    }
+
 
 }
 function hidePieceNums(){
@@ -224,8 +243,9 @@ function fastForward(){
 
 function start() {
     if (clicked) {
-    // console.log("clicking " +moving);
-    document.getElementById(moving.toString()).click();
+     console.log("clicking " +moving);
+     if (document.getElementById(moving.toString())!=undefined)
+        document.getElementById(moving.toString()).click();
  }
     numMoves=0;
     started=true;
@@ -302,6 +322,7 @@ function isBlue(s){
     return false;
 }
 function move(i,m) {
+    if (gameOver) return;
     clicked=!clicked;
     if (!started){
 
@@ -450,6 +471,7 @@ function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
 
 }
 function lose(){
+    gameOver=true;
     document.getElementById('startText').outerHTML='You lost. Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
     document.getElementById('restartBtn').style.visibility='visible';
@@ -459,6 +481,7 @@ function lose(){
 
 }
 function win(){
+    gameOver=true;
     document.getElementById('startText').outerHTML='You win! Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
     document.getElementById('restartBtn').style.visibility='visible';
@@ -511,6 +534,7 @@ function requestBoard(){
     }
 }
 function performMove(start,end,color,fight_result,img_src,replay, undo){
+    if (gameOver)return;
     console.log("start is " + start+", end is " + end);
     if (color==='B') {
 

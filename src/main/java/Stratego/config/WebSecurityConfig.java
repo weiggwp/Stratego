@@ -138,6 +138,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/register**",
                         "/board/**",
+                        "/replay/**",
                         "/history/**",
                         "/js/**",
                         "/static/**",

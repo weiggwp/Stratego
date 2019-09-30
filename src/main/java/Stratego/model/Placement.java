@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Comparator;
 
 @Entity
-public class Placement {
+public class Placement implements Comparable<Placement> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -87,5 +88,13 @@ public class Placement {
                 ", pieceName='" + pieceName + '\'' +
                 ", isPlayer=" + isPlayer +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Placement o) {
+        if (x>o.getX())return 1;
+        if (x<o.getX())return -1;
+        if (y>o.getY()) return 1;
+        return -1;
     }
 }

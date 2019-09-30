@@ -4,6 +4,8 @@ public class GameIdentifier {
 
     private long GameID;
 
+    public GameIdentifier(){}
+
     public GameIdentifier(long gameID) {
         GameID = gameID;
     }

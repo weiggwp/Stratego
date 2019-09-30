@@ -46,7 +46,9 @@ public class Game {
     {
         return this.gameWinner;
     }
-
+    public void setGameEnded(int i){
+        gameWinner=i;
+    }
     public Board getBoard(){
         return this.board;
     }
@@ -73,7 +75,7 @@ public class Game {
         //[1,1]->[1,2]      initial
         // [1,2]->[1,1]     second
         // [1,1]-> [1,2] (current attempted move)
-        if(moves.size()<(2*2))
+        if(moves.size()<(2*3))//6 moves
             return false;   //need at least 2 rounds of moves
         //System.out.println("currently in round"+moves.size()+" color:"+color);
         String current_start = startingX+","+startingY;
@@ -81,15 +83,19 @@ public class Game {
 
         Move lastMove = moves.get(moves.size()-2); //get the last valid move this person made
 //        System.out.println("last move made: "+lastMove.getStart()+" to "+lastMove.getEnd());
-        Move firstMove = moves.get(moves.size()-4);
+        Move secondMove = moves.get(moves.size()-4);
+        Move firstMove = moves.get(moves.size()-6);
 //        System.out.println("first move made: "+firstMove.getStart()+" to "+firstMove.getEnd());
-        if(lastMove.movedBack(startingX,startingY,endingX,endingY))
+        if(lastMove.movedBack(startingX,startingY,endingX,endingY)
+        && secondMove.movedBack(lastMove.getStart_x(),lastMove.getStart_y(),lastMove.getEnd_x(),lastMove.getEnd_y())
+        && firstMove.movedBack(secondMove.getStart_x(),secondMove.getStart_y(),secondMove.getEnd_x(),secondMove.getEnd_y()))
         {
-            if(current_start.equals(firstMove.getStart()) && current_end.equals(firstMove.getEnd()))
-            {
-                return true;
-            }
-            return false;
+//            if(current_start.equals(firstMove.getStart()) && current_end.equals(firstMove.getEnd()))
+//            {
+//                return true;
+//            }
+//            return false;
+            return true;
         }
         return false;
 
@@ -161,7 +167,7 @@ public class Game {
         //you are the attacker, and the opponent the defender
         if (result==0){//winning case
 
-            capture(move_stat,color,you.getUnit());   //return unit for now
+            capture(move_stat,color,opponent.getUnit());   //return unit for now
             String a = color=='B'?opponent.getImg_src():you.getImg_src();//opponent's piece
             //String a = you.getImg_src();
 
@@ -219,12 +225,16 @@ public class Game {
         board.getSetup().printRemainingPieces();
         board.getSetup().printLocationOfPieces(color);
         char opponent_color = (color=='R')?'B':'R';
-        if(!hasMovable(color)&&!hasMovable(opponent_color))
+        boolean you_can_move = hasMovable(color);
+        boolean oppo_can_move = hasMovable(opponent_color);
+        System.out.println("you can move : "+color+" "+you_can_move);
+        System.out.println("opponent can move"+opponent_color+" "+oppo_can_move);
+        if(!you_can_move&&!oppo_can_move)
             //both are not movable
         {
             move_stat.gameEnded();
             move_stat.setGame_result("draw");
-        } else if (!hasMovable(color)) {
+        } else if (!you_can_move) {
             //your color doesnt have movable
             if(!board.canWin(opponent_color))
             {//opponent cannot capture you
@@ -235,10 +245,11 @@ public class Game {
             {
                 move_stat.gameEnded();
                 move_stat.setGame_result("lost");
+                System.out.println("you have no movable pieces, and you've lost");
 
             }
         }
-        else if(!hasMovable(opponent_color))
+        else if(!oppo_can_move)
         {
             if(!board.canWin(color))
             {//opponent cannot capture you
