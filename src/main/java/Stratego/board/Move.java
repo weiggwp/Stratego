@@ -11,6 +11,17 @@ public class Move {
     private int moveNum;
     private Move_status status; //response about the attempted move
 
+    @Override
+    public String toString() {
+        return "Move{" +
+                "start_x=" + start_x +
+                ", start_y=" + start_y +
+                ", end_x=" + end_x +
+                ", end_y=" + end_y +
+                ", color=" + color +
+                '}';
+    }
+
     public int getMoveNum(){
         return moveNum;
     }

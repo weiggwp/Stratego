@@ -123,16 +123,17 @@ public class Game {
         //Move_status stat = new Move_status();
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
-        Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),'R',null);
+        Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),color,null);
         Move_status stat = move(m);
         m.setStatus(stat);
         this.moves.add(m);  //made a move
-        System.out.println("Ai says move from "+sm.getStart_x()+","+sm.getStart_y()+" to "+sm.getEnd_x()+","+sm.getEnd_y());
+        //System.out.println("Ai says move from "+sm.getStart_x()+","+sm.getStart_y()+" to "+sm.getEnd_x()+","+sm.getEnd_y());
         return m;
     }
     //public Move_status getMove_stat()
     public Move_status move(Move move)   //front-end JSON for player, and backend ai prefills field
     {
+        System.out.println(move);
         //doesnt need to return a string
         int startingX = move.getStart_x();
         int startingY = move.getStart_y();
@@ -161,10 +162,11 @@ public class Game {
 
         move_stat.setPiece_name(you.getUnit());
         board.boardAction(result,color,you,opponent);//do it after the pieces have updated
+
         //you are the attacker, and the opponent the defender
         if (result==0){//winning case
 
-            capture(move_stat,color,you.getUnit());   //return unit for now
+            capture(move_stat,color,opponent.getUnit());   //return unit for now
             String a = color=='B'?opponent.getImg_src():you.getImg_src();//opponent's piece
             //String a = you.getImg_src();
 
@@ -203,7 +205,8 @@ public class Game {
 
         }
         else if (result==3){
-            board.redefinePieceInfo(startingX,startingY,endingX,endingY);
+            capture(move_stat,color,opponent.getUnit());
+            board.redefinePieceInfo(startingX,startingY,endingX,endingY);//captured flag
             board.clearPieceInfo(startingX,startingY);
             gameWinner=1;
             move_stat.gameEnded();
@@ -224,8 +227,8 @@ public class Game {
         char opponent_color = (color=='R')?'B':'R';
         boolean you_can_move = hasMovable(color);
         boolean oppo_can_move = hasMovable(opponent_color);
-        System.out.println("you can move : "+color+" "+you_can_move);
-        System.out.println("opponent can move"+opponent_color+" "+oppo_can_move);
+//        System.out.println("you can move : "+color+" "+you_can_move);
+//        System.out.println("opponent can move"+opponent_color+" "+oppo_can_move);
         if(!you_can_move&&!oppo_can_move)
             //both are not movable
         {

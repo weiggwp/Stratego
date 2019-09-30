@@ -97,7 +97,7 @@ public class Board {
         }
         if(i==2)//tie
         {
-            setup.tiedMove(color,defender,attacker);
+            setup.tiedMove(color,attacker,defender);
         }
         if(i==4)//move
         {

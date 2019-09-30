@@ -11,3 +11,7 @@
 
     margin: auto;
 }
+
+.buttons{
+    display: table-column-group;
+}

@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -82,6 +83,7 @@ public class replayController {
 
 
     }
+
     @RequestMapping(value = "/get_Movelist", method = RequestMethod.POST )
     @ResponseBody
     public ResponseEntity getMovelist()

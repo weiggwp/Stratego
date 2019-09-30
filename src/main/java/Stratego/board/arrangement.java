@@ -12,11 +12,11 @@ import java.util.Random;
 
 //shuffles and gives positions of pieces
 public class arrangement {
-    private static ArrayList<BoardPiece> comp;
-    private static ArrayList<BoardPiece> user;
-    private static BoardPiece compFlag;
-    private static BoardPiece userFlag;
-    private static HashMap<Character, HashMap<Character,Integer>> remaining_pieces;
+    private ArrayList<BoardPiece> comp;
+    private ArrayList<BoardPiece> user;
+    private BoardPiece compFlag;
+    private BoardPiece userFlag;
+    private HashMap<Character, HashMap<Character,Integer>> remaining_pieces;
 
     //a hashmap that tracks remaining pieces from both sides
 
@@ -54,10 +54,11 @@ public class arrangement {
             System.out.println("User pieces");
             for(BoardPiece piece: user)
             {
-                if((count+1)%10==0)
-                    System.out.println();
+
                 System.out.print(piece.getUnit()+": ("+piece.getX()+","+piece.getY()+")\t");
                 count++;
+                if((count+1)%10==0)
+                    System.out.println();
             }
         }
         System.out.println();System.out.println();
@@ -120,13 +121,17 @@ public class arrangement {
         //do not affect hashmap remaining pieces count
         if(color=='R')//moved a computer piece
         {
+
             comp.remove(oldLocation);
             comp.add(newLocation);
+            printLocationOfPieces(color);
         }
         else
         {
+
             user.remove(oldLocation);
             user.add(newLocation);
+            printLocationOfPieces(color);
         }
     }
     public void printRemainingPieces()
@@ -241,7 +246,7 @@ public class arrangement {
         }
         return "";
     }
-    public static Boolean compare(int row,int col)
+    public Boolean compare(int row,int col)
     {
 
         if((row==5 || row==6) && (col==3 || col==4 || col==7 || col==8))
@@ -250,7 +255,7 @@ public class arrangement {
         }
         return false;
     }
-    public static Boolean getImage(int row)
+    public Boolean getImage(int row)
     {
         if(!(row==5 || row==6))
         {
@@ -264,26 +269,26 @@ public class arrangement {
 
 
     }
-    public static Boolean blue(int row)
+    public Boolean blue(int row)
     {
         return row<5;
     }
-    public static Boolean red(int row)
+    public Boolean red(int row)
     {
         return row>6;
     }
 
-    public static Boolean blank(int row)
+    public Boolean blank(int row)
     {
         return row==5||row==6;
 
     }
-    public static String getId(int row,int col)
+    public String getId(int row,int col)
     {
         return row+"_"+col;
     }
 
-    public static BoardPiece getPiece(int row,int col)
+    public BoardPiece getPiece(int row,int col)
     {
         if(row<5)//blue
         {
@@ -298,7 +303,7 @@ public class arrangement {
             return user.get(pos);
         }
     }
-    public static String assign(int row,int col)
+    public String assign(int row,int col)
     {
 
         if(row<5)//blue
@@ -397,7 +402,7 @@ public class arrangement {
     //TODO: Instead of storing strings encapsulate it in piece class
     //
     //randomly populates the 40 spots, works for both red and blue team
-    private static ArrayList populate(int row)
+    private ArrayList populate(int row)
     {
         ArrayList<String> collect = new ArrayList<String>();
         int[] counts ={6,8,2,3,5,4,4,4};
@@ -447,7 +452,7 @@ public class arrangement {
         return collect;
 
     }
-    private static String clone(String s)
+    private String clone(String s)
     {
         return new String(s);
     }

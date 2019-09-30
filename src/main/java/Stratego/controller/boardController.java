@@ -76,8 +76,8 @@ public class boardController {
     public ResponseEntity<Move> move(@RequestBody Move m)
     // RequestBody String some)
     {
-        System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-        System.out.println("moving");
+//        System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
+//        System.out.println("moving");
        // String status=
         Move_status stat = game.move(m);
         m.setGameID(GameID);
@@ -128,6 +128,7 @@ public class boardController {
     {
         Move ai_move = game.getAIMove('R');
         ai_move.setGameID(GameID);
+        ai_move.setMoveNum(move_num++);
         return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
     }

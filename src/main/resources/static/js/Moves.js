@@ -57,6 +57,8 @@ function undoMove(){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
+        moveList[numMoves].status.game_ended,
+        movelist[numMoves].status.game_result,
         true,true);
     if (moveList[numMoves].status.fight_result==0){//win
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];
@@ -126,7 +128,9 @@ function nextMove(fastForward){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        true);
+        moveList[numMoves].status.game_ended,
+        moveList[numMoves].status.game_result,
+        true,false);
 
     numMoves++;
     if (numMoves==moveList.length){
@@ -215,7 +219,7 @@ function fastForward(){
     permission=false;
     hidePieceNums();
     aiMove('B');
-    aiMove('R');
+    // aiMove('R');
     // console.log("AAA");
 
     permission=true;
@@ -398,12 +402,16 @@ function aiMove(color) {
 
             let color = response.color;
             let fight_result = response.status.fight_result;
+
             let img_src = response.status.image_src;
             let start = (starting_x + 1) * 10 + starting_y + 1;
+            let game_ended = response.status.game_ended;
+            let game_result = response.status.game_result;
             let end = (ending_x + 1) * 10 + ending_y + 1;
+            // alert(color+"making a move");
             if (legal==false) return;
 
-            performMove(start, end, color, fight_result, img_src,false);
+            performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
 
             // sendMoveRequest(0,starting_x,starting_y,ending_x,ending_y,'R',++numMoves);
 
@@ -465,12 +473,20 @@ function win(){
     document.getElementById('concedeBtn').style.visibility='hidden';
     requestBoard();
 }
+function draw()
+{
+    gameOver=true;
+    document.getElementById('startText').outerHTML='Draw! Press restart to restart';
+    //document.getElementById('startText').style.visibility='visible';
+    document.getElementById('restartBtn').style.visibility='visible';
+    document.getElementById('fastForwardBtn').style.visibility='hidden';
+    document.getElementById('concedeBtn').style.visibility='hidden';
+    requestBoard();
+}
 function restart(){
     location.reload()
 }
-function back(){
 
-}
 function revealPieces(board){
     if (yellowBorder!=-1)
         document.getElementById(yellowBorder.toString()).style.borderStyle='none';
@@ -509,9 +525,11 @@ function requestBoard(){
         }
     }
 }
-function performMove(start,end,color,fight_result,img_src,replay, undo){
+
+function performMove(start,end,color,fight_result,img_src,game_ended,game_result,replay, undo){
     if (gameOver)return;
     console.log("start is " + start+", end is " + end);
+    console.log(color+"is moving");
     if (color==='B') {
 
         //if (resp.startsWith("win")) { //it
@@ -573,9 +591,30 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
                 win();
             return;
         }
+        else if(game_ended===true)// check for alternate capturing
+        {
 
-        if (!replay)
+            if(game_result==="win")
+            {
+                win();
+                return;
+            }
+            else if(game_result==="lost")
+            {
+                lose();
+                return;
+            }
+            else
+            {
+                draw();
+                return;
+            }
+        }
+
+
+        if (!replay) {
             aiMove('R');
+        }
     }
     else{
 
@@ -640,6 +679,24 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         {
             if (!replay)
                 lose();
+        }
+        else if(game_ended===true)// check for alternate capturing
+        {
+            if(game_result==="win")
+            {
+                lose();
+                return;
+            }
+            else if(game_result==="lost")
+            {
+                win();
+                return;
+            }
+            else
+            {
+                draw();
+                return;
+            }
         }
         if (!replay){
             document.getElementById('fastForwardBtn').style.opacity='1';
@@ -708,13 +765,15 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let response = JSON.parse(http.response.toString());
             let legal = response.status.is_valid_move;
             let fight_result = response.status.fight_result;
-            let game_result = response.status.game_ended;
+            let game_ended = response.status.game_ended;
+            let game_result = response.status.game_result;
             let img_src = response.status.image_src;
             console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
             if (legal==false) return;
-            performMove(start, end, color, fight_result, img_src,false);
+            performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
+           // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
             //http.response.toString();
 
 
