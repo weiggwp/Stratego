@@ -2,9 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Royal_blue_hw1.Stratego.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.test.iml" />

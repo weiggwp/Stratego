@@ -1,45 +1,3 @@
-<!--<!DOCTYPE html>-->
-<!--<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"-->
-<!--      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
-<!--<head>-->
-<!--    <title>Register </title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1> Register Account</h1>-->
-
-<!--&lt;!&ndash;<div th:if="${param.error}">&ndash;&gt;-->
-<!--&lt;!&ndash;    Invalid username and password.&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div th:if="${param.logout}">&ndash;&gt;-->
-<!--&lt;!&ndash;    You have been logged out.&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--<div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red" > </div>-->
-
-<!--<br>-->
-
-<!--<form th:action="@{/register}" method="post">-->
-<!--    &lt;!&ndash;    <div><label> Username : <input type="text" name="username"/> </label></div>&ndash;&gt;-->
-<!--    &lt;!&ndash;    <div><label> Password: <input type="password" name="password"/> </label></div>&ndash;&gt;-->
-<!--    &lt;!&ndash;    <div><input type="submit" value="Sign In"/></div>&ndash;&gt;-->
-<!--    <table>-->
-<!--        <tr>-->
-<!--            <td>Username:</td>-->
-<!--            <td><input type='text' name='username' value=''></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td>Password:</td>-->
-<!--            <td><input type='password' name='password' /></td>-->
-<!--        </tr>-->
-<!--        <tr>-->
-<!--            <td colspan='2'><input name="submit" type="submit" value="sign in" /></td>-->
-<!--        </tr>-->
-<!--    </table>-->
-<!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
-
-<!--    <p>Click <a th:href="@{/register}">here</a> to register.</p>-->
-<!--</form>-->
-<!--</body>-->
-<!--</html>-->
 
 <!DOCTYPE html>
 <!--<html xmlns:th="http://www.thymeleaf.org">-->
@@ -55,8 +13,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />
+<!--    <link rel="stylesheet" type="text/css"-->
+<!--          th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}" />-->
 
     <title>Registration</title>
 </head>
@@ -102,6 +60,7 @@
                         <div class="form-group row d-flex justify-content-center">
                             <button type="submit" class="btn btn-success">Register</button>
                             <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span>Already registered? <a href="/" th:href="@{/login}">Login here</a></span>
                         </div>
                     </form>
@@ -109,10 +68,10 @@
         </div>
     </div>
 
-<script type="text/javascript"
-        th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>
-<script type="text/javascript"
-        th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+<!--<script type="text/javascript"-->
+<!--        th:src="@{/webjars/jquery/3.2.1/jquery.min.js/}"></script>-->
+<!--<script type="text/javascript"-->
+<!--        th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>-->
 </body>
 
 
