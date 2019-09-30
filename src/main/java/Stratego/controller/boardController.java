@@ -233,11 +233,10 @@ public class boardController {
     @ResponseBody
     public ResponseEntity getAIPlayer()
     {
-        Move ai_move = game.getAIMove('B');
-//        ai_move.setGameID(GameID);
-//        ai_move.setMoveNum(move_num++);
-//        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
-        Move m = game.getAIMove('R');
+
+        Move m = game.getAIMove('B');
+        m.setGameID(GameID);
+
         Move_status moveStatus = m.getStatus();
         if (m.getStatus().isGame_ended()) {
             long GameID = m.getGameID();
@@ -261,8 +260,7 @@ public class boardController {
             Reposition move = Extractor.extractMove(m);
             moveService.addMove(move);
         }
-
-        return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
+        return new ResponseEntity<Move>(m,HttpStatus.OK);
 
 
     }

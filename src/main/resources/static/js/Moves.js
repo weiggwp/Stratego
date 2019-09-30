@@ -18,7 +18,7 @@ let testThread=false;
 let replaying=false;
 let deletedImages=null;
 function startReplay() {
-     replaying=true;
+    replaying=true;
     console.log("CALLED");
     var http = new XMLHttpRequest();
     let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
@@ -132,7 +132,7 @@ function nextMove(fastForward){
     numMoves++;
     if (numMoves==moveList.length){
         document.getElementById("nextMoveBtn").style.visibility='hidden';
-       // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
+        // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
         document.getElementById("restartBtn").style.visibility='visible';
         document.getElementById("restartText").style.visibility='visible';
     }
@@ -233,8 +233,8 @@ function fastForward(){
     document.getElementById('fastForwardBtn').style.opacity='.65';
     permission=false;
     hidePieceNums();
+   // aiMove('R');
     aiMove('B');
-    aiMove('R');
     // console.log("AAA");
 
     permission=true;
@@ -243,17 +243,17 @@ function fastForward(){
 
 function start() {
     if (clicked) {
-     console.log("clicking " +moving);
-     if (document.getElementById(moving.toString())!=undefined)
-        document.getElementById(moving.toString()).click();
- }
+        console.log("clicking " +moving);
+        if (document.getElementById(moving.toString())!=undefined)
+            document.getElementById(moving.toString()).click();
+    }
     numMoves=0;
     started=true;
     document.getElementsByClassName('blank').draggable = false;
     let i=0;
     for (i=11; i<111; i++){
         if (notLake(i))
-        document.getElementById(i.toString()).draggable=false;
+            document.getElementById(i.toString()).draggable=false;
     }
     document.getElementsByClassName('blank').draggable = false;
     document.getElementById('startBtn').style.visibility="hidden";
@@ -528,8 +528,8 @@ function requestBoard(){
         if (http.status != 200) { // analyze HTTP status of the response
             alert(`Error ${http.status}: ${http.statusText}`); // e.g. 404: Not Found
         } else {
-                let board =JSON.parse(http.response.toString());
-                revealPieces(board);
+            let board =JSON.parse(http.response.toString());
+            revealPieces(board);
         }
     }
 }
@@ -546,7 +546,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
                 updateSidebar(img_src);
             if (fight_result==0&&replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(end.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(end.toString()).src;
 
             }
             document.getElementById((end).toString()).src
@@ -563,7 +563,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         {
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(start.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
             document.getElementById(start.toString()).style.opacity = ".02";
             document.getElementById(start.toString()).style.borderStyle = 'none';
@@ -577,7 +577,7 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         else if (fight_result===2){//draw
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
+                    deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
             }
             updateSidebar(img_src);
             document.getElementById(start.toString()).style.opacity = ".02";
@@ -626,13 +626,13 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
             if (replay){
                 console.log("logging "+document.getElementById(start.toString()).src);
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(end.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(end.toString()).src;
                 document.getElementById(end.toString()).src =
                     document.getElementById(start.toString()).src
             }
             else
-            document.getElementById(end.toString()).src =
-                img_src
+                document.getElementById(end.toString()).src =
+                    img_src
             revealedTwo=(end);
             if (replay)document.getElementById((start).toString()).style.opacity='.02'
             if (revealedOne==revealedTwo)revealedTwo=-1;
@@ -642,10 +642,10 @@ function performMove(start,end,color,fight_result,img_src,replay, undo){
         //else if (resp.startsWith(("lose"))){
         else if(fight_result===1)
         {   if (!replay)
-                updateSidebar(img_src);
+            updateSidebar(img_src);
             if (replay){
                 if (!undo)
-                deletedImages[numMoves]=document.getElementById(start.toString()).src;
+                    deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
             if (replay)document.getElementById(start).style.opacity='.02';
         }
@@ -713,8 +713,8 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
     http.open("POST", url, true);
 
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-   // http.setRequestHeader("Content-length", params.length);
-   // http.setRequestHeader("Connection", "close");
+    // http.setRequestHeader("Content-length", params.length);
+    // http.setRequestHeader("Connection", "close");
 
     http.send(params);
 
@@ -745,7 +745,3 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
         }
     }
 }
-
-
-
-

@@ -44,7 +44,7 @@ public class replayController {
     public ModelAndView replayPage(@PathVariable long GameID, Model model, ModelMap modelMap) {
         int count = 10;
         int inner = 10;
-
+        this.GameID = GameID;
         System.out.println("GameID is: " + GameID);
 
         List<Placement> placementList = placementService.getPlacements(GameID);
@@ -55,7 +55,7 @@ public class replayController {
         for(int i=0; i<placementList.size(); i++){
             System.out.println(placementList.get(i).getX()+","+placementList.get(i).getY()+":"+placementList.get(i).getPieceName());
         }
-        this.GameID = GameID;
+
 
         //render board.html
        // modelMap.put("startConfig", placementList);
@@ -90,7 +90,7 @@ public class replayController {
     public ResponseEntity getMovelist()
     {
 
-        List<Reposition> moves = moveService.getMoves(GameID);
+        List<Reposition> moves = moveService.getMoves(this.GameID);
         Move[] moveArr = new Move[moves.size()];
         for (int i = 0; i < moves.size();i ++) {
 
