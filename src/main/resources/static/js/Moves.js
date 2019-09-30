@@ -21,7 +21,7 @@ function startReplay() {
     replaying=true;
     console.log("CALLED");
     var http = new XMLHttpRequest();
-    let url = "replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
+    let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({});
     //start_x and start_y need to be filled in to validate move
