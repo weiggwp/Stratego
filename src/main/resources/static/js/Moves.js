@@ -86,6 +86,9 @@ function fastForwardReplay(time){
     forward=!forward;
     if (!forward){
         console.log("Forward off.");
+        document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
+        document.getElementById('nextMoveBtn').style.opacity='1';
+        document.getElementById('undoMoveBtn').style.opacity='1';
         return;
     }
     if (numMoves==moveList.length) return;
@@ -106,7 +109,14 @@ function fastForwardReplayAuto(time){
     document.getElementById('undoMoveBtn').style.opacity='.65';
     document.getElementById('fastForwardReplayBtn').innerHTML='Pause';
     console.log("forward is " +forward);
-    if (numMoves==moveList.length) return;
+    if (numMoves==moveList.length){
+        document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
+        document.getElementById('nextMoveBtn').style.opacity='1';
+        document.getElementById('undoMoveBtn').style.opacity='1';
+        forward=false;
+        return;
+    }
+
     console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
     setTimeout(function(){nextMove(true); fastForwardReplayAuto(750);}, time);
 }
@@ -117,8 +127,14 @@ function nextMoveClick(){
     if (!forward) nextMove(false);
 }
 function nextMove(fastForward){
-    if (fastForward&&!forward) return;
-    if (numMoves==moveList.length) return;
+    if (fastForward&&!forward){
+        fastForwardReplayTime();
+        return;
+    }
+    if (numMoves==moveList.length) {
+        fastForwardReplayTime();
+        return;
+    }
     document.getElementById("undoMoveBtn").style.visibility='visible';
     console.log(moveList[numMoves]);
     performMove(moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,

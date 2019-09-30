@@ -62,9 +62,9 @@ public class replayController {
 
         ArrayList<Placement> list=new ArrayList<>();
         for (int i=0; i<40; i++)
-            list.add(new Placement(0,i/10,i,'1',0));
+            list.add(new Placement(0,i/10,i,i%2==0?'1':'2',0));
         for (int i=60; i<100; i++)
-            list.add(new Placement(0,i/10,i,'2',1));
+            list.add(new Placement(0,i/10,i,'M',1));
         arrangement arr = new arrangement(0,0);
         arr.create_pieces_placement(list);
         //render board.html

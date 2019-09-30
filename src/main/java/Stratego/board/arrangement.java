@@ -131,10 +131,10 @@ public class arrangement {
         System.out.println("size is " + lis.size());
         for (int i=0; i<lis.size(); i++){
             BoardPiece bp = new BoardPiece();
-            bp.setColor(lis.get(i).getIsPlayer()==1?'B':'R');
+            bp.setColor(lis.get(i).getIsPlayer()==1?'R':'B');
 
             bp.setUnit(lis.get(i).getPieceName());
-            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),lis.get(i).getIsPlayer()==1?'B':'R') + ext);
+            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),lis.get(i).getIsPlayer()==1?'R':'B') + ext);
             //System.out.println("item at " +i +" has src of " +bp.getImg_src());
             if (bp.getColor()=='B'){
                 blue.add(bp);
