@@ -11,7 +11,12 @@
 
     margin: auto;
 }
-
-.buttons{
-    display: table-column-group;
+.pog
+{
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    padding:10px;
+    justify-content: center;
+    flex-direction: column;
 }

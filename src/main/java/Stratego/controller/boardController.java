@@ -2,7 +2,6 @@ package Stratego.controller;
 
 import Stratego.board.Move;
 import Stratego.board.Move_status;
-import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
 import Stratego.logic.src.BoardPiece;
@@ -15,8 +14,9 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.ArrayList;
 
 @RestController
 public class boardController {
@@ -38,9 +38,13 @@ public class boardController {
         long gameId = GameID;
         Board board = game.getBoard();
 
+        ArrayList<Placement> placements = new ArrayList<>();
+
+
         if (board.isInitialized()) {
             BoardPiece[][] boardPiece = board.getBoard();
             for (int i = 0; i < 10; i++) {
+
                 for (int j = 0; j < 10; j++) {
                     BoardPiece piece = boardPiece[i][j];
 
@@ -49,13 +53,16 @@ public class boardController {
                     int y = j;
                     int isPlayer = piece.getColor() == 'R' ? 1 : 0;
                     char pieceName = piece.getUnit();
-
                     Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-                    placementService.addPlacement(placement);
+                    placements.add(placement);
+
                 }
+
             }
         }
-
+        // have a new thread to add placements to database as it was slowing down board loading by 20s
+        Thread t = new Thread(new PlacementsToDBRunnable(placementService,placements));
+        t.start();
 
         //render board.html
         model.addAttribute("count", count);
@@ -64,6 +71,7 @@ public class boardController {
         model.addAttribute("pos", game.getGameSetup());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("board");
+
         return modelAndView;
 
         //return "board";
@@ -142,5 +150,20 @@ public class boardController {
         return new ResponseEntity<Move>(ai_move,HttpStatus.OK);
 
 
+    }
+}
+
+class PlacementsToDBRunnable implements Runnable {
+    private final ArrayList<Placement> placements;
+    private final PlacementService placementService;
+    public PlacementsToDBRunnable(PlacementService placementService, ArrayList<Placement> placements) {
+        // store parameter for later user
+        this.placementService = placementService;
+        this.placements = placements;
+    }
+
+    public void run() {
+        placementService.addPlacements(placements);
+//        System.out.println("placements added");
     }
 }
