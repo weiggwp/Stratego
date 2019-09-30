@@ -104,7 +104,7 @@ public class SimulationBoard{
             if( count>=3) return true;  //changed from 2-3
             temp = temp.getPrev();
 
-            my_move = false;
+            my_move = false;        //added
         }
         return false;
     }
