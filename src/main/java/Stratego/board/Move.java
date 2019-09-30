@@ -27,7 +27,22 @@ public class Move {
     {
         this.GameID = id;
     }
-    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color ,Move_status status) {
+
+    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color, int moveNum, Move_status status) {
+        GameID = gameID;
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.color = color;
+        this.moveNum = moveNum;
+        this.status = status;
+    }
+    public Move()
+    {
+
+    }
+    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color , Move_status status) {
         GameID = gameID;
         //this.player = player;
         this.start_x = start_x;
@@ -36,6 +51,7 @@ public class Move {
         this.end_y = end_y;
         this.color = color;
         this.status = status;
+        this.moveNum = 0;
     }
     public String getStart()
     {
