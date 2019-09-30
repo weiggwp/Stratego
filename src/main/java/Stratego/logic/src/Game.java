@@ -127,6 +127,7 @@ public class Game {
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
         Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),color,null);
+        System.out.println("AI_MOVE****");
         Move_status stat = move(m);
         m.setStatus(stat);
         this.moves.add(m);  //made a move

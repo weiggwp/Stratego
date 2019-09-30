@@ -58,8 +58,7 @@ function undoMove(){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        moveList[numMoves].status.game_ended,
-        movelist[numMoves].status.game_result,
+        false,"",
         true,true);
     if (moveList[numMoves].status.fight_result==0){//win
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];
@@ -145,8 +144,8 @@ function nextMove(fastForward){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        moveList[numMoves].status.game_ended,
-        moveList[numMoves].status.game_result,
+        false,
+        "",
         true,false);
 
     numMoves++;
