@@ -2,7 +2,6 @@ package Stratego.controller;
 
 import Stratego.board.Move;
 import Stratego.board.Move_status;
-import Stratego.board.Round;
 import Stratego.logic.src.Board;
 
 import Stratego.logic.src.BoardPiece;
@@ -15,13 +14,9 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import Stratego.board.arrangement;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 @RestController
 public class boardController {
@@ -35,7 +30,6 @@ public class boardController {
     Game game;
     @GetMapping("/board")
     public ModelAndView greeting(Model model) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
@@ -47,7 +41,6 @@ public class boardController {
         ArrayList<Placement> placements = new ArrayList<>();
 
 
-        System.out.println("start:"+dateFormat.format(new Date())); //2016/11/16 12:08:43
         if (board.isInitialized()) {
             BoardPiece[][] boardPiece = board.getBoard();
             for (int i = 0; i < 10; i++) {
@@ -60,21 +53,17 @@ public class boardController {
                     int y = j;
                     int isPlayer = piece.getColor() == 'R' ? 1 : 0;
                     char pieceName = piece.getUnit();
-//                    long start = System.currentTimeMillis();
                     Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
                     placements.add(placement);
-//                    placementService.addPlacement(placement);
-//                    long end = System.currentTimeMillis();float sec = (end - start) / 1000F; System.out.println(sec + " seconds elapsed");
 
                 }
 
             }
         }
-//        placementService.addPlacements(placements);
-        Thread t = new Thread(new MyRunnable(placementService,placements));
+        // have a new thread to add placements to database as it was slowing down board loading by 20s
+        Thread t = new Thread(new PlacementsToDBRunnable(placementService,placements));
         t.start();
-        System.out.println("end  :"+dateFormat.format(new Date())); //2016/11/16 12:08:43
-//        long end = System.currentTimeMillis();float sec = (end - start) / 1000F; System.out.println(sec + " seconds in total");
+
         //render board.html
         model.addAttribute("count", count);
         model.addAttribute("inner", inner);
@@ -163,10 +152,10 @@ public class boardController {
     }
 }
 
-class MyRunnable implements Runnable {
+class PlacementsToDBRunnable implements Runnable {
     private final ArrayList<Placement> placements;
     private final PlacementService placementService;
-    public MyRunnable(PlacementService placementService,ArrayList<Placement> placements) {
+    public PlacementsToDBRunnable(PlacementService placementService, ArrayList<Placement> placements) {
         // store parameter for later user
         this.placementService = placementService;
         this.placements = placements;
@@ -174,6 +163,6 @@ class MyRunnable implements Runnable {
 
     public void run() {
         placementService.addPlacements(placements);
-        System.out.println("placements added");
+//        System.out.println("placements added");
     }
 }
