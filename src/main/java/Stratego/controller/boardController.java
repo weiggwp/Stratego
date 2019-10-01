@@ -33,7 +33,7 @@ import java.util.ArrayList;
 @RestController
 public class boardController {
     private long GameID=0;
-    private int move_num = 0;
+    private volatile int move_num = 0;
 
     @Autowired
     PlacementService placementService;
@@ -76,8 +76,6 @@ public class boardController {
     public ResponseEntity<Move> move(@RequestBody Move m)
     // RequestBody String some)
     {
-        System.out.println(m.getStart_x()+","+m.getStart_y()+","+m.getEnd_x()+","+m.getEnd_y());
-        System.out.println("moving");
        // String status=
         Move_status stat = game.move(m);
         m.setGameID(GameID);
@@ -90,7 +88,7 @@ public class boardController {
             // computer move comes in another http request
 
             game.madeMove(m);
-            System.out.println(stat);
+//            System.out.println(stat);
 
             Move_status moveStatus = m.getStatus();
             boolean isGameOver = moveStatus.isGame_ended();
@@ -115,9 +113,13 @@ public class boardController {
                 Match match = new Match(GameID, userId, gameResult, unixTime);
                 matchService.addMatch(match);
             } else {
+
                 /* save move */
                 Reposition move = Extractor.extractMove(m);
-                moveService.addMove(move);
+//                moveService.addMove(move);
+                Thread t = new Thread(new MoveToDBRunnable(moveService, move));
+                t.start();
+
 
 //                Move aiMove = game.getAIMove();
 //                Reposition move2 = Extractor.extractMove(aiMove);
@@ -178,7 +180,9 @@ public class boardController {
         } else {
             m.setMoveNum(move_num++);
             Reposition move = Extractor.extractMove(m);
-            moveService.addMove(move);
+//            moveService.addMove(move);
+            Thread t = new Thread(new MoveToDBRunnable(moveService, move));
+            t.start();
         }
         return new ResponseEntity<Move>(m, HttpStatus.OK);
 
@@ -242,7 +246,9 @@ public class boardController {
         } else {
             m.setMoveNum(move_num++);
             Reposition move = Extractor.extractMove(m);
-            moveService.addMove(move);
+//            moveService.addMove(move);
+            Thread t = new Thread(new MoveToDBRunnable(moveService, move));
+            t.start();
         }
         return new ResponseEntity<Move>(m,HttpStatus.OK);
 
@@ -254,7 +260,6 @@ public class boardController {
     public ResponseEntity concede()
     {
 //        game.setGameEnded(0);
-        System.out.println("CONCEDING GAME AAA\n\n\n\nAAAAA");
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = "";
         if (principal instanceof UserDetails) {
@@ -287,5 +292,18 @@ class PlacementsToDBRunnable implements Runnable {
     public void run() {
         placementService.addPlacements(placements);
 //        System.out.println("placements added");
+    }
+}
+class MoveToDBRunnable implements Runnable {
+    private final MoveService moveService;
+    private final Reposition move;
+    public MoveToDBRunnable(MoveService moveService, Reposition move) {
+        // store parameter for later user
+        this.moveService = moveService;
+        this.move = move;
+    }
+
+    public void run() {
+        moveService.addMove(move);
     }
 }

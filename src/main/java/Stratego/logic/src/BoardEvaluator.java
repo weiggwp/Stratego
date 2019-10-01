@@ -10,15 +10,15 @@ import static java.lang.Math.abs;
 
 
 /**
- * + score for blue team advantage
+ * positive score for blue team advantage
  */
 
 
 public class BoardEvaluator {
-    public static final double WEIGHT_PIECES       = .575;
-    public static final double WEIGHT_ADVANCEMENT  = .025;
+    public static final double WEIGHT_PIECES       = .6;
+    public static final double WEIGHT_ADVANCEMENT  = .05;
     public static final double WEIGHT_FLAG_SAFETY  = .3;
-    public static final double WEIGHT_AWARENESS    = .1;
+    public static final double WEIGHT_AWARENESS    = .05;
 
     private static final char RED = 'R', BLUE = 'B', DRAW='D';
     private static final char[] teams = new char[]{RED,BLUE};
@@ -82,10 +82,8 @@ public class BoardEvaluator {
 
                 //store pieces
                 if(color==RED || color == BLUE){
-//                    System.out.println("****************"+color);
 
                     HashMap info = team_info.get(color);
-//                    System.out.println("****************"+info);
                     ArrayList<BoardPiece> pieces = (ArrayList<BoardPiece>) info.get(PIECES);
                     pieces.add(piece);
 

@@ -50,7 +50,6 @@ public class HistoryController {
 
         User user = userService.findByUsername(username);
         long userId = user.getId();
-        System.out.print("user name is: " + username + " id: " + userId);
         // 1) get the matches from database;
         List<Match> matches = matchService.getMatchesByUserId(userId);
         // 2) sort by date

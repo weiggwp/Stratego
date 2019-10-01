@@ -53,12 +53,16 @@ public class BoardPiece {
     public void reset(){
         unit='0';
         color='0';
+        moved = false;
+        revealed = false;
     }
 
     public void newPiece(BoardPiece b){
         unit=b.getUnit();
         color=b.getColor();
         img_src=b.toString();
+        moved = true;
+        revealed = b.revealed;
     }
     public String getImg_src(){
         return img_src;

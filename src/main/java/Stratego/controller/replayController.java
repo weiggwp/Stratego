@@ -47,7 +47,6 @@ public class replayController {
         int count = 10;
         int inner = 10;
         this.GameID = GameID;
-        System.out.println("GameID is: " + GameID);
 
         List<Placement> placementList = placementService.getPlacements(GameID);
         for(int i=0; i<placementList.size(); i++){
@@ -100,7 +99,6 @@ public class replayController {
         for (int i = 0; i < moves.size();i ++) {
 
             Reposition reposition = moves.get(i);
-            System.out.println("Printing");
             System.out.println(reposition);
 
             Move_status moveStatus = new Move_status();
