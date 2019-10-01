@@ -6,7 +6,10 @@
     margin-right: auto;
 
 }
-
+body {
+    background-image: url("../images/mon2.jpg");
+    background-size:cover;
+}
 .center {
 
     margin: auto;

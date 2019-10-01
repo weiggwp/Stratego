@@ -1,8 +1,11 @@
 body {
-    background-image: url("../images/page7.jpg");
+    //background-image: url("../images/page7.jpg");
+    background-image: url("../images/mon2.jpg");
+
 }
 div.board {
     background-image: url("../images/land2.jpg");
+    /*background-image: url("../images/mon2.jpg");*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-size:cover;
     border: 3px solid #716155;

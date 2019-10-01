@@ -1,5 +1,5 @@
 //test function to send and receive stuff front+backend when making a move
-//TODO: need another function to swap pieces for game setup
+
 function sendRequest(GameID,target_x,target_y)
 {
     var http = new XMLHttpRequest();
