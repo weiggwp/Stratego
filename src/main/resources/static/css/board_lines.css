@@ -1,7 +1,8 @@
 body {
-    //background-image: url("../images/page7.jpg");
+    /*background-image: url("../images/page7.jpg");*/
     /*background-image: url("../images/mon2.jpg");*/
     background-image:url("../images/pp.png");
+    background-size:cover;
 
 }
 div.board {

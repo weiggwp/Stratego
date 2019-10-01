@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Stratego_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Stratego_main.iml" group="Stratego" />
