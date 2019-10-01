@@ -78,8 +78,8 @@ function undoMove(){
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
     }
     else if (moveList[numMoves].status.fight_result==1){//lose
-        /*if (numMoves%2==1)
-        document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];*/
+        //if (numMoves%2==1)
+        document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).src=deletedImages[numMoves];
 
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
@@ -103,7 +103,7 @@ let forward=false;
 function fastForwardReplay(time){
     forward=!forward;
     if (!forward){
-        // console.log("Forward off.");
+         console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
@@ -125,8 +125,10 @@ function fastForwardReplayAuto(time){
         // document.getElementById('undoMoveBtn').style.opacity='1';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
+        console.log("returning");
         return;
     }
+    console.log("forward is "+forward);
     // document.getElementById('nextMoveBtn').style.opacity='.65';
     // document.getElementById('undoMoveBtn').style.opacity='.65';
     disable('nextMoveBtn');
@@ -154,11 +156,11 @@ function nextMoveClick(){
 }
 function nextMove(fastForward){
     if (fastForward&&!forward){
-        fastForwardReplayTime();
+       // fastForwardReplayTime();
         return;
     }
     if (numMoves==moveList.length) {
-        fastForwardReplayTime();
+       // fastForwardReplayTime();
         return;
     }
     // document.getElementById("undoMoveBtn").style.visibility='visible';
@@ -751,7 +753,8 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         //target_y);
 
         // console.log("x is " +x);
-
+        if (start==revealedOne)
+            revealedOne=end;
 
 
         //document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
