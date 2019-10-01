@@ -96,7 +96,7 @@ public class boardController {
                 Reposition reposition = Extractor.extractMove(m);
                 moveService.addMove(reposition);
                 /* game match over, save match */
-                System.out.println("GAME OVER");
+//                System.out.println("GAME OVER");
                 long GameID = m.getGameID();
                 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
                 String username = "";

@@ -99,7 +99,7 @@ public class replayController {
         for (int i = 0; i < moves.size();i ++) {
 
             Reposition reposition = moves.get(i);
-            System.out.println(reposition);
+//            System.out.println(reposition);
 
             Move_status moveStatus = new Move_status();
             moveStatus.setIs_valid_move(true);

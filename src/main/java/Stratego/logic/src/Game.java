@@ -140,12 +140,12 @@ public class Game {
         Move_status move_stat = new Move_status("");
         //move.setStatus(move_stat);
 
-        System.out.println();System.out.println();
+//        System.out.println();System.out.println();
 
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
             move_stat.setError_message(err_msg);   //by default invalid move
-            System.out.println(err_msg);
+//            System.out.println(err_msg);
             return move_stat;
             //return "illegal";
         }

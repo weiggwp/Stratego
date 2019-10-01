@@ -137,12 +137,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/register**",
-                        "/board/**",
-                        "/replay/**",
+//                        "/board/**",
+//                        "/replay/**",
                         "/history/**",
                         "/favicon.ico",
-//                        "/resources/static/**",
-//                        "/css/**",
                         "/static/**",
                         "/images/**",
                         "/css/**",

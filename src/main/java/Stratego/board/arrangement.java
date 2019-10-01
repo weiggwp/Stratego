@@ -87,7 +87,7 @@ public class arrangement {
     }
     public void DecrementRemaining(char color,BoardPiece piece)
     {
-        System.out.println("decrementing count for "+color+" "+piece.getUnit());
+//        System.out.println("decrementing count for "+color+" "+piece.getUnit());
         int current = remaining_pieces.get(color).get(piece.getUnit());
         remaining_pieces.get(color).replace(piece.getUnit(),--current);
     }
@@ -134,7 +134,7 @@ public class arrangement {
         remaining_pieces.entrySet().forEach(entry->{
 
             String result = (entry.getKey()=='R')?"Computer":"User";
-            System.out.println(result); //red or blue
+//            System.out.println(result); //red or blue
             entry.getValue().entrySet().forEach(num->
             {
                 System.out.print(num.getKey()+": "+num.getValue()+"\t");
@@ -170,7 +170,7 @@ public class arrangement {
         // System.out.println("MAKING B");
 
 
-        System.out.println("size is " + lis.size());
+//        System.out.println("size is " + lis.size());
 
 
         for (int i=0; i<lis.size(); i++){
@@ -181,8 +181,8 @@ public class arrangement {
 
             bp.setUnit(lis.get(i).getPieceName());
             bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),bp.getColor()) + ext);
-            System.out.println("src is " +bp.getImg_src());
-            System.out.println("unit is " +bp.getUnit());
+//            System.out.println("src is " +bp.getImg_src());
+//            System.out.println("unit is " +bp.getUnit());
             //System.out.println("item at " +i +" has src of " +bp.getImg_src());
             if (bp.getColor()=='B'){
                 user.add(bp);

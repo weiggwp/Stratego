@@ -19,7 +19,7 @@ let replaying=false;
 let deletedImages=null;
 function startReplay() {
     replaying=true;
-    console.log("CALLED");
+    // console.log("CALLED");
     var http = new XMLHttpRequest();
     let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
@@ -103,7 +103,7 @@ let forward=false;
 function fastForwardReplay(time){
     forward=!forward;
     if (!forward){
-        console.log("Forward off.");
+        // console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
@@ -112,7 +112,7 @@ function fastForwardReplay(time){
         return;
     }
     if (numMoves==moveList.length) return;
-    console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
+    // console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
     setTimeout(function(){nextMove(); fastForwardReplayAuto(750);}, time);
 
 
@@ -132,7 +132,7 @@ function fastForwardReplayAuto(time){
     disable('nextMoveBtn');
     disable('undoMoveBtn');
     document.getElementById('fastForwardReplayBtn').innerHTML='Pause';
-    console.log("forward is " +forward);
+    // console.log("forward is " +forward);
     if (numMoves==moveList.length){
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         // document.getElementById('nextMoveBtn').style.opacity='1';
@@ -143,7 +143,7 @@ function fastForwardReplayAuto(time){
         return;
     }
 
-    console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
+    // console.log("looping, num moves is " + numMoves+ " len is " +moveList.length+" time is "+time);
     setTimeout(function(){nextMove(true); fastForwardReplayAuto(750);}, time);
 }
 function fastForwardReplayTime(){
@@ -163,7 +163,7 @@ function nextMove(fastForward){
     }
     // document.getElementById("undoMoveBtn").style.visibility='visible';
     enable("undoMoveBtn");
-    console.log(moveList[numMoves]);
+    // console.log(moveList[numMoves]);
     performMove(moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
         moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
         numMoves%2==0?'B':'R',
@@ -184,7 +184,7 @@ function nextMove(fastForward){
         enable("restartBtn");
         enable("restartText");
     }
-    console.log("num moves is " + numMoves+ " len is " +moveList.length);
+    // console.log("num moves is " + numMoves+ " len is " +moveList.length);
 }
 function highlight(i,m) {
     let id = i*10+m;
@@ -210,7 +210,7 @@ function highlight(i,m) {
         set_coordinates(i,m);
 
     }
-    console.log(selected);
+    // console.log(selected);
     //target.className = (target.className === "red_front") ? "highlighted" : "red_front";
 }
 let lastsrc='';
@@ -316,7 +316,7 @@ function start() {
     http.send("game started")
     http.onload = function() {
         if (clicked) {
-            console.log("clicking " +moving);
+            // console.log("clicking " +moving);
             if (document.getElementById(moving.toString())!=undefined)
                 document.getElementById(moving.toString()).click();
         }
@@ -357,10 +357,10 @@ function enable(element)
 }
 
 function swap(i,m){
-    console.log(document.getElementById((i*10+m).toString()).src);
+    // console.log(document.getElementById((i*10+m).toString()).src);
     if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
     if (document.getElementById((i*10+m).toString()).style.opacity=='.02') return;
-    else console.log(document.getElementById((i*10+m).toString()).src);
+    // else console.log(document.getElementById((i*10+m).toString()).src);
     if (moving==-1){
 
         moving=(i*10+m);
@@ -383,7 +383,7 @@ function swap(i,m){
         sendSwapRequest(0,x,y,i,m,'B');
         highlight(Math.floor(moving/10),moving%10);
         moving=-1;
-        console.log("swapping from " + x + y+ " to " + i + m);
+        // console.log("swapping from " + x + y+ " to " + i + m);
         // clear_coordinates();
     }
 }
@@ -425,7 +425,7 @@ function move(i,m) {
     if (moving==-1){
         if (isImmovable(document.getElementById((i*10+m).toString()).src)) return;
         if (document.getElementById((i*10+m).toString()).style.opacity=='.02'||document.getElementById((i*10+m).toString()).style.opacity==.02) return;
-        console.log(document.getElementById((i*10+m).toString()).style.opacity);
+        // console.log(document.getElementById((i*10+m).toString()).style.opacity);
         //else console.log(document.getElementById((i*10+m).toString()).src);
 
         moving=(i*10+m);
@@ -496,7 +496,7 @@ function aiMove(color) {
     let url = color=='R'?"/get_AI":"/get_AIPlayer";
     var params = JSON.stringify(
         {color});
-    console.log("color is " + color);
+    // console.log("color is " + color);
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
     http.send();
@@ -622,15 +622,15 @@ function revealPieces(board){
         for (let j=0; j<board[0].length; j++){
             let startX=(i+1)*10;
             let startY=j+1;
-            console.log(board[i][j].img_src);
+            // console.log(board[i][j].img_src);
             if (isBlue(board[i][j].img_src)){
                 if (document.getElementById((startY+startX).toString()).src.endsWith("Moved.png")){
                     document.getElementById((startY+startX).toString()).style.opacity='.02';
                     continue;
                 }
-                console.log("blue!");
+                // console.log("blue!");
                 if (notLake(startX+startY)){
-                    console.log("notLake! val is" +(startY+startX).toString());
+                    // console.log("notLake! val is" +(startY+startX).toString());
                     document.getElementById((startY+startX).toString()).src=board[i][j].img_src;
                 }
             }
@@ -656,7 +656,7 @@ function requestBoard(){
 
 function performMove(start,end,color,fight_result,img_src,game_ended,game_result,replay, undo){
     if (gameOver)return;
-    console.log("start is " + start+", end is " + end);
+    // console.log("start is " + start+", end is " + end);
     if (color==='B') {
         if (lastsrc!='')
         document.getElementById(lastsrc).style.color='white';
@@ -693,7 +693,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             if (!replay)
                 document.getElementById((end).toString()).src=img_src;
             revealedOne=end;
-            console.log(img_src);
+            // console.log(img_src);
             //(resp.substring(resp.lastIndexOf(" ")+1));
             moving = -1;
         }
@@ -768,7 +768,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         if(fight_result===0)
         {
             if (replay){
-                console.log("logging "+document.getElementById(start.toString()).src);
+                // console.log("logging "+document.getElementById(start.toString()).src);
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(end.toString()).src;
                 document.getElementById(end.toString()).src =
@@ -835,7 +835,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
                     if (yellow!=(end))
                         document.getElementById(yellow.toString()).style.opacity=".02";
-                console.log("x is " + (end) + " yellow is " + yellow);
+                // console.log("x is " + (end) + " yellow is " + yellow);
 
                 document.getElementById(yellowBorder.toString()).style.borderStyle='none';
                 if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
@@ -898,7 +898,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let game_ended = response.status.game_ended;
             let game_result = response.status.game_result;
             let img_src = response.status.image_src;
-            console.log("imgsrc is " + response.status.image_src);
+            // console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
             if (legal===false) {
