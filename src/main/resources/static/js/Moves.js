@@ -107,7 +107,7 @@ function fastForwardReplay(time){
     redirect = false;
     forward=!forward;
     if (!forward){
-       //  console.log("Forward off.");
+        //  console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
@@ -132,7 +132,7 @@ function fastForwardReplayAuto(time){
         //console.log("returning");
         return;
     }
-  //  console.log("forward is "+forward);
+    //  console.log("forward is "+forward);
     // document.getElementById('nextMoveBtn').style.opacity='.65';
     // document.getElementById('undoMoveBtn').style.opacity='.65';
     disable('nextMoveBtn');
@@ -160,11 +160,11 @@ function nextMoveClick(){
 }
 function nextMove(fastForward){
     if (fastForward&&!forward){
-       // fastForwardReplayTime();
+        // fastForwardReplayTime();
         return;
     }
     if (numMoves==moveList.length) {
-       // fastForwardReplayTime();
+        // fastForwardReplayTime();
         return;
     }
     // document.getElementById("undoMoveBtn").style.visibility='visible';
@@ -667,7 +667,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
     // console.log("start is " + start+", end is " + end);
     if (color==='B') {
         if (lastsrc!='')
-        document.getElementById(lastsrc).style.color='white';
+            document.getElementById(lastsrc).style.color='white';
 
         //if (resp.startsWith("win")) { //it
 
@@ -791,10 +791,20 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         document.getElementById(start.toString()).style.borderStyle = 'none';
         document.getElementById(end.toString()).style.opacity = "1";
         //if (resp.startsWith("empty")) {
+        console.log("fight res is " +fight_result+ " undo is " +undo)
+
         if(fight_result===4)
         {
-            document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
-            if (replay)document.getElementById((start).toString()).style.opacity=opacity;
+            if (undo)
+                console.log("opac is "+document.getElementById(start.toString).opacity+"start is "+ start);
+
+            if (undo&&document.getElementById(start.toString).opacity=='1'){
+                document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
+                console.log("doot");
+            } else{
+                document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
+                if (replay)document.getElementById((start).toString()).style.opacity=opacity;
+            }
         }
         //if (resp.startsWith("win")) {
         if(fight_result===0)
@@ -823,7 +833,13 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
-            if (replay)document.getElementById(start).style.opacity=opacity;
+            console.log("start is " + start );
+            if (replay){
+                if ((!undo||isBlue(document.getElementById(start).src))){
+                    console.log("changing opa");
+                    document.getElementById(start).style.opacity=opacity;
+                }
+            }
         }
         //else if (resp.startsWith("draw")){
         else if(fight_result===2)
@@ -875,8 +891,11 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             }
             yellow=start;
             yellowBorder=(end);
-            document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
-            document.getElementById(yellow.toString()).style.opacity='1';
+            if (document.getElementById(yellow.toString()).style.opacity!='1'){
+                document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
+                document.getElementById(yellow.toString()).style.opacity='1';
+            }
+
             document.getElementById(yellowBorder.toString()).style.borderStyle='solid';
             document.getElementById(yellowBorder.toString()).style.borderWidth='2px';
             document.getElementById(yellowBorder.toString()).style.borderColor='Yellow';
@@ -960,7 +979,7 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
 
 
             performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
-           // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
+            // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
             //http.response.toString();
 
 
