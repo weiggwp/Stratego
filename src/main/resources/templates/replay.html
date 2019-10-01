@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-
+    <link rel="shortcut icon" type="image/png" th:href="@{/images/favicon.ico}"/>
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
     <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
 
@@ -22,14 +22,17 @@
 </script>
 <body>
 <div class="page">
-    <div class="rectangle">
+    <div class="play_buttons">
 
 
 
-
+        <br>
         <button type="button" id='nextMoveBtn'class="btn btn-primary" onclick="nextMoveClick()">Next Move</button>
-            <button type="button" id='undoMoveBtn'class="btn btn-primary btn-invis" onclick="undoMove()">Undo Move</button>
-        <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>
+        <br>
+        <button type="button" disabled id='undoMoveBtn'class="btn btn-primary" onclick="undoMove()">Undo Move</button>
+        <br>
+        <button type="button" disabled id='restartBtn'class="btn btn-primary"onclick="restart()">Restart</button>
+        <br>
         <button type="button" id='fastForwardReplayBtn'class="btn btn-primary "onclick="fastForwardReplayTime()">Fast Forward</button>
             <div class="center">
                 <p id = 'restartText' style = 'visibility: hidden'>Game ended. Press restart to restart.  </div>

@@ -1,25 +1,33 @@
 .home_buttons {
 
-    width: 200px;
-    margin-bottom: 25px;
+    width: 300px;
+    /*margin-bottom: 25px;*/
     margin-left: auto;
     margin-right: auto;
 
 }
 body {
-    background-image: url("../images/mon2.jpg");
+    background-image: url("../images/mf.jpg");
     background-size:cover;
+
 }
 .center {
 
     margin: auto;
+    transform: translateX(15%);
 }
-.pog
+
+
+.pane
 {
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    padding:10px;
-    justify-content: center;
-    flex-direction: column;
+    max-width:400px;
+    min-height:450px;
+    background: linear-gradient(to bottom, #3a9994 0%, #ffffff 100%);
+    margin:auto;
+    box-shadow: 3px 3px 5px #368075;
+    border-radius: 10px;
+    -ms-transform: translateY(20%);
+    transform: translateY(20%);
+
+
 }

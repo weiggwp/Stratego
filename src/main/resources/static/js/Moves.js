@@ -7,7 +7,7 @@ let clicked=false;
 let yellow=-1;
 let yellowBorder=-1;
 let started=false;
-// let legal=0;
+let legal=0;
 let gameOver=false;
 let revealedOne=-1;
 let revealedTwo=-1;
@@ -50,7 +50,9 @@ function startReplay() {
 }
 function undoMove(){
     if (forward) return;
-    document.getElementById("nextMoveBtn").style.visibility='visible';
+    // document.getElementById("nextMoveBtn").style.visibility='visible';
+    enable('nextMoveBtn');
+
     if (numMoves==0) return;
     numMoves--;
     performMove(moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
@@ -79,10 +81,14 @@ function undoMove(){
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
     }
-    document.getElementById("restartBtn").style.visibility='hidden';
-    document.getElementById("restartText").style.visibility='hidden';
+    // document.getElementById("restartBtn").style.visibility='hidden';
+    // document.getElementById("restartText").style.visibility='hidden';
+    disable("restartBtn");
+    disable("restartText");
     //numMoves++;
-    if (numMoves==0)   document.getElementById("undoMoveBtn").style.visibility='hidden';
+    if (numMoves==0)       disable("undoMoveBtn");
+
+    // document.getElementById("undoMoveBtn").style.visibility='hidden';
 }
 let forward=false;
 function fastForwardReplay(time){
@@ -90,8 +96,10 @@ function fastForwardReplay(time){
     if (!forward){
         console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
-        document.getElementById('nextMoveBtn').style.opacity='1';
-        document.getElementById('undoMoveBtn').style.opacity='1';
+        enable('nextMoveBtn');
+        enable('undoMoveBtn');
+        // document.getElementById('nextMoveBtn').style.opacity='1';
+        // document.getElementById('undoMoveBtn').style.opacity='1';
         return;
     }
     if (numMoves==moveList.length) return;
@@ -104,18 +112,24 @@ function fastForwardReplay(time){
 function fastForwardReplayAuto(time){
     if (!forward){
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
-        document.getElementById('nextMoveBtn').style.opacity='1';
-        document.getElementById('undoMoveBtn').style.opacity='1';
+        // document.getElementById('nextMoveBtn').style.opacity='1';
+        // document.getElementById('undoMoveBtn').style.opacity='1';
+        enable('nextMoveBtn');
+        enable('undoMoveBtn');
         return;
     }
-    document.getElementById('nextMoveBtn').style.opacity='.65';
-    document.getElementById('undoMoveBtn').style.opacity='.65';
+    // document.getElementById('nextMoveBtn').style.opacity='.65';
+    // document.getElementById('undoMoveBtn').style.opacity='.65';
+    disable('nextMoveBtn');
+    disable('undoMoveBtn');
     document.getElementById('fastForwardReplayBtn').innerHTML='Pause';
     console.log("forward is " +forward);
     if (numMoves==moveList.length){
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
-        document.getElementById('nextMoveBtn').style.opacity='1';
-        document.getElementById('undoMoveBtn').style.opacity='1';
+        // document.getElementById('nextMoveBtn').style.opacity='1';
+        // document.getElementById('undoMoveBtn').style.opacity='1';
+        enable('nextMoveBtn');
+        enable('undoMoveBtn');
         forward=false;
         return;
     }
@@ -138,7 +152,8 @@ function nextMove(fastForward){
         fastForwardReplayTime();
         return;
     }
-    document.getElementById("undoMoveBtn").style.visibility='visible';
+    // document.getElementById("undoMoveBtn").style.visibility='visible';
+    enable("undoMoveBtn");
     console.log(moveList[numMoves]);
     performMove(moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
         moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
@@ -150,11 +165,15 @@ function nextMove(fastForward){
         true,false);
 
     numMoves++;
-    if (numMoves==moveList.length){
-        document.getElementById("nextMoveBtn").style.visibility='hidden';
-        // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
-        document.getElementById("restartBtn").style.visibility='visible';
-        document.getElementById("restartText").style.visibility='visible';
+    if (numMoves===moveList.length){
+        // document.getElementById("nextMoveBtn").style.visibility='hidden';
+        // // document.getElementById("fastForwardReplayBtn").style.visibility='hidden';
+        // document.getElementById("restartBtn").style.visibility='visible';
+        // document.getElementById("restartText").style.visibility='visible';
+
+        disable("nextMoveBtn");
+        enable("restartBtn");
+        enable("restartText");
     }
     console.log("num moves is " + numMoves+ " len is " +moveList.length);
 }
@@ -189,11 +208,11 @@ let lastsrc='';
 function updateSidebar(src){
     if(replaying)return;
     let num=src.substring(src.lastIndexOf("piece")+5,src.lastIndexOf(".png"));
-    console.log("num is "+num);
+
     let numString = "captured".concat(num);
-    console.log("numstr is "+numString);
+
     let prevNum=parseInt(document.getElementById(numString).innerHTML.charAt(document.getElementById(numString).innerHTML.length-1));
-    console.log("prevnum is "+prevNum);
+
     let newNum=(prevNum+1).toString();
     let finalRet = document.getElementById(numString).innerHTML.substring(0,document.getElementById(numString).innerHTML.length-1).concat(newNum);
     document.getElementById(numString).innerHTML=finalRet;
@@ -249,11 +268,12 @@ let permission =true;
 
 function fastForward(){
     if (!permission)return;
-    document.getElementById('fastForwardBtn').style.opacity='.65';
+    // document.getElementById('fastForwardBtn').style.opacity='.65';
+    disable('fastForwardBtn');
     permission=false;
     hidePieceNums();
     aiMove('B');
-    console.log("AAA");
+
 
     //permission=true;
 
@@ -281,12 +301,30 @@ function start() {
                 document.getElementById(i.toString()).draggable=false;
         }
         document.getElementsByClassName('blank').draggable = false;
-        document.getElementById('startBtn').style.visibility="hidden";
+        //document.getElementById('startBtn').style.visibility="hidden";
+        //document.getElementById('startBtn').style.disabled=true;
+        disable('startBtn');
+        // document.getElementById('startBtn').setAttribute('disabled', 'disabled');
         document.getElementById('startText').style.visibility="hidden";
-        document.getElementById('fastForwardBtn').style.visibility='visible';
-        document.getElementById('concedeBtn').style.visibility='visible';
+        enable('fastForwardBtn');
+        enable('concedeBtn');
+        // document.getElementById('fastForwardBtn').removeAttribute('disabled');
+        // document.getElementById('concedeBtn').removeAttribute('disabled');
+        // document.getElementById('fastForwardBtn').style.visibility='visible';
+        // document.getElementById('concedeBtn').style.visibility='visible';
     }
 }
+function disable(element)
+{
+    document.getElementById(element).setAttribute('disabled', 'disabled');
+
+}
+function enable(element)
+{
+    document.getElementById(element).removeAttribute('disabled');
+
+}
+
 function swap(i,m){
     console.log(document.getElementById((i*10+m).toString()).src);
     if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
@@ -501,9 +539,13 @@ function lose(){
     gameOver=true;
     document.getElementById('startText').outerHTML='You lost. Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
-    document.getElementById('restartBtn').style.visibility='visible';
-    document.getElementById('fastForwardBtn').style.visibility='hidden';
-    document.getElementById('concedeBtn').style.visibility='hidden';
+    // document.getElementById('restartBtn').style.visibility='visible';
+    // document.getElementById('fastForwardBtn').style.visibility='hidden';
+    // document.getElementById('concedeBtn').style.visibility='hidden';
+    enable('restartBtn');
+    disable('fastForwardBtn');
+    disable('concedeBtn');
+
     requestBoard();
 
 }
@@ -511,9 +553,13 @@ function win(){
     gameOver=true;
     document.getElementById('startText').outerHTML='You win! Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
-    document.getElementById('restartBtn').style.visibility='visible';
-    document.getElementById('fastForwardBtn').style.visibility='hidden';
-    document.getElementById('concedeBtn').style.visibility='hidden';
+    // document.getElementById('restartBtn').style.visibility='visible';
+    enable('restartBtn');
+    disable('fastForwardBtn');
+    disable('concedeBtn');
+
+    // document.getElementById('fastForwardBtn').style.visibility='hidden';
+    // document.getElementById('concedeBtn').style.visibility='hidden';
     requestBoard();
 }
 function draw()
@@ -521,9 +567,13 @@ function draw()
     gameOver=true;
     document.getElementById('startText').outerHTML='Draw! Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
-    document.getElementById('restartBtn').style.visibility='visible';
-    document.getElementById('fastForwardBtn').style.visibility='hidden';
-    document.getElementById('concedeBtn').style.visibility='hidden';
+    enable('restartBtn');
+    disable('fastForwardBtn');
+    disable('concedeBtn');
+
+    // document.getElementById('restartBtn').style.visibility='visible';
+    // document.getElementById('fastForwardBtn').style.visibility='hidden';
+    // document.getElementById('concedeBtn').style.visibility='hidden';
     requestBoard();
 }
 function restart(){
@@ -743,7 +793,8 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             }
         }
         if (!replay){
-            document.getElementById('fastForwardBtn').style.opacity='1';
+            // document.getElementById('fastForwardBtn').style.opacity='1';
+            enable('fastForwardBtn');
             if (yellow!==-1){
                 if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))

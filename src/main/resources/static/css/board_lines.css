@@ -1,10 +1,12 @@
 body {
     //background-image: url("../images/page7.jpg");
-    background-image: url("../images/mon2.jpg");
+    /*background-image: url("../images/mon2.jpg");*/
+    background-image:url("../images/pp.png");
 
 }
 div.board {
-    background-image: url("../images/land2.jpg");
+    /*background-image: url("../images/land2.jpg");*/
+    background-color: #6b3541;
     /*background-image: url("../images/mon2.jpg");*/
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-size:cover;
@@ -16,7 +18,7 @@ div.board {
     margin-right:auto;
 }
 .divTable.board .divTableCell,.divTable.board .divTableHead {
-    border: 1px solid #716155;
+    border: 1px solid #326765;
     padding: 0px 0px;
     user-select: none;
 }
@@ -143,6 +145,8 @@ div.board {
 .rectangle {
     max-height: 700px;
     max-width: 150px;
+    height:600px;
+    width:150px;
     border-radius: 25px;
     background-color: #3e5c72;
     /*padding:10px;*/
@@ -151,6 +155,23 @@ div.board {
     text-align: center;
     margin-left:auto;
     margin-right:auto;
+}
+.play_buttons {
+    max-height: 700px;
+    max-width: 150px;
+    height:300px;
+    width:150px;
+    border-radius: 25px;
+    background-color: #3e5c72;
+
+    float: left;
+
+    margin-left:auto;
+    margin-right:auto;
+}
+.column
+{
+    float:left;
 }
 .btn-invis{
 
@@ -170,9 +191,13 @@ div.board {
 .divTable{ display: table; user-select:none}
 
 .page{
+    max-width:1300px;
     margin-left:auto;
     margin-right:auto;
-    display:table
+    display:table;
+    padding:20px;
+    transform: translateY(5%);
+    box-sizing: border-box;
 }
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}

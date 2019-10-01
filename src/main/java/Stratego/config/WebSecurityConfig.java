@@ -140,6 +140,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/board/**",
                         "/replay/**",
                         "/history/**",
+                        "/favicon.ico",
 //                        "/resources/static/**",
 //                        "/css/**",
                         "/static/**",
