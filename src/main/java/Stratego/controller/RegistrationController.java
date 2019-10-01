@@ -33,8 +33,6 @@ public class RegistrationController {
     public String registerUserAccount(@ModelAttribute("user") @Valid UserDto userDto, BindingResult result,
                                       Model model) {
         String errorMessge = null;
-        System.out.println(userDto);
-        System.out.println(model);
         User existing = userService.findByUsername(userDto.getUsername());
         if (result.hasErrors()) {
             errorMessge =  "Username or Password is invalid !";

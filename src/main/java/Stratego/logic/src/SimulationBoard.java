@@ -179,66 +179,56 @@ public class SimulationBoard{
 
 
         public void undo_move() {
-            //todo: please implement
-            SimulationMove move_to_undo = move_ptr;
             gameboard[move_ptr.getStart_x()][move_ptr.getStart_y()] = move_ptr.getStarting_piece();
             gameboard[move_ptr.getEnd_x()][move_ptr.getEnd_y()] = move_ptr.getDestination_piece();
+
+            // cant undo to an ended game
             gameEnded = false;
             winner = '0';
             move_ptr = move_ptr.getPrev();
         }
 
-        /*Attempt to move unit to a tile*/
-        public String move(SimulationMove simulationMove) {
-            int     startingX = simulationMove.getStart_x(),
-                    startingY = simulationMove.getStart_y(),
-                    endingX   = simulationMove.getEnd_x(),
-                    endingY   = simulationMove.getEnd_y();
-            char color = simulationMove.getColor();
+    /*Attempt to move unit to a tile*/
+    public void move(SimulationMove simulationMove) {
+        int     startingX = simulationMove.getStart_x(),
+                startingY = simulationMove.getStart_y(),
+                endingX   = simulationMove.getEnd_x(),
+                endingY   = simulationMove.getEnd_y();
+        char color = simulationMove.getColor();
 
-            if (!isLegalMove(simulationMove)) {
-//            illegalMove();
-                return "illegal";
-            }
-            SimulationMove sm = new SimulationMove(startingX, startingY, endingX, endingY,
-                    gameboard[startingX][startingY].clone(), gameboard[endingX][endingY].clone(), color);
-            sm.setPrev(move_ptr);
-            move_ptr = sm;
+        SimulationMove sm = new SimulationMove(startingX, startingY, endingX, endingY,
+                gameboard[startingX][startingY].clone(), gameboard[endingX][endingY].clone(), color);
+        sm.setPrev(move_ptr);
+        move_ptr = sm;
 
-            int result = attack(gameboard[startingX][startingY].getUnit(), gameboard[endingX][endingY].getUnit());
-            if (result == 0) {
-                char a = gameboard[endingX][endingY].getUnit();
-                gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
-                gameboard[startingX][startingY].reset();
+        int result = attack(gameboard[startingX][startingY].getUnit(), gameboard[endingX][endingY].getUnit());
+        if (result == 0) { //win
+            char a = gameboard[endingX][endingY].getUnit();
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[endingX][endingY].setRevealed(true);
+            gameboard[startingX][startingY].reset();
 
-                return "win " + a; // mover wins
-            } else if (result == 1) {
-                char a = gameboard[startingX][startingY].getUnit();
-                gameboard[startingX][startingY].reset();
-                return "lose " + a; // mover's opponent wins
-            } else if (result == 2) {
-                char a = gameboard[endingX][endingY].getUnit();
-                gameboard[startingX][startingY].reset();
-                gameboard[endingX][endingY].reset();
-                return "draw " + a;
-            } else if (result == 3) {
-//            System.out.println("result==3");
-                char a = gameboard[endingX][endingY].getUnit();
-                gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
-                gameboard[startingX][startingY].reset();
-
-                gameEnded = true;
-                winner = color;
-                return "flag"; //mover wins the videogame
-            } else if (result == 4) {
-                gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
-                gameboard[startingX][startingY].reset();
-                return "empty"; // mover moved to empty space
-            }
-
-            return "This will never happen.";
-
+        } else if (result == 1) {// lose
+            char a = gameboard[startingX][startingY].getUnit();
+            gameboard[endingX][endingY].setRevealed(true);
+            gameboard[startingX][startingY].reset();
+        } else if (result == 2) {//tie
+            char a = gameboard[endingX][endingY].getUnit();
+            gameboard[startingX][startingY].reset();
+            gameboard[endingX][endingY].reset();
+        } else if (result == 3) {//win game
+            char a = gameboard[endingX][endingY].getUnit();
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
+            gameboard[endingX][endingY].setRevealed(true);
+            gameEnded = true;
+            winner = color;
+        } else if (result == 4) {//mover moved to empty space
+            gameboard[endingX][endingY].newPiece(gameboard[startingX][startingY]);
+            gameboard[startingX][startingY].reset();
         }
+
+    }
 
 
         public static int[] getBoardSize() {

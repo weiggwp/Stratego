@@ -77,15 +77,12 @@ public class Game {
         // [1,1]-> [1,2] (current attempted move)
         if(moves.size()<(2*3))//6 moves
             return false;   //need at least 2 rounds of moves
-        //System.out.println("currently in round"+moves.size()+" color:"+color);
         String current_start = startingX+","+startingY;
         String current_end = endingX+","+endingY;
 
         Move lastMove = moves.get(moves.size()-2); //get the last valid move this person made
-//        System.out.println("last move made: "+lastMove.getStart()+" to "+lastMove.getEnd());
         Move secondMove = moves.get(moves.size()-4);
         Move firstMove = moves.get(moves.size()-6);
-//        System.out.println("first move made: "+firstMove.getStart()+" to "+firstMove.getEnd());
         if(lastMove.movedBack(startingX,startingY,endingX,endingY)
         && secondMove.movedBack(lastMove.getStart_x(),lastMove.getStart_y(),lastMove.getEnd_x(),lastMove.getEnd_y())
         && firstMove.movedBack(secondMove.getStart_x(),secondMove.getStart_y(),secondMove.getEnd_x(),secondMove.getEnd_y()))
@@ -130,13 +127,11 @@ public class Game {
         Move_status stat = move(m);
         m.setStatus(stat);
         this.moves.add(m);  //made a move
-        //System.out.println("Ai says move from "+sm.getStart_x()+","+sm.getStart_y()+" to "+sm.getEnd_x()+","+sm.getEnd_y());
         return m;
     }
     //public Move_status getMove_stat()
     public Move_status move(Move move)   //front-end JSON for player, and backend ai prefills field
     {
-        System.out.println(move);
         //doesnt need to return a string
         int startingX = move.getStart_x();
         int startingY = move.getStart_y();
@@ -146,13 +141,12 @@ public class Game {
         Move_status move_stat = new Move_status();
         //move.setStatus(move_stat);
 
-        System.out.println();System.out.println();
+//        System.out.println();System.out.println();
 
         this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
             move_stat.setError_message(err_msg);   //by default invalid move
-            System.out.println("invalid move");
             return move_stat;
             //return "illegal";
         }
@@ -176,19 +170,20 @@ public class Game {
             move_stat.setImage_src(a);
 
             board.redefinePieceInfo(startingX,startingY, endingX,endingY);
+            board.setPieceRevealed(endingX,endingY,true);
             board.clearPieceInfo(startingX,startingY);//gameboard[startingX][startingY].reset();
             //return "win "+a; // mover wins
         }
-        else if (result==1){    //lose
-
-//            BoardPiece opponent = board.getPieceAtLocation(endingX,endingY);
+        else if (result==1){
+            //lose
             //String a = opponent.getImg_src();//opponent's piece
             String a = color=='B'?opponent.getImg_src():you.getImg_src();
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//you got captured by opponent color
 
                     //board.getPieceAtLocation(startingX,startingY).getImg_src();
             move_stat.setImage_src(a);
-            System.out.println("winning source: "+a);
+//            System.out.println("winning source: "+a);
+            board.setPieceRevealed(endingX,endingY,true);
             board.clearPieceInfo(startingX,startingY);
             //return "lose "+a; // mover's opponent wins
         }
@@ -202,7 +197,6 @@ public class Game {
             capture(move_stat,color,opponent.getUnit());//you captured the opponent's unit
             capture(move_stat,(color=='R')?'B':'R',you.getUnit());//opponent captured your piece as well
             move_stat.setImage_src(a);
-
             board.clearPieceInfo(startingX,startingY);
             board.clearPieceInfo(endingX,endingY);
 
@@ -210,6 +204,7 @@ public class Game {
         else if (result==3){
             capture(move_stat,color,opponent.getUnit());
             board.redefinePieceInfo(startingX,startingY,endingX,endingY);//captured flag
+            board.setPieceRevealed(endingX,endingY,true);
             board.clearPieceInfo(startingX,startingY);
             gameWinner=1;
             move_stat.gameEnded();
@@ -223,15 +218,10 @@ public class Game {
             //return "empty"; // mover moved to empty space
 
         }
-        //return "This will never happen.";
-        System.out.println("move result"+move_stat.getFight_result());
-        board.getSetup().printRemainingPieces();
-        board.getSetup().printLocationOfPieces(color);
+
         char opponent_color = (color=='R')?'B':'R';
         boolean you_can_move = hasMovable(color);
         boolean oppo_can_move = hasMovable(opponent_color);
-//        System.out.println("you can move : "+color+" "+you_can_move);
-//        System.out.println("opponent can move"+opponent_color+" "+oppo_can_move);
         if(!you_can_move&&!oppo_can_move)
             //both are not movable
         {
@@ -248,7 +238,6 @@ public class Game {
             {
                 move_stat.gameEnded();
                 move_stat.setGame_result("lost");
-                System.out.println("you have no movable pieces, and you've lost");
 
             }
         }
@@ -330,8 +319,6 @@ public class Game {
 //    }
     /*Returns false on illegal move, true on legal move.*/
     public boolean isLegalMove( int startingX, int startingY, int endingX, int endingY, char color){
-        //System.out.println("moving "+ color+" from ("+ startingX+","+startingY+") to ("+endingX+","+endingY+")");
-        //System.out.println("trying to move " +gameboard[startingX][startingY].getUnit()+" to " +gameboard[endingX][endingY].getUnit());
         if (//board.getPieceAtLocation(startingX,startingY).getColor()!=color
                  board.getPieceAtLocation(startingX,startingY).getUnit()=='F'
                 || board.getPieceAtLocation(startingX,startingY).getUnit()=='0'
@@ -340,27 +327,20 @@ public class Game {
             //gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 //gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             err_msg="invalid starting piece";
-            System.out.println("invalid starting piece");
             return false;
         }
 
         if(madeLoopMove(startingX,startingY,endingX,endingY,color))
         {
             err_msg="illegal: making repeated moves";
-            System.out.println("illegal: making repeated moves");
             return false;
         }
 
 
-        /*if (gameboard[startingX][startingY].getColor()!=color) {
-            System.out.println("invalid starting color");
-            return false;
-        }//if moving a piece not owned by player...*/
 
         if(board.getPieceAtLocation(endingX,endingY).isLake())
         {
             err_msg="cant move to lake";
-            System.out.println("cant move to lake");
             return false;
         }
         //if moving into lake...
@@ -368,21 +348,16 @@ public class Game {
         if(board.getPieceAtLocation(endingX,endingY).getColor()==board.getPieceAtLocation(startingX,startingY).getColor())
         {
             err_msg="cant capture friendly unit";
-//            System.out.println("cant capture friendly unit");
             return false;
         }/* if moving
         onto a space occupied by another piece owned by the player...*/
         if ((Math.abs(startingX-endingX)>=1&&Math.abs(startingY-endingY)>=1)) {
             err_msg="cant move diagonally";
-//            System.out.println("cant move diagonally");
             return false;
         }
-        //if (!gameboard[startingX][startingY].isScout()&&( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)
-        //)){ //if it moves too far...
         if(!board.getPieceAtLocation(startingX,startingY).isScout() && ( (Math.abs(startingX-endingX)>=2||Math.abs(startingY-endingY)>=2)))
         {
             err_msg="too far, not a scout";
-//            System.out.println("too far, not a scout");
             return false;
         }
         //if (gameboard[startingX][startingY].isScout() ){ //if a scout moves through a unit or lake...
@@ -401,8 +376,6 @@ public class Game {
                 ending=Math.max(startingX,endingX);
 
             }
-            //System.out.println("horizontal is " + horizontal);
-            //System.out.println("items are " +startingX+","+startingY+","+endingX+","+endingY);
             for (int i=starting+1; i<ending; i++){
 
                 if (horizontal) {
@@ -410,7 +383,6 @@ public class Game {
                     if(!board.getPieceAtLocation(startingX,i).isEmpty() || board.getPieceAtLocation(startingX,i).isLake())
                     {
                         err_msg = "collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit();
-//                        System.out.println("collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit());
                         return false;
                     }
                 }
@@ -418,7 +390,6 @@ public class Game {
                     //if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
                     if(!board.getPieceAtLocation(i,startingY).isEmpty()|| board.getPieceAtLocation(i,startingY).isLake()){
                         err_msg = "collision at "+i+" "+startingY+ "; " +board.getPieceAtLocation(i,startingY).getUnit();
-//                        System.out.println("collision at " + i + " " + startingY + "; " + board.getPieceAtLocation(i,startingY).getUnit());
 
                         return false;
                     }

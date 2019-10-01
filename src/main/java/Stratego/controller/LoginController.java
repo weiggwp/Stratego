@@ -22,7 +22,6 @@ public class LoginController
                             Model model) {
 
         String errorMessge = null;
-//        System.out.println("huh");        moves get sent here
         if(error != null) {
             errorMessge = "Username or Password is incorrect !!";
         }

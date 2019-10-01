@@ -28,7 +28,6 @@ public class MoveService {
         List<Reposition> repositions = new ArrayList<>();
         for(Reposition reposition : moveRepository.findAll()) {
             if (reposition.getMatchId() == matchId) {
-                System.out.println(reposition);
                 repositions.add(reposition);
             }
         }

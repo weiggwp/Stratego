@@ -64,7 +64,6 @@ public class arrangement {
     public void capturePiece(char color,BoardPiece captured,BoardPiece capturing)
     //blue, 6, B
     {
-        System.out.println("color: "+color+" "+captured.getUnit()+capturing.getUnit());
         //update the hashmap of remaining pieces
         char opponent_color = (color=='R')?'B':'R';
         //int current_remaining = remaining_pieces.get(opponent_color).get(captured.getUnit());
@@ -120,14 +119,14 @@ public class arrangement {
 
             comp.remove(oldLocation);
             comp.add(newLocation);
-            printLocationOfPieces(color);
+//            printLocationOfPieces(color);
         }
         else
         {
 
             user.remove(oldLocation);
             user.add(newLocation);
-            printLocationOfPieces(color);
+//            printLocationOfPieces(color);
         }
     }
     public void printRemainingPieces()
