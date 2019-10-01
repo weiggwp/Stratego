@@ -3,45 +3,58 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="UTF-8">
-    <title>Board</title>
+    <title>Game</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-
+    <link rel="shortcut icon" type="image/png" th:href="@{/images/favicon.ico}"/>
     <link href="../static/css/board_lines.css" th:href="@{/css/board_lines.css}" rel="stylesheet" />
     <script type="text/javascript" th:inline="javascript" th:src="@{../js/Moves.js}" src="../js/on_click_handler.js"></script>
 
 </head>
 
 <body>
+
 <div class="page">
-<div class="rectangle">
-    <div class = "whiteText">
 
-    <li id = 'captured2' ><img class="sidebarImage" src="../images/pieces/piece2.png/">x 0</li>
-    <li id= 'captured12' ><img class="sidebarImage"  src="../images/pieces/piece12.png/">x 0</li>
-    <li id = 'captured15' ><img class="sidebarImage"  src="../images/pieces/piece15.png/">x 0</li>
-    <li id = 'captured16' ><img  class="sidebarImage" src="../images/pieces/piece16.png/">x 0</li>
-    <li id = 'captured17' >    <img class="sidebarImage"  src="../images/pieces/piece17.png/">x 0</li>
-    <li id = 'captured18' >    <img class="sidebarImage"  src="../images/pieces/piece18.png/">x 0</li>
-    <li id = 'captured14' >    <img class="sidebarImage"  src="../images/pieces/piece14.png/">x 0</li>
-    <li id = 'captured13' >    <img class="sidebarImage"  src="../images/pieces/piece13.png/">x 0</li>
-    <li id = 'captured4' >    <img  class="sidebarImage" src="../images/pieces/piece4.png/">x 0</li>
-    <li id = 'captured3'>    <img class="sidebarImage"  src="../images/pieces/piece3.png/">x 0</li>
-    <li id = 'captured11' >    <img  class="sidebarImage" src="../images/pieces/piece11.png/">x 0</li>
+    <div class="rectangle column">
+        <div class = "whiteText">
+        &nbsp;
+        <li id = 'captured2' ><img class="sidebarImage" src="../images/pieces/piece2.png/">x 0</li>
+        <li id= 'captured12' ><img class="sidebarImage"  src="../images/pieces/piece12.png/">x 0</li>
+        <li id = 'captured15' ><img class="sidebarImage"  src="../images/pieces/piece15.png/">x 0</li>
+        <li id = 'captured16' ><img  class="sidebarImage" src="../images/pieces/piece16.png/">x 0</li>
+        <li id = 'captured17' >    <img class="sidebarImage"  src="../images/pieces/piece17.png/">x 0</li>
+        <li id = 'captured18' >    <img class="sidebarImage"  src="../images/pieces/piece18.png/">x 0</li>
+        <li id = 'captured14' >    <img class="sidebarImage"  src="../images/pieces/piece14.png/">x 0</li>
+        <li id = 'captured13' >    <img class="sidebarImage"  src="../images/pieces/piece13.png/">x 0</li>
+        <li id = 'captured4' >    <img  class="sidebarImage" src="../images/pieces/piece4.png/">x 0</li>
+        <li id = 'captured3'>    <img class="sidebarImage"  src="../images/pieces/piece3.png/">x 0</li>
+        <li id = 'captured11' >    <img  class="sidebarImage" src="../images/pieces/piece11.png/">x 0</li>
+        &nbsp;
+    </div>
+
+
+
+<!--    <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>-->
+<!--    <button type="button" id='fastForwardBtn'class="btn btn-primary btn-invis"onclick="fastForward()">Auto-Move</button>-->
+<!--    <button type="button" id='concedeBtn'class="btn btn-primary btn-invis"onclick="concede()">Concede Game</button>-->
+<!--    <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>-->
 
 </div>
+    <div id="concedePane" class="confirmConcede" >
+        <div id="concedeMsg" class ="concedeMsg" >Are you sure you wish to concede the game? </div>
+        <input class="concedeOK" type="button" value="OK"
+               onclick="confirm_concede()">
+
+        <input class="concedeNO" type="button" value="Cancel"
+               onclick="cancel_concede()">
+        <br>
+    </div>
+
+<div class="divTable board column" id="board">
 
 
-
-    <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
-    <button type="button" id='fastForwardBtn'class="btn btn-primary btn-invis"onclick="fastForward()">Auto-Move</button>
-    <button type="button" id='concedeBtn'class="btn btn-primary btn-invis"onclick="concede()">Concede Game</button>
-    <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>
-
-</div>
-
-<div class="divTable board" id="board">
 
     <div class="divTableBody">
 
@@ -93,12 +106,40 @@
     </div>
 
 </div>
-    <div class="center">
-        <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
+    <div class="column">
+    <div class="play_buttons">
+        <br>
+        <button type="button" id='backBtn'class="btn btn-primary"onclick="back_to_main()">Main Menu</button>
+
+        <br>
+        <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
+        <br>
+        <button type="button" disabled id='fastForwardBtn'class="btn btn-primary "onclick="fastForward()">Auto-Move</button>
+        <br>
+        <button type="button" disabled id='concedeBtn'class="btn btn-primary "onclick="concede()">Surrender</button>
+       <br>
+        <button type="button" disabled id='restartBtn'class="btn btn-primary "onclick="restart()">Restart</button>
+
     </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="status_update">
+        <br><p style="text-align: center;font-weight: bold;color:white;"> Game Status</p>
+        <p class="text_field" id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
 
-
+    </div>
+    </div>
 </div>
+
+<!--<div class="center">-->
+<!--    <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>-->
+<!--</div>-->
+
+
+
+
+<!--</div>-->
+
+
 </body>
 
 </html>

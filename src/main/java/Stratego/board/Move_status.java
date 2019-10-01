@@ -9,8 +9,8 @@ public class Move_status {
     private String game_result;    //if game ended, either be win:lose:draw:null (game did not end)
 
     private int fight_result;   //4 for no fight, 0 user win, 1 user lose, 2 tie, 3 game_over
-    private char pieceCapturedByPlayer=' ';
-    private char pieceCapturedByComputer=' ';
+    private char pieceCapturedByPlayer='$';
+    private char pieceCapturedByComputer='$';
 
     private String image_src;  //what is left on the board /* if AI captures a user piece, it must be revealed*/
 
@@ -43,6 +43,13 @@ public class Move_status {
         this.game_ended = false;
         this.image_src = "";
     }
+    public Move_status(String m)
+    {
+        this.notValid(false,m);    //initialize to not valid
+        this.game_ended = false;
+        this.image_src = "";
+    }
+
     public void notValid(boolean is_valid,String error)  //if invalid, don't need to set anything else
     {
         this.is_valid_move = is_valid;
@@ -122,4 +129,18 @@ public class Move_status {
         this.image_src = image_src;
     }
 
+    @Override
+    public String toString() {
+        return "Move_status{" +
+                "is_valid_move=" + is_valid_move +
+                ", error_message='" + error_message + '\'' +
+                ", game_ended=" + game_ended +
+                ", game_result='" + game_result + '\'' +
+                ", fight_result=" + fight_result +
+                ", pieceCapturedByPlayer=" + pieceCapturedByPlayer +
+                ", pieceCapturedByComputer=" + pieceCapturedByComputer +
+                ", image_src='" + image_src + '\'' +
+                ", piece_name=" + piece_name +
+                '}';
+    }
 }

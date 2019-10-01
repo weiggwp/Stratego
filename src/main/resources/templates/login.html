@@ -1,34 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<link rel="shortcut icon" type="image/png" th:href="@{/images/favicon.ico}"/>
 <head>
-    <title>Login </title>
+    <title>Stratego</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="../static/css/home_style.css" th:href="@{/static/css/home_style.css}" rel="stylesheet"/>
+    <link href="../static/css/home_style.css" th:href="@{/css/home_style.css}" rel="stylesheet"/>
 </head>
 <body>
 
-<div class="d-flex align-items-center justify-content-center">
-    <h1> Welcome to Stratego!</h1>
-</div>
+<div class="pane">
+    <div class="d-flex align-items-center justify-content-center">
 
+        <img class="head"  src="../static/images/Stratego.png" th:src="@{images/Stratego.png}" />
+    </div>
 
-<!--<div th:if="${param.error}">-->
-<!--    Invalid username and password.-->
-<!--</div>-->
-<!--<div th:if="${param.logout}">-->
-<!--    You have been logged out.-->
-<!--</div>-->
 
 
 <br>
 
-<div class="center" >
-    <div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red"></div>
-
-</div>
 
 <form th:action="@{/login}" method="post">
     <!--    <div><label> Username : <input type="text" name="username"/> </label></div>-->
@@ -49,7 +40,7 @@
                 <input type="password" class="form-control" id="inputPassword" placeholder="Password" name="password">
             </div>
         </div>
-
+        &nbsp;&nbsp;
         <div class="form-group row col-sm-auto d-flex justify-content-center">
             <div class="col-sm-auto">
                 <input name="submit" class="form-control col-sm-auto" type="submit" value="Sign in" />
@@ -62,26 +53,14 @@
     </form>
 
 
-    <!--    <table>-->
-    <!--        <tr>-->
-    <!--            <td>Username:</td>-->
-    <!--            <td><label>-->
-<!--                    <input type='text' class="form-control" name='username' value=''>-->
-    <!--            </label></td>-->
-    <!--        </tr>-->
-    <!--        <tr>-->
-    <!--            <td>Password:</td>-->
-    <!--            <td><label>-->
-    <!--                <input type='password' class="form-control" name='password' />-->
-    <!--            </label></td>-->
-    <!--        </tr>-->
-    <!--        <tr>-->
-    <!--            <td colspan='2'><input name="submit" class="form-control" type="submit" value="Sign in" /></td>-->
-    <!--        </tr>-->
-    <!--    </table>-->
-    <!--    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />-->
 
 </form>
 
+
+    <div class="center" >
+        <div th:text="${errorMessge != null} ? ${errorMessge}" style="color:red"></div>
+
+    </div>
+</div>
 </body>
 </html>

@@ -8,6 +8,8 @@ import Stratego.service.MatchService;
 import Stratego.service.MoveService;
 import Stratego.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -33,10 +35,21 @@ public class HistoryController {
 
     @GetMapping(path="/{userName}")
     public String history(Model model, ModelMap modelMap, @PathVariable String userName) {
+
+//        if (userName == null) return "404";
+
         // 0)
-        User user = userService.findByUsername(userName);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = "";
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+//        if (username == null) return "404";
+
+        User user = userService.findByUsername(username);
         long userId = user.getId();
-        System.out.print(userId);
         // 1) get the matches from database;
         List<Match> matches = matchService.getMatchesByUserId(userId);
         // 2) sort by date

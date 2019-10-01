@@ -4,9 +4,10 @@
         lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Game History</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="shortcut icon" type="image/png" th:href="@{/images/favicon.ico}"/>
 </head>
 <body>
 
@@ -24,8 +25,9 @@
         <th scope="col">#</th>
         <th scope="col">Date</th>
         <th scope="col">Outcome</th>
-        <th scope="col">PieceCapturedByPlayer</th>
         <th scope="col">PieceCapturedByAI</th>
+        <th scope="col">PieceCapturedByPlayer</th>
+        <th scope="col" style="visibility: hidden"></th>
     </tr>
     </thead>
     <tbody>
@@ -39,6 +41,7 @@
             <td th:text="${match.outcome}"></td>
             <td th:text="${match.piecesLostPlayer}"></td>
             <td th:text="${match.piecesLostComputer}"></td>
+            <td style="visibility: hidden" th:text="${match.matchId}"></td>
         </tr>
 
 
@@ -55,10 +58,14 @@
             var currentRow = table.rows[i];
             var cell = currentRow.getElementsByTagName("td")[1];
             var outcome = cell.innerHTML;
-            if (outcome === "Win") {
+            if (outcome === "win") {
                 currentRow.className = "table-primary";
-            } else {
-                currentRow.className = "table-danger"
+            }
+            else if (outcome === "draw"){
+                currentRow.className="table-dark";
+            }
+            else {
+                currentRow.className = "table-danger";
             }
         }
     }
@@ -77,15 +84,16 @@
             var createClickHandler =
                 function(row)
                 {
-                    return function() {
-                        // simulate an HTTP redirect
-                        // "/history/user/matchid"
-                        // TODO: redirect to the replay page
 
-                        window.location.href = "/history/" + userName + "/" +
-                        var cell = row.getElementsByTagName("td")[1];
-                        var id = cell.innerHTML;
-                        alert("id:" + id);
+                    return function() {
+                        var http = new XMLHttpRequest();
+                        var cell = row.getElementsByTagName("td")[4];
+                        var gameId = cell.innerHTML;
+                        // alert("id:" + gameId);
+                        let url = "/replay/" + gameId;
+                        window.location.href=url
+
+
                     };
                 };
 

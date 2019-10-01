@@ -2,7 +2,7 @@ package Stratego.board;
 
 public class Move {
     private long GameID;
-//    private String player; //either computer or user
+    //    private String player; //either computer or user
     private int start_x;
     private int start_y;
     private int end_x;
@@ -10,6 +10,26 @@ public class Move {
     private char color;
     private int moveNum;
     private Move_status status; //response about the attempted move
+
+    @Override
+    public String toString() {
+        return "Move{" +
+                "start_x=" + start_x +
+                ", start_y=" + start_y +
+                ", end_x=" + end_x +
+                ", end_y=" + end_y +
+                ", color=" + color +
+                '}';
+    }
+
+    public Move(int gameID, String s, int startX, int startY, int curX, int curY, Move_status moveStatus) {
+        GameID = gameID;
+        this.start_x = startX;
+        this.start_y = startY;
+        this.end_x = curX;
+        this.end_y = curY;
+        this.status = moveStatus;
+    }
 
     public int getMoveNum(){
         return moveNum;
@@ -23,8 +43,26 @@ public class Move {
     public char getColor(){
         return color;
     }
+    public void setGameID(long id)
+    {
+        this.GameID = id;
+    }
 
-    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color ,Move_status status) {
+    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color, int moveNum, Move_status status) {
+        GameID = gameID;
+        this.start_x = start_x;
+        this.start_y = start_y;
+        this.end_x = end_x;
+        this.end_y = end_y;
+        this.color = color;
+        this.moveNum = moveNum;
+        this.status = status;
+    }
+    public Move()
+    {
+
+    }
+    public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color , Move_status status) {
         GameID = gameID;
         //this.player = player;
         this.start_x = start_x;
@@ -33,6 +71,7 @@ public class Move {
         this.end_y = end_y;
         this.color = color;
         this.status = status;
+        this.moveNum = 0;
     }
     public String getStart()
     {
@@ -96,6 +135,3 @@ public class Move {
     }
 
 }
-
-
-

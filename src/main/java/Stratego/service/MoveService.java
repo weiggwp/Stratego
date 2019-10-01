@@ -1,5 +1,6 @@
 package Stratego.service;
 
+import Stratego.logic.src.Game;
 import Stratego.model.Reposition;
 import Stratego.repository.MoveRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +28,14 @@ public class MoveService {
         List<Reposition> repositions = new ArrayList<>();
         for(Reposition reposition : moveRepository.findAll()) {
             if (reposition.getMatchId() == matchId) {
-                System.out.println(reposition);
                 repositions.add(reposition);
             }
         }
         return repositions;
+    }
+
+    public List<Reposition> getMoves(long GameID) {
+        return moveRepository.findRepositionByMatchIdOrderByTurnId(GameID);
     }
 
     public void updateMove() {
@@ -53,17 +57,17 @@ public class MoveService {
     }
 
     private String findLostPieces(long matchId, int isPlayer) {
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder(" ");
         List<Reposition> allRepositions = readMoves(matchId);
 
         if (isPlayer == 1) {
             for (Reposition reposition : allRepositions) {
-                if (reposition.getPieceCapturedByOpponent()!=' ')
+                if (reposition.getPieceCapturedByOpponent()!='$')
                     stringBuilder.append(reposition.getPieceCapturedByOpponent());
             }
         } else {
             for (Reposition reposition : allRepositions) {
-                if (reposition.getPieceCapturedByPlayer()!=' ')
+                if (reposition.getPieceCapturedByPlayer()!='$')
                     stringBuilder.append(reposition.getPieceCapturedByPlayer());
             }
         }

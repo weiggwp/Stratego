@@ -2,19 +2,17 @@ package Stratego.board;
 
 
 import Stratego.logic.src.BoardPiece;
+import Stratego.model.Placement;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 //shuffles and gives positions of pieces
 public class arrangement {
-    private static ArrayList<BoardPiece> comp;
-    private static ArrayList<BoardPiece> user;
-    private static BoardPiece compFlag;
-    private static BoardPiece userFlag;
-    private static HashMap<Character, HashMap<Character,Integer>> remaining_pieces;
+    private ArrayList<BoardPiece> comp;
+    private ArrayList<BoardPiece> user;
+    private BoardPiece compFlag;
+    private BoardPiece userFlag;
+    private HashMap<Character, HashMap<Character,Integer>> remaining_pieces;
 
     //a hashmap that tracks remaining pieces from both sides
 
@@ -24,6 +22,11 @@ public class arrangement {
         if(color=='R')
             return comp;
         return user;
+    }
+    public arrangement(int a, int b){
+
+        user = new ArrayList<>();
+        comp = new ArrayList<>();
     }
     public void printLocationOfPieces(char color)
     {
@@ -47,10 +50,11 @@ public class arrangement {
             System.out.println("User pieces");
             for(BoardPiece piece: user)
             {
-                if((count+1)%10==0)
-                    System.out.println();
+
                 System.out.print(piece.getUnit()+": ("+piece.getX()+","+piece.getY()+")\t");
                 count++;
+                if((count+1)%10==0)
+                    System.out.println();
             }
         }
         System.out.println();System.out.println();
@@ -60,7 +64,6 @@ public class arrangement {
     public void capturePiece(char color,BoardPiece captured,BoardPiece capturing)
     //blue, 6, B
     {
-        System.out.println("color: "+color+" "+captured.getUnit()+capturing.getUnit());
         //update the hashmap of remaining pieces
         char opponent_color = (color=='R')?'B':'R';
         //int current_remaining = remaining_pieces.get(opponent_color).get(captured.getUnit());
@@ -84,7 +87,7 @@ public class arrangement {
     }
     public void DecrementRemaining(char color,BoardPiece piece)
     {
-        System.out.println("decrementing count for "+color+" "+piece.getUnit());
+//        System.out.println("decrementing count for "+color+" "+piece.getUnit());
         int current = remaining_pieces.get(color).get(piece.getUnit());
         remaining_pieces.get(color).replace(piece.getUnit(),--current);
     }
@@ -113,13 +116,17 @@ public class arrangement {
         //do not affect hashmap remaining pieces count
         if(color=='R')//moved a computer piece
         {
+
             comp.remove(oldLocation);
             comp.add(newLocation);
+//            printLocationOfPieces(color);
         }
         else
         {
+
             user.remove(oldLocation);
             user.add(newLocation);
+//            printLocationOfPieces(color);
         }
     }
     public void printRemainingPieces()
@@ -127,7 +134,7 @@ public class arrangement {
         remaining_pieces.entrySet().forEach(entry->{
 
             String result = (entry.getKey()=='R')?"Computer":"User";
-            System.out.println(result); //red or blue
+//            System.out.println(result); //red or blue
             entry.getValue().entrySet().forEach(num->
             {
                 System.out.print(num.getKey()+": "+num.getValue()+"\t");
@@ -147,18 +154,100 @@ public class arrangement {
 
 
     }
-    public HashMap getRemaining(char color)
-    {
-        return remaining_pieces.get(color);
-    }
+    /*
+ There are twice unique pieces in total for each user
+ this method creates them in order with respect to their image src
+ do the same as create_pieces except now we populate the arraylist with objects containing value+image_src
+ */
+    public void create_pieces_placement(List<Placement> lis){
 
-    public BoardPiece getFlag(char color)
-    {
-        if(color=='R')
-            return this.compFlag;
-        return this.userFlag;
+
+
+        String src="../images/pieces/piece"; // directory
+        String start="";
+        String ext=".png";
+
+        // System.out.println("MAKING B");
+
+
+//        System.out.println("size is " + lis.size());
+
+
+        for (int i=0; i<lis.size(); i++){
+            if (i>=40&&i<60)continue;
+            if (lis.get(i).getPieceName()=='0'||lis.get(i).getPieceName()=='W')continue;
+            BoardPiece bp = new BoardPiece();
+            bp.setColor(lis.get(i).getIsPlayer()==1?'R':'B');
+
+            bp.setUnit(lis.get(i).getPieceName());
+            bp.setImg_src(src + start + pieceToSrc(bp.getUnit(),bp.getColor()) + ext);
+//            System.out.println("src is " +bp.getImg_src());
+//            System.out.println("unit is " +bp.getUnit());
+            //System.out.println("item at " +i +" has src of " +bp.getImg_src());
+            if (bp.getColor()=='B'){
+                user.add(bp);
+            }
+            else comp.add(bp);
+        }
+        // System.out.println("blue size is " +blue.size() + " and red size is " + red.size());
+
     }
-    public static Boolean compare(int row,int col)
+    private String pieceToSrc(char piece, char color){
+        if (color=='R'){
+            if (piece=='1')
+                return"2";
+            if (piece=='2')
+                return "12";
+            if (piece=='3')
+                return "15";
+            if (piece=='4')
+                return "16";
+            if (piece=='5')
+                return "17";
+            if (piece=='6')
+                return "18";
+            if (piece=='7')
+                return "14";
+            if (piece=='8')
+                return "13";
+            if (piece=='9')
+                return "4";
+            if (piece=='M')
+                return "3";
+            if (piece=='F')
+                return "1";
+            if (piece=='B')
+                return "11";
+        }
+        else{
+            if (piece=='1')
+                return"22";
+            if (piece=='2')
+                return "72";
+            if (piece=='3')
+                return "75";
+            if (piece=='4')
+                return "76";
+            if (piece=='5')
+                return "77";
+            if (piece=='6')
+                return "78";
+            if (piece=='7')
+                return "74";
+            if (piece=='8')
+                return "73";
+            if (piece=='9')
+                return "24";
+            if (piece=='M')
+                return "23";
+            if (piece=='F')
+                return "21";
+            if (piece=='B')
+                return "71";
+        }
+        return "";
+    }
+    public Boolean compare(int row,int col)
     {
 
         if((row==5 || row==6) && (col==3 || col==4 || col==7 || col==8))
@@ -167,7 +256,7 @@ public class arrangement {
         }
         return false;
     }
-    public static Boolean getImage(int row)
+    public Boolean getImage(int row)
     {
         if(!(row==5 || row==6))
         {
@@ -181,26 +270,26 @@ public class arrangement {
 
 
     }
-    public static Boolean blue(int row)
+    public Boolean blue(int row)
     {
         return row<5;
     }
-    public static Boolean red(int row)
+    public Boolean red(int row)
     {
         return row>6;
     }
 
-    public static Boolean blank(int row)
+    public Boolean blank(int row)
     {
         return row==5||row==6;
 
     }
-    public static String getId(int row,int col)
+    public String getId(int row,int col)
     {
         return row+"_"+col;
     }
 
-    public static BoardPiece getPiece(int row,int col)
+    public BoardPiece getPiece(int row,int col)
     {
         if(row<5)//blue
         {
@@ -215,7 +304,7 @@ public class arrangement {
             return user.get(pos);
         }
     }
-    public static String assign(int row,int col)
+    public String assign(int row,int col)
     {
 
         if(row<5)//blue
@@ -364,8 +453,15 @@ public class arrangement {
         return collect;
 
     }
-    private static String clone(String s)
+
+
+    public BoardPiece getFlag(char color) {
+        if(color=='R')
+            return this.compFlag;
+        return this.userFlag;
+    }
+    public HashMap getRemaining(char color)
     {
-        return new String(s);
+        return remaining_pieces.get(color);
     }
 }

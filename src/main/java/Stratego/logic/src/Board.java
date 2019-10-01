@@ -92,12 +92,11 @@ public class Board {
         }
         if(i==1)//lose
         {
-            System.out.println(defender.getUnit()+" is capturing "+attacker.getUnit());
             setup.capturePiece(opponent_color, attacker,defender);
         }
         if(i==2)//tie
         {
-            setup.tiedMove(color,defender,attacker);
+            setup.tiedMove(color,attacker,defender);
         }
         if(i==4)//move
         {
@@ -171,10 +170,8 @@ public class Board {
     private void initializeCustomGameboard() throws FileNotFoundException {
         Scanner sc = new Scanner(new File("./resources/board2.txt"));
         Scanner sc2 = new Scanner(new File("./resources/board2Colors.txt"));
-        //System.out.println(sc.nextLine());
         for (int i=0; i<10; i++) {
             for (int j = 0; j < 10; j++) {
-                // System.out.println(i+"  "+j);
                 gameboard[i][j] = new BoardPiece(sc.next().charAt(0), sc2.next().charAt(0));
             }
         }
@@ -205,15 +202,14 @@ public class Board {
 }
     public void swap (int startingX, int startingY, int endingX, int endingY)
     {
-        System.out.println("swapping "+ startingX +" "+startingY+" with "+ endingX +" "+endingY);
         BoardPiece start = gameboard[startingX][startingY];
         BoardPiece end = gameboard[endingX][endingY];
         start.swapPlaces(end);//swaps both x,y fields
         gameboard[startingX][startingY] = end;
         gameboard[endingX][endingY] = start;
-        System.out.println("swapping "+ start.getUnit()+" with "+end.getUnit());
+//        System.out.println("swapping "+ start.getUnit()+" with "+end.getUnit());
         displayGameBoard();
-        setup.printLocationOfPieces('B');
+//        setup.printLocationOfPieces('B');
     }
 
     private boolean isDigit(char s){
@@ -223,6 +219,7 @@ public class Board {
     }
 
 
-
-
+    public void setPieceRevealed(int x, int y, boolean b) {
+        this.gameboard[x][y].setRevealed(b);
+    }
 }
