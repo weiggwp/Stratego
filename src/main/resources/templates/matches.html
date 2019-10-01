@@ -60,8 +60,12 @@
             var outcome = cell.innerHTML;
             if (outcome === "win") {
                 currentRow.className = "table-primary";
-            } else {
-                currentRow.className = "table-danger"
+            }
+            else if (outcome === "draw"){
+                currentRow.className="table-dark";
+            }
+            else {
+                currentRow.className = "table-danger";
             }
         }
     }

@@ -60,8 +60,7 @@ function undoMove(){
         numMoves%2==0?'B':'R',
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
-        false,
-        " ",
+        false,"",
         true,true);
     if (moveList[numMoves].status.fight_result==0){//win
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];
@@ -161,7 +160,7 @@ function nextMove(fastForward){
         moveList[numMoves].status.fight_result,
         moveList[numMoves].status.image_src,
         false,
-        " ",
+        "",
         true,false);
 
     numMoves++;
@@ -866,12 +865,13 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
-            console.log("legal is "+legal);
-            if (legal==false){
-                permission=true;
+            if (legal===false) {
+                permission = true;
                 return;
             }
-            performMove(start, end, color, fight_result, img_src,false);
+
+            performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
+           // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
             //http.response.toString();
 
 
