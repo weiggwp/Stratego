@@ -17,6 +17,7 @@ let moveList=null;
 // let testThread=false;
 let replaying=false;
 let deletedImages=null;
+let opacity='.0001'
 function startReplay() {
     replaying=true;
     // console.log("CALLED");
@@ -78,8 +79,8 @@ function undoMove(){
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
     }
     else if (moveList[numMoves].status.fight_result==1){//lose
-        /*if (numMoves%2==1)
-        document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];*/
+        //if (numMoves%2==1)
+        document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).src=deletedImages[numMoves];
 
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
@@ -104,7 +105,7 @@ function fastForwardReplay(time){
     redirect = false;
     forward=!forward;
     if (!forward){
-        // console.log("Forward off.");
+       //  console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
@@ -126,8 +127,10 @@ function fastForwardReplayAuto(time){
         // document.getElementById('undoMoveBtn').style.opacity='1';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
+        //console.log("returning");
         return;
     }
+  //  console.log("forward is "+forward);
     // document.getElementById('nextMoveBtn').style.opacity='.65';
     // document.getElementById('undoMoveBtn').style.opacity='.65';
     disable('nextMoveBtn');
@@ -155,11 +158,11 @@ function nextMoveClick(){
 }
 function nextMove(fastForward){
     if (fastForward&&!forward){
-        fastForwardReplayTime();
+       // fastForwardReplayTime();
         return;
     }
     if (numMoves==moveList.length) {
-        fastForwardReplayTime();
+       // fastForwardReplayTime();
         return;
     }
     // document.getElementById("undoMoveBtn").style.visibility='visible';
@@ -360,7 +363,7 @@ function enable(element)
 function swap(i,m){
     // console.log(document.getElementById((i*10+m).toString()).src);
     if (document.getElementById((i*10+m).toString()).src.endsWith("/images/pieces/blue_back.png")) return;
-    if (document.getElementById((i*10+m).toString()).style.opacity=='.02') return;
+    if (document.getElementById((i*10+m).toString()).style.opacity==opacity) return;
     // else console.log(document.getElementById((i*10+m).toString()).src);
     if (moving==-1){
 
@@ -425,7 +428,7 @@ function move(i,m) {
     }
     if (moving==-1){
         if (isImmovable(document.getElementById((i*10+m).toString()).src)) return;
-        if (document.getElementById((i*10+m).toString()).style.opacity=='.02'||document.getElementById((i*10+m).toString()).style.opacity==.02) return;
+        if (document.getElementById((i*10+m).toString()).style.opacity==opacity||document.getElementById((i*10+m).toString()).style.opacity==opacity) return;
         // console.log(document.getElementById((i*10+m).toString()).style.opacity);
         //else console.log(document.getElementById((i*10+m).toString()).src);
 
@@ -471,9 +474,9 @@ function aiMoveTest() {
         if (!notLake(ran)||!notLake(ran+10)) continue;
         // console.log("opac is "+document.getElementById((ran).toString()).style.opacity);
         if (isBlue(document.getElementById((ran).toString()).src)
-            &&( document.getElementById((ran).toString()).style.opacity != .02)&&
+            &&( document.getElementById((ran).toString()).style.opacity != opacity)&&
             (
-                document.getElementById((ran+10).toString()).style.opacity == .02||!isBlue(document.getElementById((ran+10).toString()).src))){
+                document.getElementById((ran+10).toString()).style.opacity == opacity||!isBlue(document.getElementById((ran+10).toString()).src))){
             //if (test&&!document.getElementById((ran+10).toString()).src.endsWith("Moved.png"))continue;
             from=ran;
             to=ran+10;
@@ -626,7 +629,7 @@ function revealPieces(board){
             // console.log(board[i][j].img_src);
             if (isBlue(board[i][j].img_src)){
                 if (document.getElementById((startY+startX).toString()).src.endsWith("Moved.png")){
-                    document.getElementById((startY+startX).toString()).style.opacity='.02';
+                    document.getElementById((startY+startX).toString()).style.opacity=opacity;
                     continue;
                 }
                 // console.log("blue!");
@@ -675,7 +678,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             }
             document.getElementById((end).toString()).src
                 = document.getElementById((start).toString()).src;
-            document.getElementById(start.toString()).style.opacity = ".02";
+            document.getElementById(start.toString()).style.opacity = opacity;
             document.getElementById(start.toString()).style.borderStyle = 'none';
             document.getElementById((end).toString()).style.opacity = "1";
             moving = -1;
@@ -689,7 +692,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
-            document.getElementById(start.toString()).style.opacity = ".02";
+            document.getElementById(start.toString()).style.opacity =opacity;
             document.getElementById(start.toString()).style.borderStyle = 'none';
             if (!replay)
                 document.getElementById((end).toString()).src=img_src;
@@ -704,16 +707,16 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                     deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
             }
             updateSidebar(img_src);
-            document.getElementById(start.toString()).style.opacity = ".02";
+            document.getElementById(start.toString()).style.opacity = opacity;
             document.getElementById(start.toString()).style.borderStyle = 'none';
-            document.getElementById(end.toString()).style.opacity = ".02";
+            document.getElementById(end.toString()).style.opacity = opacity;
             document.getElementById(end.toString()).style.borderStyle = 'none';
             moving=-1;
         }
         else if (fight_result===3){ //game_over, a win
             document.getElementById((end).toString()).src
                 = document.getElementById((start).toString()).src
-            document.getElementById(start.toString()).style.opacity = ".02";
+            document.getElementById(start.toString()).style.opacity = opacity;
             document.getElementById(start.toString()).style.borderStyle = 'none';
             document.getElementById(end.toString()).style.opacity = "1";
             moving = -1;
@@ -752,18 +755,19 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         //target_y);
 
         // console.log("x is " +x);
-
+        if (start==revealedOne)
+            revealedOne=end;
 
 
         //document.getElementById(((target_x + 1) * 10 + target_y + 1).toString()).src = document.getElementById((x).toString()).src
-        //document.getElementById(x.toString()).style.opacity = ".02";
+        //document.getElementById(x.toString()).style.opacity =opacity;
         document.getElementById(start.toString()).style.borderStyle = 'none';
         document.getElementById(end.toString()).style.opacity = "1";
         //if (resp.startsWith("empty")) {
         if(fight_result===4)
         {
             document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
-            if (replay)document.getElementById((start).toString()).style.opacity='.02'
+            if (replay)document.getElementById((start).toString()).style.opacity=opacity;
         }
         //if (resp.startsWith("win")) {
         if(fight_result===0)
@@ -779,7 +783,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 document.getElementById(end.toString()).src =
                     img_src
             revealedTwo=(end);
-            if (replay)document.getElementById((start).toString()).style.opacity='.02'
+            if (replay)document.getElementById((start).toString()).style.opacity=opacity;
             if (revealedOne==revealedTwo)revealedTwo=-1;
             //(resp.substring(resp.lastIndexOf(" ")+1));
             //document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
@@ -792,7 +796,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
-            if (replay)document.getElementById(start).style.opacity='.02';
+            if (replay)document.getElementById(start).style.opacity=opacity;
         }
         //else if (resp.startsWith("draw")){
         else if(fight_result===2)
@@ -802,7 +806,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                     deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
             }
             if (!replay) updateSidebar(img_src);
-            document.getElementById(end.toString()).style.opacity='.02';
+            document.getElementById(end.toString()).style.opacity=opacity;
         }
         //else if (resp.startsWith("flag")){
         else if(fight_result===3)
@@ -835,12 +839,12 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
                     if (yellow!=(end))
-                        document.getElementById(yellow.toString()).style.opacity=".02";
+                        document.getElementById(yellow.toString()).style.opacity=opacity;
                 // console.log("x is " + (end) + " yellow is " + yellow);
 
                 document.getElementById(yellowBorder.toString()).style.borderStyle='none';
                 if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
-                    document.getElementById(yellowBorder.toString()).style.opacity='.02';
+                    document.getElementById(yellowBorder.toString()).style.opacity=opacity;
             }
             yellow=start;
             yellowBorder=(end);
