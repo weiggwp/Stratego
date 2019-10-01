@@ -30,14 +30,15 @@ public class SimulationBoard{
 
             }
         }
-
-        int last_index = moves.size()-1;
-        for(int i=0;i<=last_index;i++){
-            Move move = moves.get(last_index-i);
-            SimulationMove simulationMove = new SimulationMove(move);
-            simulationMove.setPrev(move_ptr);
-            move_ptr = simulationMove;
-            if(i==4)break;
+        int size = moves.size();
+        if (size>=6){
+            //return last 3 moves made by this player
+            for(int i=size-6;i<size;i+=2){
+                Move move = moves.get(i);
+                SimulationMove simulationMove = new SimulationMove(move);
+                simulationMove.setPrev(move_ptr);
+                move_ptr = simulationMove;
+            }
         }
         gameEnded = false;
         winner = '0';
@@ -77,34 +78,23 @@ public class SimulationBoard{
     }
 */
     /*Returns false on illegal move, true on legal move.*/
-
     public boolean makingLoops(SimulationMove move)
     {
         //[1,1]->[1,2]      initial
         // [1,2]->[1,1]     second
         // [1,1]-> [1,2] (current attempted move)
-        boolean my_move = false;
         int count = 0;
-        SimulationMove temp = move_ptr;
-        while(temp!=null) //if has previous move
+        SimulationMove ptr = move_ptr;
+        while(ptr!=null) //if has previous move
         {
-            if(!my_move){
-                my_move=true;
-                temp = move_ptr.getPrev();
-                continue;
-            }
+          boolean moved_back = move.movedBack(ptr);
+          if (!moved_back) return false;
 
-            //is my move
-            boolean moved_back = move.movedBack(temp);
-            if (!moved_back) return false;
-
-            // moved back
-            move = temp;
-            count++;
-            if( count>=3) return true;  //changed from 2-3
-            temp = temp.getPrev();
-
-            my_move = false;        //added
+          // moved back
+          move = ptr;
+          count++;
+          if( count>=3) return true;  //changed from 2-3
+          ptr = ptr.getPrev();
         }
         return false;
     }
@@ -120,8 +110,6 @@ public class SimulationBoard{
                 gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             return false;
         }
-        if(makingLoops(simulationMove))
-            return false;
 
         if (gameboard[endingX][endingY].isLake()){
             return false;
@@ -165,6 +153,8 @@ public class SimulationBoard{
                 }
             }
         }
+        if(makingLoops(simulationMove))
+            return false;
 
 
         return true;

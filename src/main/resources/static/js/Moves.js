@@ -816,7 +816,11 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             console.log("imgsrc is " + response.status.image_src);
             let start = (starting_x + 1) * 10 + starting_y + 1;
             let end = (target_x + 1) * 10 + target_y + 1;
-            if (legal==false) return;
+            if (legal===false) {
+                permission = true;
+                return;
+            }
+
             performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
            // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo
             //http.response.toString();

@@ -15,8 +15,8 @@ import static java.lang.Math.abs;
 
 
 public class BoardEvaluator {
-    public static final double WEIGHT_PIECES       = .5;
-    public static final double WEIGHT_ADVANCEMENT  = .1;
+    public static final double WEIGHT_PIECES       = .575;
+    public static final double WEIGHT_ADVANCEMENT  = .025;
     public static final double WEIGHT_FLAG_SAFETY  = .3;
     public static final double WEIGHT_AWARENESS    = .1;
 
