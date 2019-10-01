@@ -6,6 +6,8 @@ let moving = -1;
 let clicked=false;
 let yellow=-1;
 let yellowBorder=-1;
+let green =-1;
+let greenBorder=-1;
 let started=false;
 let legal=0;
 let gameOver=false;
@@ -622,6 +624,8 @@ function restart(){
 function revealPieces(board){
     if (yellowBorder!=-1)
         document.getElementById(yellowBorder.toString()).style.borderStyle='none';
+    if (greenBorder!=-1)
+        document.getElementById(greenBorder.toString()).style.borderStyle='none';
     for (let i=0; i<board.length; i++){
         for (let j=0; j<board[0].length; j++){
             let startX=(i+1)*10;
@@ -743,7 +747,30 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 return;
             }
         }
+        if (replay){
+            // document.getElementById('fastForwardBtn').style.opacity='1';
 
+            if (green!==-1){
+                if
+                (document.getElementById(green.toString()).src.endsWith('images/pieces/MovedPlayer.png'))
+                    if (green!=(end))
+                        document.getElementById(green.toString()).style.opacity=opacity;
+                // console.log("x is " + (end) + " yellow is " + yellow);
+
+                document.getElementById(greenBorder.toString()).style.borderStyle='none';
+                if (document.getElementById(greenBorder.toString()).src.endsWith("blank.png"))
+                    document.getElementById(greenBorder.toString()).style.opacity=opacity;
+            }
+            console.log("green is " +green + "start is " + start+" end is " +end);
+            green=start;
+            greenBorder=(end);
+            document.getElementById(green.toString()).style.opacity='1';
+            document.getElementById(green.toString()).src='../images/pieces/MovedPlayer.png';
+            document.getElementById(greenBorder.toString()).style.borderStyle='solid';
+            document.getElementById(greenBorder.toString()).style.borderWidth='2px';
+            document.getElementById(greenBorder.toString()).style.borderColor='Green';
+
+        }
 
         if (!replay) {
             aiMove('R');
@@ -832,9 +859,9 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 return;
             }
         }
-        if (!replay){
+        if (true){
             // document.getElementById('fastForwardBtn').style.opacity='1';
-            enable('fastForwardBtn');
+            if (!replay)enable('fastForwardBtn');
             if (yellow!==-1){
                 if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
@@ -849,10 +876,11 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             yellow=start;
             yellowBorder=(end);
             document.getElementById(yellow.toString()).src='../images/pieces/Moved.png';
+            document.getElementById(yellow.toString()).style.opacity='1';
             document.getElementById(yellowBorder.toString()).style.borderStyle='solid';
             document.getElementById(yellowBorder.toString()).style.borderWidth='2px';
             document.getElementById(yellowBorder.toString()).style.borderColor='Yellow';
-            permission=true;
+            if (!replay)permission=true;
         }
     }
 
