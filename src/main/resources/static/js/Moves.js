@@ -105,7 +105,7 @@ function fastForwardReplay(time){
     redirect = false;
     forward=!forward;
     if (!forward){
-         console.log("Forward off.");
+       //  console.log("Forward off.");
         document.getElementById('fastForwardReplayBtn').innerHTML='Fast Forward';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
@@ -127,10 +127,10 @@ function fastForwardReplayAuto(time){
         // document.getElementById('undoMoveBtn').style.opacity='1';
         enable('nextMoveBtn');
         enable('undoMoveBtn');
-        console.log("returning");
+        //console.log("returning");
         return;
     }
-    console.log("forward is "+forward);
+  //  console.log("forward is "+forward);
     // document.getElementById('nextMoveBtn').style.opacity='.65';
     // document.getElementById('undoMoveBtn').style.opacity='.65';
     disable('nextMoveBtn');
