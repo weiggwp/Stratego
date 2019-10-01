@@ -101,6 +101,7 @@ function undoMove(){
 }
 let forward=false;
 function fastForwardReplay(time){
+    redirect = false;
     forward=!forward;
     if (!forward){
         // console.log("Forward off.");
