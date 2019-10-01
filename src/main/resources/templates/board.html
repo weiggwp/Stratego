@@ -14,7 +14,9 @@
 </head>
 
 <body>
+
 <div class="page">
+
     <div class="rectangle column">
         <div class = "whiteText">
         &nbsp;
@@ -40,8 +42,19 @@
 <!--    <button type="button" id='restartBtn'class="btn btn-primary btn-invis"onclick="restart()">Restart</button>-->
 
 </div>
+    <div id="concedePane" class="confirmConcede" >
+        <div id="concedeMsg" class ="concedeMsg" >Are you sure you wish to concede the game? </div>
+        <input class="concedeOK" type="button" value="OK"
+               onclick="confirm_concede()">
+
+        <input class="concedeNO" type="button" value="Cancel"
+               onclick="cancel_concede()">
+        <br>
+    </div>
 
 <div class="divTable board column" id="board">
+
+
 
     <div class="divTableBody">
 
@@ -93,7 +106,11 @@
     </div>
 
 </div>
-    <div class="play_buttons column">
+    <div class="column">
+    <div class="play_buttons">
+        <br>
+        <button type="button" id='backBtn'class="btn btn-primary"onclick="back_to_main()">Main Menu</button>
+
         <br>
         <button type="button" id='startBtn'class="btn btn-primary"onclick="start()">Start</button>
         <br>
@@ -104,11 +121,20 @@
         <button type="button" disabled id='restartBtn'class="btn btn-primary "onclick="restart()">Restart</button>
 
     </div>
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div class="status_update">
+        <br><p style="text-align: center;font-weight: bold;color:white;"> Game Status</p>
+        <p class="text_field" id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
+
+    </div>
+    </div>
 </div>
 
-<div class="center">
-    <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>
-</div>
+<!--<div class="center">-->
+<!--    <p id = 'startText'>To swap where you would like 2 pieces to be, click each piece. Click start when ready to play.</p>-->
+<!--</div>-->
+
+
 
 
 <!--</div>-->

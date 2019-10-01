@@ -11,7 +11,7 @@ let legal=0;
 let gameOver=false;
 let revealedOne=-1;
 let revealedTwo=-1;
-
+let redirect = false;
 let moveList=null;
 // let moveCounter=0;
 // let testThread=false;
@@ -47,6 +47,16 @@ function startReplay() {
         }
 
     }
+}
+function back_to_main()
+{
+
+    if(redirect) return;
+
+    window.location.href="/home";
+
+    //popup
+
 }
 function undoMove(){
     if (forward) return;
@@ -222,25 +232,43 @@ function updateSidebar(src){
 
 
 }
-function concede(){
-    if (confirm("Are you sure you wish to concede the game? This cannot be undone.")){
-        var http = new XMLHttpRequest();
-        let url = "/concede";    //-> will be changed to another uri maybe action?=move
-        //sent json file is 0-based index
-        var params = JSON.stringify({});
-        //start_x and start_y need to be filled in to validate move
+function cancel_concede()
+{
+    close_popup();
+}
+function close_popup()
+{
+    document.getElementById('concedePane').style.visibility= "hidden";
+    redirect = false;
+}
+function concede(back){
+    if(redirect)return;
+    if(back)
+        document.getElementById('concedeMsg').innerHTML='Are you sure you want to forefit game and go back to main';
+    else
+        document.getElementById('concedeMsg').innerHTML='Are you sure you wish to concede the game?';
+    document.getElementById('concedePane').style.visibility= "visible";
+    redirect = true;
 
-        http.open("POST", url, true);
 
-        http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-        // http.setRequestHeader("Content-length", params.length);
-        // http.setRequestHeader("Connection", "close");
+}
+function confirm_concede() {
+    close_popup();
+    var http = new XMLHttpRequest();
+    let url = "/concede";    //-> will be changed to another uri maybe action?=move
+    //sent json file is 0-based index
+    var params = JSON.stringify({});
+    //start_x and start_y need to be filled in to validate move
 
-        http.send(params);
+    http.open("POST", url, true);
 
-        lose();
-    }
+    http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    // http.setRequestHeader("Content-length", params.length);
+    // http.setRequestHeader("Connection", "close");
 
+    http.send(params);
+
+    lose();
 }
 function hidePieceNums(){
     if (revealedOne!=-1)
@@ -267,6 +295,7 @@ let permission =true;
 
 function fastForward(){
     if (!permission)return;
+    if(redirect) return;
     // document.getElementById('fastForwardBtn').style.opacity='.65';
     disable('fastForwardBtn');
     permission=false;
@@ -279,7 +308,7 @@ function fastForward(){
 }
 
 function start() {
-
+    if(redirect===true)return;
     let http = new XMLHttpRequest();
     let url = "/start_game";
     http.open("POST", url, true);
@@ -303,8 +332,11 @@ function start() {
         //document.getElementById('startBtn').style.visibility="hidden";
         //document.getElementById('startBtn').style.disabled=true;
         disable('startBtn');
+        disable('backBtn');
         // document.getElementById('startBtn').setAttribute('disabled', 'disabled');
-        document.getElementById('startText').style.visibility="hidden";
+        // document.getElementById('startText').style.visibility="hidden";
+        document.getElementById('startText').innerHTML = " ";
+
         enable('fastForwardBtn');
         enable('concedeBtn');
         // document.getElementById('fastForwardBtn').removeAttribute('disabled');
@@ -382,6 +414,7 @@ function isBlue(s){
 function move(i,m) {
     if (gameOver) return;
     if (!permission)return;
+    if(redirect) return;
 
     clicked=!clicked;
     if (!started){
@@ -536,12 +569,13 @@ function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
 }
 function lose(){
     gameOver=true;
-    document.getElementById('startText').outerHTML='You lost. Press restart to restart';
+    document.getElementById('startText').innerHTML='You lost. Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
     // document.getElementById('restartBtn').style.visibility='visible';
     // document.getElementById('fastForwardBtn').style.visibility='hidden';
     // document.getElementById('concedeBtn').style.visibility='hidden';
     enable('restartBtn');
+    enable('backBtn');
     disable('fastForwardBtn');
     disable('concedeBtn');
 
@@ -550,10 +584,11 @@ function lose(){
 }
 function win(){
     gameOver=true;
-    document.getElementById('startText').outerHTML='You win! Press restart to restart';
+    document.getElementById('startText').innerHTML='You win! Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
     // document.getElementById('restartBtn').style.visibility='visible';
     enable('restartBtn');
+    enable('backBtn');
     disable('fastForwardBtn');
     disable('concedeBtn');
 
@@ -564,9 +599,10 @@ function win(){
 function draw()
 {
     gameOver=true;
-    document.getElementById('startText').outerHTML='Draw! Press restart to restart';
+    document.getElementById('startText').innerHTML='Draw! Press restart to restart';
     //document.getElementById('startText').style.visibility='visible';
     enable('restartBtn');
+    enable('backBtn');
     disable('fastForwardBtn');
     disable('concedeBtn');
 
@@ -867,8 +903,28 @@ function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,mo
             let end = (target_x + 1) * 10 + target_y + 1;
             if (legal===false) {
                 permission = true;
+
+                // document.getElementById('startText').style.visibility="visible";
+                document.getElementById('startText').innerHTML = response.status.error_message;
+                // document.getElementById('startText').classsName = 'text_field';
                 return;
             }
+            else
+            {
+                let aaa = document.getElementById('startText');
+                if(aaa)
+                {
+                    // document.getElementById('startText').style.visibility="hidden";
+                    // document.getElementById('startText').outerHTML = ;
+                    document.getElementById('startText').innerHTML = " ";
+
+
+                }
+
+            }
+
+
+
 
             performMove(start, end, color, fight_result, img_src,game_ended,game_result,false,false);
            // start,end,color,fight_result,game_ended,game_result,img_src,replay, undo

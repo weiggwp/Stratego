@@ -15,8 +15,7 @@ public class Game {
     private long GameID; //
     private int gameWinner;
     private String err_msg;
-    private Move current_move;
-    private Move_status move_stat;
+
     private AI ai;
     //HashMap<String, ArrayList> piecesLost;    - will be updating per move
 
@@ -102,7 +101,7 @@ public class Game {
     }
     public Move makeIllegalMove(Move m)
     {
-        m.setStatus(new Move_status());
+        m.setStatus(new Move_status(this.err_msg));
         return m;
     }
     public void capture(Move_status move_stat,char color,char piece)
@@ -143,16 +142,15 @@ public class Game {
         int endingX = move.getEnd_x();
         int endingY = move.getEnd_y();
         char color = move.getColor();
-        Move_status move_stat = new Move_status();
+        Move_status move_stat = new Move_status("");
         //move.setStatus(move_stat);
 
         System.out.println();System.out.println();
 
-        this.move_stat = new Move_status();// make a new reference - not sure if java is by reference or value..
         if (!isLegalMove(startingX,startingY,endingX,endingY,color)) {
 
             move_stat.setError_message(err_msg);   //by default invalid move
-            System.out.println("invalid move");
+            System.out.println(err_msg);
             return move_stat;
             //return "illegal";
         }
@@ -248,7 +246,7 @@ public class Game {
             {
                 move_stat.gameEnded();
                 move_stat.setGame_result("lost");
-                System.out.println("you have no movable pieces, and you've lost");
+//                System.out.println("you have no movable pieces, and you've lost");
 
             }
         }
@@ -340,14 +338,14 @@ public class Game {
             //gameboard[startingX][startingY].getUnit()==color||gameboard[startingX][startingY].getUnit()=='F'||
                 //gameboard[startingX][startingY].getUnit()=='0'||gameboard[startingX][startingY].getUnit()=='X') {
             err_msg="invalid starting piece";
-            System.out.println("invalid starting piece");
+//            System.out.println("invalid starting piece");
             return false;
         }
 
         if(madeLoopMove(startingX,startingY,endingX,endingY,color))
         {
             err_msg="illegal: making repeated moves";
-            System.out.println("illegal: making repeated moves");
+//            System.out.println("illegal: making repeated moves");
             return false;
         }
 
@@ -367,7 +365,7 @@ public class Game {
 
         if(board.getPieceAtLocation(endingX,endingY).getColor()==board.getPieceAtLocation(startingX,startingY).getColor())
         {
-            err_msg="cant capture friendly unit";
+            err_msg="unselect current piece before attempting to move another piece";
 //            System.out.println("cant capture friendly unit");
             return false;
         }/* if moving
@@ -409,7 +407,7 @@ public class Game {
                     //if (!gameboard[startingX][i].isEmpty() || gameboard[startingX][i].isLake()) {
                     if(!board.getPieceAtLocation(startingX,i).isEmpty() || board.getPieceAtLocation(startingX,i).isLake())
                     {
-                        err_msg = "collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit();
+                        err_msg = "collision ahead";
 //                        System.out.println("collision at " + startingX + " " + i + "; " + board.getPieceAtLocation(startingX,i).getUnit());
                         return false;
                     }
@@ -417,7 +415,7 @@ public class Game {
                 else {
                     //if (!gameboard[i][startingY].isEmpty() || gameboard[i][startingY].isLake()) {
                     if(!board.getPieceAtLocation(i,startingY).isEmpty()|| board.getPieceAtLocation(i,startingY).isLake()){
-                        err_msg = "collision at "+i+" "+startingY+ "; " +board.getPieceAtLocation(i,startingY).getUnit();
+                        err_msg = "collision ahead";
 //                        System.out.println("collision at " + i + " " + startingY + "; " + board.getPieceAtLocation(i,startingY).getUnit());
 
                         return false;

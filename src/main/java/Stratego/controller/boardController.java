@@ -53,37 +53,8 @@ public class boardController {
         int inner = 10;
         //boardController control = new boardController();
         game = new Game(++GameID);
-        move_num = 0;
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
-//        Board board = game.getBoard();
-
-
-//        ArrayList<Placement> placements = new ArrayList<>();
-
-
-//        if (board.isInitialized()) {
-//            BoardPiece[][] boardPiece = board.getBoard();
-//            for (int i = 0; i < 10; i++) {
-//
-//                for (int j = 0; j < 10; j++) {
-//                    BoardPiece piece = boardPiece[i][j];
-//
-//                    // attributes to saved
-//                    int x = i;
-//                    int y = j;
-//                    int isPlayer = piece.getColor() == 'R' ? 1 : 0;
-//                    char pieceName = piece.getUnit();
-//                    Placement placement = new Placement(gameId, x, y, pieceName, isPlayer);
-//                    placements.add(placement);
-//
-//                }
-//
-//            }
-//        }
-//        // have a new thread to add placements to database as it was slowing down board loading by 20s
-//        Thread t = new Thread(new PlacementsToDBRunnable(placementService,placements));
-//        t.start();
 
         //render board.html
         model.addAttribute("count", count);
@@ -111,12 +82,13 @@ public class boardController {
         Move_status stat = game.move(m);
         m.setGameID(GameID);
         m.setMoveNum(move_num++);
+        m.setStatus(stat);
 
         //game.setCurrent_move(m);//  filling in move_status from game
         if (stat.isIs_valid_move())    //not a valid move
         {
             // computer move comes in another http request
-            m.setStatus(stat);
+
             game.madeMove(m);
             System.out.println(stat);
 
@@ -152,10 +124,10 @@ public class boardController {
 //                moveService.addMove(move2);
             }
 
-            return new ResponseEntity<Move>(m, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<Move>(game.makeIllegalMove(m), HttpStatus.OK);
+
         }
+            return new ResponseEntity<Move>(m, HttpStatus.OK);
+
 
 
     }

@@ -16,11 +16,68 @@ div.board {
     text-align: center;
     margin-left:auto;
     margin-right:auto;
+    z-index:1;
 }
 .divTable.board .divTableCell,.divTable.board .divTableHead {
     border: 1px solid #326765;
     padding: 0px 0px;
     user-select: none;
+}
+.concedeMsg
+{
+
+    font-size: larger;
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    width: 200px;
+    text-align: justify;
+    color: #ffeff2
+}
+.status_update
+{
+    width: 280px;
+    height: 180px;
+    border-radius: 25px;
+    background-color: #3e5c72;
+}
+.text_field
+{
+    width:240px;
+    height:160px;
+    color:white;
+    margin:auto;
+}
+.confirmConcede
+{
+
+    background-color: #404040;
+    position: absolute;
+    top: 174px;
+    left: 350px;
+    width: 280px;
+    height: 180px;
+    z-index: 2;
+    box-shadow: 10px 10px 5px grey;
+    visibility: hidden;
+}
+.concedeOK
+{
+    position: absolute;
+    top: 100px;
+    left: 15px;
+    width: 80px;
+    height: 40px;
+    font-size: 16px;
+}
+.concedeNO
+{
+    position: absolute;
+    top: 100px;
+    right: 15px;
+    width: 80px;
+    height: 40px;
+    font-size: 16px;
 }
 
 .pieces
@@ -159,7 +216,7 @@ div.board {
 .play_buttons {
     max-height: 700px;
     max-width: 150px;
-    height:300px;
+    height:350px;
     width:150px;
     border-radius: 25px;
     background-color: #3e5c72;
@@ -201,6 +258,6 @@ div.board {
 }
 .divTableRow { display: table-row; }
 .divTableHeading { display: table-header-group;}
-.divTableCell, .divTableCell1, .divTableHead {display:table-cell;width:50px ;height:50px; }
+.divTableCell, .divTableCell1, .divTableHead {display:table-cell;width:50px ;height:50px;z-index:1; }
 .blue_front{user-select:none;}
-.divTableBody { display: table-row-group;}
+.divTableBody { display: table-row-group;z-index:1}

@@ -43,6 +43,13 @@ public class Move_status {
         this.game_ended = false;
         this.image_src = "";
     }
+    public Move_status(String m)
+    {
+        this.notValid(false,m);    //initialize to not valid
+        this.game_ended = false;
+        this.image_src = "";
+    }
+
     public void notValid(boolean is_valid,String error)  //if invalid, don't need to set anything else
     {
         this.is_valid_move = is_valid;
