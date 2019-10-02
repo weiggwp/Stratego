@@ -1,17 +1,17 @@
 package Stratego.board;
 
 public class GameObj {
-    long gameID;
+    long GameID;
 
     public long getGameID() {
-        return gameID;
+        return GameID;
     }
 
     public void setGameID(long gameID) {
-        this.gameID = gameID;
+        this.GameID = gameID;
     }
 
     public GameObj(long gameID) {
-        this.gameID = gameID;
+        this.GameID = gameID;
     }
 }

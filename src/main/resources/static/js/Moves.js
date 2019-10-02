@@ -332,9 +332,13 @@ function start() {
     if(redirect===true)return;
     let http = new XMLHttpRequest();
     let url = "/start_game";
+
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    http.send("game started")
+    var params = JSON.stringify({
+        'GameID':document.getElementsByClassName("gameIDSub")[0].id}
+    );
+    http.send(params);
     http.onload = function() {
         gameID=document.getElementsByClassName("gameIDSub")[0].id
         //console.log("game id is "+gameID);
