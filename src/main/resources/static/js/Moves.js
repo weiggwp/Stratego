@@ -329,14 +329,19 @@ function fastForward(){
 }
 
 function start() {
+
     if(redirect===true)return;
+    gameID=document.getElementsByClassName("gameIDSub")[0].id
     let http = new XMLHttpRequest();
     let url = "/start_game";
     http.open("POST", url, true);
+    var params = JSON.stringify({
+        'GameID':gameID}
+    );
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
-    http.send("game started")
+    http.send(params)
     http.onload = function() {
-        gameID=document.getElementsByClassName("gameIDSub")[0].id
+
         //console.log("game id is "+gameID);
         if (clicked) {
             // console.log("clicking " +moving);
