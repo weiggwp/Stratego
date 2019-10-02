@@ -7,6 +7,10 @@ public class GameObj {
         return GameID;
     }
 
+    public GameObj()
+    {
+
+    }
     public void setGameID(long gameID) {
         this.GameID = gameID;
     }
