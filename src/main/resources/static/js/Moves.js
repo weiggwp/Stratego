@@ -821,7 +821,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             }
         }
         //if (resp.startsWith("win")) {
-        if(fight_result===0)
+        else if(fight_result===0)
         {
             if (replay){
                 // console.log("logging "+document.getElementById(start.toString()).src);
@@ -886,22 +886,23 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             if(game_result==="win")
             {
                 lose();
-                return;
+                // return;
             }
             else if(game_result==="lost")
             {
                 win();
-                return;
+                // return;
             }
             else
             {
                 draw();
-                return;
+                // return;
             }
         }
         if (true){
             // document.getElementById('fastForwardBtn').style.opacity='1';
-            if (!replay)enable('fastForwardBtn');
+            if (!replay && !game_ended)
+                enable('fastForwardBtn');
             if (yellow!==-1){
                 if (document.getElementById(yellow.toString()).src.endsWith('images/pieces/blue_back.png')
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
