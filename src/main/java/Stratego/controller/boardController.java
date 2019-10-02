@@ -1,5 +1,6 @@
 package Stratego.controller;
 
+import Stratego.board.GameObj;
 import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.logic.src.Board;
@@ -52,12 +53,10 @@ public class boardController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        Game game = new Game(GameID++);
+        long a = GameID++;
+        Game game = new Game(a);
         games.add(game);
-        long a = ++GameID;
         model.addAttribute("gameID",a);
-        game = new Game(a);
-        long gameId = GameID;
         move_num = 0;   //reset move_num per new game
 
         //render board.html
@@ -196,8 +195,8 @@ public class boardController {
 
 
     @RequestMapping(value = "/start_game", method = RequestMethod.POST)
-    public ResponseEntity startGame() { // @RequestBody GameObj p
-        Game game = games.get((int)GameID);
+    public ResponseEntity startGame(@RequestBody GameObj m) { // @RequestBody GameObj p
+        Game game = games.get((int)m.getGameID());
         Board board = game.getBoard();
         long gameId = game.getGameID();
         BoardPiece[][] boardPiece = board.getBoard();
@@ -226,9 +225,9 @@ public class boardController {
     }
     @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity getAIPlayer()
+    public ResponseEntity getAIPlayer(@RequestBody GameObj a)
     {
-
+        Game game = games.get((int)a.getGameID());
         Move m = game.getAIMove('B');
         m.setGameID(GameID);
 
@@ -264,8 +263,9 @@ public class boardController {
 
     @RequestMapping(value = "/concede", method = RequestMethod.POST )
     @ResponseBody
-    public ResponseEntity concede()
+    public ResponseEntity concede(@RequestBody GameObj m)
     {
+        Game game = games.get((int)m.getGameID());
 //        game.setGameEnded(0);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = "";
