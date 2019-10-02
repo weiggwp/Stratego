@@ -68,14 +68,15 @@ function undoMove(){
 
     if (numMoves==0) return;
     numMoves--;
-    performMove(moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
-        moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
-        numMoves%2==0?'B':'R',
-        moveList[numMoves].status.fight_result,
-        moveList[numMoves].status.image_src,
-        false,"",
-        true,true);
+
     if (moveList[numMoves].status.fight_result==0){//win
+        performMove(moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
+            moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
+            numMoves%2==0?'B':'R',
+            moveList[numMoves].status.fight_result,
+            moveList[numMoves].status.image_src,
+            false,"",
+            true,true);
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves];
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
@@ -88,11 +89,20 @@ function undoMove(){
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
     }
     else if (moveList[numMoves].status.fight_result==2){//draw
-        /*document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves][1];
-        document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves][0];*/
+
+
+        document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).src=deletedImages[numMoves][1];
+        document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).src=deletedImages[numMoves][0];
         document.getElementById((moveList[numMoves].start_x*10+moveList[numMoves].start_y+11).toString()).style.opacity='1';
         document.getElementById((moveList[numMoves].end_x*10+moveList[numMoves].end_y+11).toString()).style.opacity='1';
     }
+    else  performMove(moveList[numMoves].end_x*10+moveList[numMoves].end_y+11,
+            moveList[numMoves].start_x*10+moveList[numMoves].start_y+11,
+            numMoves%2==0?'B':'R',
+            moveList[numMoves].status.fight_result,
+            moveList[numMoves].status.image_src,
+            false,"",
+            true,true);
     // document.getElementById("restartBtn").style.visibility='hidden';
     // document.getElementById("restartText").style.visibility='hidden';
     disable("restartBtn");
@@ -449,6 +459,7 @@ function move(i,m) {
         }
         numMoves++;
         permission=false;
+        console.log("hiding");
         hidePieceNums();
         let response=sendMoveRequest(0,x-1,y-1,i-1,m-1,'B',numMoves);
         //clear_coordinates();
@@ -696,6 +707,9 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
+            if (undo){
+
+            }
             document.getElementById(start.toString()).style.opacity =opacity;
             document.getElementById(start.toString()).style.borderStyle = 'none';
             if (!replay)
@@ -791,14 +805,14 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         document.getElementById(start.toString()).style.borderStyle = 'none';
         document.getElementById(end.toString()).style.opacity = "1";
         //if (resp.startsWith("empty")) {
-       // console.log("fight res is " +fight_result+ " undo is " +undo)
+        console.log("fight res is " +fight_result+ " undo is " +undo)
 
         if(fight_result===4)
         {
-            if (undo)
+
                // console.log("opac is "+document.getElementById(start.toString).opacity+"start is "+ start);
 
-            if (undo&&document.getElementById(start.toString).opacity=='1'){
+            if (undo&&document.getElementById(start).opacity=='1'){
                 document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
                 //console.log("doot");
             } else{
@@ -851,8 +865,15 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=[document.getElementById(start.toString()).src,document.getElementById(end.toString()).src];
             }
-            if (!replay) updateSidebar(img_src);
-            document.getElementById(end.toString()).style.opacity=opacity;
+            if (!replay) {
+                updateSidebar(img_src);
+                document.getElementById(end.toString()).style.opacity = opacity;
+                document.getElementById(start.toString()).style.opacity = opacity;
+            }
+            else{
+                document.getElementById(start.toString()).style.opacity = opacity;
+                document.getElementById(end.toString()).style.opacity = opacity;
+            }
         }
         //else if (resp.startsWith("flag")){
         else if(fight_result===3)
@@ -886,7 +907,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                     ||document.getElementById(yellow.toString()).src.endsWith('images/pieces/Moved.png'))
                     if (yellow!=(end))
                         document.getElementById(yellow.toString()).style.opacity=opacity;
-                // console.log("x is " + (end) + " yellow is " + yellow);
+                console.log("yellow is " + yellow);
 
                 document.getElementById(yellowBorder.toString()).style.borderStyle='none';
                 if (document.getElementById(yellowBorder.toString()).src.endsWith("blank.png"))
