@@ -7,6 +7,7 @@ let clicked=false;
 let yellow=-1;
 let yellowBorder=-1;
 let green =-1;
+let gameID=0;
 let greenBorder=-1;
 let started=false;
 let legal=0;
@@ -331,6 +332,7 @@ function start() {
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
     http.send("game started")
     http.onload = function() {
+        gameID =JSON.parse(http.response);
         if (clicked) {
             // console.log("clicking " +moving);
             if (document.getElementById(moving.toString())!=undefined)
@@ -461,7 +463,7 @@ function move(i,m) {
         permission=false;
         console.log("hiding");
         hidePieceNums();
-        let response=sendMoveRequest(0,x-1,y-1,i-1,m-1,'B',numMoves);
+        let response=sendMoveRequest(gameID,x-1,y-1,i-1,m-1,'B',numMoves);
         //clear_coordinates();
 
     }
@@ -682,7 +684,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
 
         //if (resp.startsWith("win")) { //it
 
-        if(fight_result===0||fight_result==4) //mover wins
+        if(fight_result===0||fight_result==4||fight_result==3) //mover wins
         {
             if (fight_result==0)
                 updateSidebar(img_src);
@@ -731,7 +733,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
             document.getElementById(end.toString()).style.borderStyle = 'none';
             moving=-1;
         }
-        else if (fight_result===3){ //game_over, a win
+         if (fight_result===3){ //game_over, a win
             document.getElementById((end).toString()).src
                 = document.getElementById((start).toString()).src
             document.getElementById(start.toString()).style.opacity = opacity;

@@ -190,7 +190,7 @@ public class boardController {
 
 
     @RequestMapping(value = "/start_game", method = RequestMethod.POST)
-    public void startGame() {
+    public ResponseEntity startGame() {
         Board board = game.getBoard();
         long gameId = game.getGameID();
         BoardPiece[][] boardPiece = board.getBoard();
@@ -215,7 +215,7 @@ public class boardController {
         Thread t = new Thread(new PlacementsToDBRunnable(placementService, placements));
         t.start();
 
-        // should I say anything back to client?
+        return new ResponseEntity<Long>(gameId,HttpStatus.OK);
     }
     @RequestMapping(value = "/get_AIPlayer", method = RequestMethod.POST )
     @ResponseBody
