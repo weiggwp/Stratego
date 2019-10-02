@@ -1,5 +1,6 @@
 package Stratego.controller;
 
+import Stratego.board.GameObj;
 import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.logic.src.Board;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 
 @RestController
 public class boardController {
-    private long GameID=0;
+    private volatile long GameID=0;
     private volatile int move_num = 0;
 
     @Autowired
@@ -44,15 +45,16 @@ public class boardController {
     @Autowired
     MatchService matchService;
 
-
-    Game game;
+    private volatile ArrayList<Game> games = new ArrayList<Game> ();
+//    Game game;
 
     @GetMapping("/board")
     public ModelAndView greeting(Model model) {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        game = new Game(++GameID);
+        Game game = new Game(GameID++);
+        games.add(game);
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
 
@@ -76,9 +78,10 @@ public class boardController {
     public ResponseEntity<Move> move(@RequestBody Move m)
     // RequestBody String some)
     {
+        Game game = games.get((int)m.getGameID());
        // String status=
         Move_status stat = game.move(m);
-        m.setGameID(GameID);
+//        m.setGameID(GameID);
         m.setMoveNum(move_num++);
         m.setStatus(stat);
 
@@ -137,6 +140,7 @@ public class boardController {
     @RequestMapping(value = "/swap_piece", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity swap(@RequestBody Move m) {
+        Game game = games.get((int)m.getGameID());
         game.swap(m.getStart_x() - 1, m.getStart_y() - 1, m.getEnd_x() - 1, m.getEnd_y() - 1);
         //need to save the move in game
         return new ResponseEntity(HttpStatus.OK);
@@ -146,8 +150,8 @@ public class boardController {
 
     @RequestMapping(value = "/get_board", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity getBoard() {
-
+    public ResponseEntity getBoard(@RequestBody GameObj m) {
+        Game game = games.get((int)m.getGameID());
         return new ResponseEntity<BoardPiece[][]>(game.getBoard().getBoard(), HttpStatus.OK);
 
 
@@ -155,8 +159,8 @@ public class boardController {
 
     @RequestMapping(value = "/get_AI", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity getAI() {
-
+    public ResponseEntity getAI(@RequestBody GameObj p) {
+        Game game = games.get((int)p.getGameID());
         Move m = game.getAIMove('R');
 
         Move_status moveStatus = m.getStatus();
@@ -190,7 +194,8 @@ public class boardController {
 
 
     @RequestMapping(value = "/start_game", method = RequestMethod.POST)
-    public ResponseEntity startGame() {
+    public ResponseEntity startGame() { // @RequestBody GameObj p
+        Game game = games.get((int)GameID);
         Board board = game.getBoard();
         long gameId = game.getGameID();
         BoardPiece[][] boardPiece = board.getBoard();
