@@ -52,7 +52,9 @@ public class boardController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        game = new Game(++GameID);
+        long a = ++GameID;
+        model.addAttribute("gameID",a);
+        game = new Game(a);
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
 
