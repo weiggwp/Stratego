@@ -332,7 +332,8 @@ function start() {
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
     http.send("game started")
     http.onload = function() {
-        gameID =JSON.parse(http.response);
+        gameID=document.getElementsByClassName("gameIDSub")[0].id
+        //console.log("game id is "+gameID);
         if (clicked) {
             // console.log("clicking " +moving);
             if (document.getElementById(moving.toString())!=undefined)
@@ -340,6 +341,9 @@ function start() {
         }
         numMoves=0;
         started=true;
+
+
+
         document.getElementsByClassName('blank').draggable = false;
         let i=0;
         for (i=11; i<111; i++){

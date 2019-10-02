@@ -1,6 +1,5 @@
 package Stratego.controller;
 
-import Stratego.board.GameObj;
 import Stratego.board.Move;
 import Stratego.board.Move_status;
 import Stratego.logic.src.Board;
@@ -55,6 +54,9 @@ public class boardController {
         //boardController control = new boardController();
         Game game = new Game(GameID++);
         games.add(game);
+        long a = ++GameID;
+        model.addAttribute("gameID",a);
+        game = new Game(a);
         long gameId = GameID;
         move_num = 0;   //reset move_num per new game
 
