@@ -803,7 +803,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 console.log("doot");
             } else{
                 document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
-                if (replay)document.getElementById((start).toString()).style.opacity=opacity;
+                document.getElementById((start).toString()).style.opacity=opacity;
             }
         }
         //if (resp.startsWith("win")) {
