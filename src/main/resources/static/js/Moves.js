@@ -791,16 +791,16 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
         document.getElementById(start.toString()).style.borderStyle = 'none';
         document.getElementById(end.toString()).style.opacity = "1";
         //if (resp.startsWith("empty")) {
-        console.log("fight res is " +fight_result+ " undo is " +undo)
+       // console.log("fight res is " +fight_result+ " undo is " +undo)
 
         if(fight_result===4)
         {
             if (undo)
-                console.log("opac is "+document.getElementById(start.toString).opacity+"start is "+ start);
+               // console.log("opac is "+document.getElementById(start.toString).opacity+"start is "+ start);
 
             if (undo&&document.getElementById(start.toString).opacity=='1'){
                 document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
-                console.log("doot");
+                //console.log("doot");
             } else{
                 document.getElementById(end.toString()).src  =document.getElementById((start).toString()).src
                 document.getElementById((start).toString()).style.opacity=opacity;
@@ -820,7 +820,7 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 document.getElementById(end.toString()).src =
                     img_src
             revealedTwo=(end);
-            if (replay)document.getElementById((start).toString()).style.opacity=opacity;
+            document.getElementById((start).toString()).style.opacity=opacity;
             if (revealedOne==revealedTwo)revealedTwo=-1;
             //(resp.substring(resp.lastIndexOf(" ")+1));
             //document.getElementById((end).toString()).src=(resp.substring(resp.lastIndexOf(" ")+1));
@@ -833,12 +833,15 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
                 if (!undo)
                     deletedImages[numMoves]=document.getElementById(start.toString()).src;
             }
-            console.log("start is " + start );
+            //console.log("start is " + start );
             if (replay){
                 if ((!undo||isBlue(document.getElementById(start).src))){
-                    console.log("changing opa");
+                    //console.log("changing opa");
                     document.getElementById(start).style.opacity=opacity;
                 }
+            }
+            else {
+                document.getElementById(start).style.opacity=opacity;
             }
         }
         //else if (resp.startsWith("draw")){
