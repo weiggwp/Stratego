@@ -2,17 +2,15 @@ package Stratego.logic.src;
 
 import Stratego.board.Move;
 import Stratego.board.Move_status;
-import Stratego.board.Round;
 import Stratego.board.arrangement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 //a game has a board and moves associated with it
 public class Game {
     private Board board;    //a unique board per game
     private ArrayList<Move> moves;  //variable length of moves
-    private long GameID; //
+    private long gameID; //
     private int gameWinner;
     private String err_msg;
 
@@ -23,7 +21,7 @@ public class Game {
     {
         board = new Board();
         moves = new ArrayList<Move>();
-        GameID = id; //
+        gameID = id; //
         gameWinner = 0;
         err_msg = "";
         load_board();
@@ -36,7 +34,7 @@ public class Game {
 
     }
 
-    public long getGameID(){return this.GameID;}
+    public long getGameID(){return this.gameID;}
     public String getErr_msg()
     {
         return this.getErr_msg();
@@ -122,7 +120,7 @@ public class Game {
         //Move_status stat = new Move_status();
         //stat.setIs_valid_move(true);
         //stat.setImage_src(board.getPieceAtLocation(sm.getStart_x(),sm.getStart_y()).getImg_src());
-        Move m = new Move(GameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),color,null);
+        Move m = new Move(gameID,sm.getStart_x(),sm.getStart_y(),sm.getEnd_x(),sm.getEnd_y(),color,null);
         Move_status stat = move(m);
         m.setStatus(stat);
         this.moves.add(m);  //made a move

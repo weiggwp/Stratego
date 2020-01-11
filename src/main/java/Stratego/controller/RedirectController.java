@@ -14,7 +14,7 @@ public class RedirectController {
 
     @RequestMapping(value="/to_replay", method = RequestMethod.POST)
     public ModelAndView redirectView(@RequestBody GameIdentifier gameIdentifier, ModelMap model){
-        model.addAttribute("GameID", gameIdentifier);
+        model.addAttribute("gameID", gameIdentifier);
         return new ModelAndView("redirect:/replay", model);
     }
 

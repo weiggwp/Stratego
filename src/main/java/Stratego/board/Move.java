@@ -1,7 +1,7 @@
 package Stratego.board;
 
 public class Move {
-    private long GameID;
+    private long gameID;
     //    private String player; //either computer or user
     private int start_x;
     private int start_y;
@@ -23,7 +23,7 @@ public class Move {
     }
 
     public Move(int gameID, String s, int startX, int startY, int curX, int curY, Move_status moveStatus) {
-        GameID = gameID;
+        this.gameID = gameID;
         this.start_x = startX;
         this.start_y = startY;
         this.end_x = curX;
@@ -45,11 +45,11 @@ public class Move {
     }
     public void setGameID(long id)
     {
-        this.GameID = id;
+        this.gameID = id;
     }
 
     public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color, int moveNum, Move_status status) {
-        GameID = gameID;
+        this.gameID = gameID;
         this.start_x = start_x;
         this.start_y = start_y;
         this.end_x = end_x;
@@ -63,7 +63,7 @@ public class Move {
 
     }
     public Move(long gameID, int start_x, int start_y, int end_x, int end_y, char color , Move_status status) {
-        GameID = gameID;
+        this.gameID = gameID;
         //this.player = player;
         this.start_x = start_x;
         this.start_y = start_y;
@@ -131,7 +131,7 @@ public class Move {
     }
 
     public long getGameID() {
-        return GameID;
+        return gameID;
     }
 
 }

@@ -28,7 +28,7 @@ function startReplay() {
     let url = "/replay/get_Movelist";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({
-        'GameID':gameID}
+        'gameID':gameID}
     );
     //start_x and start_y need to be filled in to validate move
 
@@ -277,7 +277,7 @@ function confirm_concede() {
     let url = "/concede";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({
-        'GameID':gameID}
+        'gameID':gameID}
     );
     //start_x and start_y need to be filled in to validate move
 
@@ -335,13 +335,14 @@ function start() {
 
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
+    console.log("id", document.getElementsByClassName("gameIDSub")[0].id);
     var params = JSON.stringify({
-        'GameID':document.getElementsByClassName("gameIDSub")[0].id}
+        'gameID':document.getElementsByClassName("gameIDSub")[0].id}
     );
     http.send(params);
     http.onload = function() {
         gameID=document.getElementsByClassName("gameIDSub")[0].id
-        //console.log("game id is "+gameID);
+        console.log("game id is "+gameID);
         if (clicked) {
             // console.log("clicking " +moving);
             if (document.getElementById(moving.toString())!=undefined)
@@ -526,7 +527,7 @@ function aiMove(color) {
     var http = new XMLHttpRequest();
     let url = color=='R'?"/get_AI":"/get_AIPlayer";
     var params = JSON.stringify({
-        'GameID':gameID}
+        'gameID':gameID}
         );
     // console.log("color is " + color);
     http.open("POST", url, true);
@@ -570,13 +571,13 @@ function aiMove(color) {
 
 }
 
-function sendSwapRequest(GameID,starting_x,starting_y,target_x,target_y,color)
+function sendSwapRequest(gameID,starting_x,starting_y,target_x,target_y,color)
 {
     var http = new XMLHttpRequest();
     let url = "/swap_piece";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({
-        'GameID': gameID,
+        'gameID': gameID,
         'player': "user",
         'color': color,
         'moveNum':0,
@@ -676,7 +677,7 @@ function requestBoard(){
     let url = "/get_board";
     http.open("POST", url, true);
     var params = JSON.stringify({
-        'GameID':gameID}
+        'gameID':gameID}
     );
     http.setRequestHeader("Content-type", "application/json; charset=utf-8");
     http.send(params);
@@ -950,14 +951,14 @@ function performMove(start,end,color,fight_result,img_src,game_ended,game_result
 
 }
 
-function sendMoveRequest(GameID,starting_x,starting_y,target_x,target_y,color,moveNum)
+function sendMoveRequest(gameID,starting_x,starting_y,target_x,target_y,color,moveNum)
 {
 
     var http = new XMLHttpRequest();
     let url = "/make_move";    //-> will be changed to another uri maybe action?=move
     //sent json file is 0-based index
     var params = JSON.stringify({
-        'GameID': gameID,
+        'gameID': gameID,
         'player': "user",
         'color': color,
         'moveNum':moveNum,

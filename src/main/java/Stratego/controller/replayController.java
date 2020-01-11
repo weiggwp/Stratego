@@ -41,14 +41,14 @@ public class replayController {
     @Autowired
     MoveService moveService;
 
-    private long GameID;
-    @GetMapping(path="/{GameID}")
-    public ModelAndView replayPage(@PathVariable long GameID, Model model, ModelMap modelMap) {
+    private long gameID;
+    @GetMapping(path="/{gameID}")
+    public ModelAndView replayPage(@PathVariable long gameID, Model model, ModelMap modelMap) {
         int count = 10;
         int inner = 10;
-        this.GameID = GameID;
+        this.gameID = gameID;
 
-        List<Placement> placementList = placementService.getPlacements(GameID);
+        List<Placement> placementList = placementService.getPlacements(gameID);
         for(int i=0; i<placementList.size(); i++){
             System.out.println(placementList.get(i).getX()+","+placementList.get(i).getY()+":"+placementList.get(i).getPieceName());
         }
@@ -94,7 +94,7 @@ public class replayController {
     public ResponseEntity getMovelist()
     {
 
-        List<Reposition> moves = moveService.getMoves(this.GameID);
+        List<Reposition> moves = moveService.getMoves(this.gameID);
         Move[] moveArr = new Move[moves.size()];
         for (int i = 0; i < moves.size();i ++) {
 

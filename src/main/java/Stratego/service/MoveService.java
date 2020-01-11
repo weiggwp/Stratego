@@ -34,8 +34,8 @@ public class MoveService {
         return repositions;
     }
 
-    public List<Reposition> getMoves(long GameID) {
-        return moveRepository.findRepositionByMatchIdOrderByTurnId(GameID);
+    public List<Reposition> getMoves(long gameID) {
+        return moveRepository.findRepositionByMatchIdOrderByTurnId(gameID);
     }
 
     public void updateMove() {

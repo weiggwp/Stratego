@@ -17,7 +17,6 @@ import Stratego.service.PlacementService;
 import Stratego.service.UserService;
 import Stratego.util.Extractor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.init.RepositoriesPopulatedEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -30,10 +29,11 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.Date;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
 public class boardController {
-    private volatile long GameID=0;
+    private AtomicInteger gameID = new AtomicInteger(0);
     private volatile int move_num = 0;
 
     @Autowired
@@ -53,10 +53,11 @@ public class boardController {
         int count = 10;
         int inner = 10;
         //boardController control = new boardController();
-        long a = GameID++;
-        Game game = new Game(a);
+
+        long id = gameID.getAndIncrement();
+        Game game = new Game(id);
         games.add(game);
-        model.addAttribute("gameID",a);
+        model.addAttribute("gameID",id);
         move_num = 0;   //reset move_num per new game
 
         //render board.html
@@ -66,7 +67,8 @@ public class boardController {
         model.addAttribute("pos", game.getGameSetup());
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("board");
-
+        System.out.println("id: " + id);
+        System.out.println("games: " + games);
         return modelAndView;
 
         //return "board";
@@ -80,6 +82,7 @@ public class boardController {
     // RequestBody String some)
     {
         Game game = games.get((int)m.getGameID());
+        System.out.println("maing move, game: " + game);
        // String status=
         Move_status stat = game.move(m);
 //        m.setGameID(GameID);
@@ -142,6 +145,7 @@ public class boardController {
     @ResponseBody
     public ResponseEntity swap(@RequestBody Move m) {
         Game game = games.get((int)m.getGameID());
+        System.out.println("swap piece, game: " + game);
         game.swap(m.getStart_x() - 1, m.getStart_y() - 1, m.getEnd_x() - 1, m.getEnd_y() - 1);
         //need to save the move in game
         return new ResponseEntity(HttpStatus.OK);
@@ -229,7 +233,7 @@ public class boardController {
     {
         Game game = games.get((int)a.getGameID());
         Move m = game.getAIMove('B');
-        m.setGameID(GameID);
+        m.setGameID(gameID.get());
 
         Move_status moveStatus = m.getStatus();
         if (m.getStatus().isGame_ended()) {

@@ -1,6 +1,6 @@
 //test function to send and receive stuff front+backend when making a move
 
-function sendRequest(GameID,target_x,target_y)
+function sendRequest(gameID,target_x,target_y)
 {
     var http = new XMLHttpRequest();
     var url = "/make_move";    //-> will be changed to another uri maybe action?=move
@@ -8,7 +8,7 @@ function sendRequest(GameID,target_x,target_y)
         'name':'ying'
         });
     /*
-    GameID: GameID,
+    gameID: gameID,
         player: "user",
         start_x: null,
         start_y: null,
